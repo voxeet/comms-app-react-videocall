@@ -1,0 +1,32 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.spinnerView {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.videoGrid {
+  flex: 1;
+  height: 100%;
+}
+
+.one {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  > div:first-child {
+    width: calc(100% - 340px);
+  }
+}

@@ -1,0 +1,35 @@
+stages:
+  - push
+
+.job_template:
+  image: "timbru31/node-alpine-git"
+  tags:
+    - dolby-iapi
+    - general-pool
+
+push-github:
+  extends: .job_template
+  stage: push
+  before_script:
+    - apk update
+    - apk add rsync
+    - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - echo "$SSHKEY_GITHUB" | tr -d '\r' | ssh-add -
+    - ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+  script:
+    - git clone git@github.com:dolbyio-samples/comms-app-react-videocall.git
+    - VERSION=$(node --eval="process.stdout.write(require('./package.json').version)")
+    - cd comms-app-react-videocall
+    - git checkout -b "rc-$VERSION"
+    - rm -rf ./*
+    - rsync -av --progress ./.. . --exclude comms-app-react-videocall --exclude .git
+    - git add .
+    - git config --global user.email ${GIT_USER_EMAIL}
+    - git config --global user.name ${GIT_USER_NAME}
+    - git commit -a -m "RC $VERSION"
+    - git push --set-upstream origin "rc-$VERSION" -o merge_request.create
+  only:
+    - main
