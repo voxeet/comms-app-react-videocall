@@ -1,0 +1,19 @@
+@import '../../styles/zIndex';
+
+.drawer {
+  position: absolute;
+  right: -400px;
+  width: 364px;
+  top: 0;
+  text-align: center;
+  transition: 0.15s linear;
+  box-shadow: -2px 0 20px rgb(97 97 97 / 18%);
+  z-index: $zI_drawer;
+  &.active {
+    right: 0;
+  }
+  .container {
+    display: flex;
+    flex-direction: column;
+  }
+}
