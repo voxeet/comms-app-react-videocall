@@ -1,0 +1,49 @@
+.container {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.columnLeft {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .localViewContainer {
+    display: flex;
+    justify-content: center;
+
+    .toastContainer {
+      position: absolute;
+      z-index: 1;
+      transform-origin: center;
+    }
+  }
+
+  .buttonsBar {
+    display: flex;
+    flex-direction: row;
+
+    .spacer {
+      width: 12px;
+    }
+  }
+}
+
+.columnRight {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 400px;
+
+  > * {
+    margin: 10px 0;
+  }
+}

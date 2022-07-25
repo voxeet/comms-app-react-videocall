@@ -1,0 +1,10 @@
+@import '../../styles/zIndex';
+
+.version {
+  z-index: $zI_version;
+  position: fixed;
+  bottom: 5px;
+  left: 10px;
+  display: flex;
+  flex-direction: column;
+}
