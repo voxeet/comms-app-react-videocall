@@ -4,7 +4,7 @@ import { ConferenceCreateContext } from '../context/ConferenceCreateContext';
 import { CreateStep } from '../types/routes.types';
 
 const useConferenceCreate = () => {
-  const { step, setStep, username, setUsername, meetingName, setMeetingName } = useContext(ConferenceCreateContext);
+  const { step, setStep, accessToken, setAccessToken, username, setUsername, meetingName, setMeetingName } = useContext(ConferenceCreateContext);
 
   const nextStep = () => {
     if (step !== CreateStep.deviceSetup) {
@@ -13,7 +13,7 @@ const useConferenceCreate = () => {
   };
 
   const prevStep = () => {
-    if (step !== CreateStep.username) {
+    if (step !== CreateStep.accessToken) {
       setStep(step - 1);
     }
   };
@@ -21,6 +21,8 @@ const useConferenceCreate = () => {
   return {
     step,
     setStep,
+    accessToken,
+    setAccessToken,
     username,
     setUsername,
     meetingName,

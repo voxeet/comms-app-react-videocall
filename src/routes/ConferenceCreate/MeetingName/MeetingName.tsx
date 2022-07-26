@@ -1,10 +1,11 @@
 import { Input, ValidationType, Button, Space } from '@dolbyio/comms-uikit-react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 
 import Text from '../../../components/Text';
 import useConferenceCreate from '../../../hooks/useConferenceCreate';
 import { useEnter } from '../../../hooks/useEnter';
+import { useQuery } from '../../../hooks/useQuery';
 import { isValid } from '../../../utils/validation.util';
 
 import styles from './MeetingName.module.scss';
@@ -14,6 +15,14 @@ export const MeetingName = () => {
   const [validation, setValidation] = useState<ValidationType>({ valid: true });
   const [name, setName] = useState(meetingName);
   const intl = useIntl();
+  const query = useQuery();
+
+  useEffect(() => {
+    const conferenceAlias = query.get("alias");
+    if (conferenceAlias != null) {
+      setName(conferenceAlias);
+    }
+  }, []);
 
   const next = () => {
     if (validation.valid && name.length !== 0) {

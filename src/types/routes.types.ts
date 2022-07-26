@@ -7,7 +7,8 @@ export enum Routes {
 }
 
 export enum CreateStep {
-  username = 0,
-  meetingName = 1,
-  deviceSetup = 2,
+  accessToken = 0,
+  username = 1,
+  meetingName = 2,
+  deviceSetup = 3,
 }

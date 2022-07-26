@@ -12,6 +12,8 @@ import ConferenceCreate from './ConferenceCreate';
 import ConferenceLeft from './ConferenceLeft';
 import Home from './Home';
 
+type AppProviderProps = { children: React.ReactNode };
+
 const Router = () => {
   const { conference } = useConference();
   const { meetingName } = useConferenceCreate();
@@ -40,11 +42,12 @@ const Router = () => {
   );
 };
 
-export const Navigator = () => {
+export const Navigator = ({ children }: AppProviderProps) => {
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL}>
       <Version />
       <Router />
+      {children}
     </BrowserRouter>
   );
 };

@@ -1,5 +1,4 @@
 import { IconButton, useTheme, Space } from '@dolbyio/comms-uikit-react';
-import React from 'react';
 
 import useConferenceCreate from '../../hooks/useConferenceCreate';
 import useDrawer from '../../hooks/useDrawer';
@@ -19,7 +18,7 @@ export const ConferenceCreateHeader = () => {
       style={{ borderBottom: `1px solid ${getColor('grey.100')}` }}
     >
       <Space style={{ width: 48 }}>
-        {step > CreateStep.username && (
+        {step > CreateStep.accessToken && (
           <IconButton testID="StepBackButton" backgroundColor="transparent" icon="arrowLeft" onClick={prevStep} />
         )}
       </Space>

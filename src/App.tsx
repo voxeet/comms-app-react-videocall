@@ -1,4 +1,3 @@
-import { CommsProvider, ThemeProvider } from '@dolbyio/comms-uikit-react';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 
@@ -6,20 +5,15 @@ import './App.module.scss';
 import TranslationProvider from './components/TranslationProvider';
 import { ConferenceCreateProvider } from './context/ConferenceCreateContext';
 import { Navigator } from './routes/Navigator';
+import Call from './Call';
 
 const App = () => {
   return (
     <TranslationProvider>
       <ConferenceCreateProvider>
-        <CommsProvider token={YOUR_TOKEN}>
-          <ThemeProvider
-            customThemes={{
-              'My Theme': { colors: { white: 'yellow', primary: { 400: 'red' }, secondary: { 400: 'blue' } } },
-            }}
-          >
-            <Navigator />
-          </ThemeProvider>
-        </CommsProvider>
+        <Navigator>
+          <Call />
+        </Navigator>
       </ConferenceCreateProvider>
     </TranslationProvider>
   );
