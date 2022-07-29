@@ -1,4 +1,4 @@
-import type { ColorKey } from '@dolbyio/comms-uikit-common';
+import type { ColorKey } from '@dolbyio/comms-uikit-react';
 import { Text, Space } from '@dolbyio/comms-uikit-react';
 import React from 'react';
 

@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import type { ColorKey } from '@dolbyio/comms-uikit-common';
+import type { ColorKey } from '@dolbyio/comms-uikit-react';
 import { useTheme, Space } from '@dolbyio/comms-uikit-react';
 import cx from 'classnames';
 import React from 'react';

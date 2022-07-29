@@ -4,12 +4,13 @@ The useConference hook gathers functions responsible for managing conferences.
 
 ## Members
 
-| Name               | Type                        | Description                           |
-| ------------------ | --------------------------- | ------------------------------------- |
-| `conference`       | Conference                  | The object of the current conference. |
-| `createConference` | (ConferenceOptions) => Promise<Conference> | Creates a conference.                 |
-| `joinConference`   | (Conference, JoinOptions) =>  Promise<Conference>      | Joins a conference.                   |
-| `leaveConference`  | () => Promise<void>                  | Leaves a conference.
+| Name               | Type                                              | Description                           |
+|--------------------|---------------------------------------------------|---------------------------------------|
+| `conference`       | Conference                                        | The object of the current conference. |
+| `createConference` | (ConferenceOptions) => Promise<Conference>        | Creates a conference.                 |
+| `fetchConference`  | (id) => Promise<Conference>                       | Fetches a conference.                 |
+| `joinConference`   | (Conference, JoinOptions) =>  Promise<Conference> | Joins a conference.                   |
+| `leaveConference`  | () => Promise<void>                               | Leaves a conference.
 
 ## Examples
 
