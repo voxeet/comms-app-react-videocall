@@ -1,6 +1,6 @@
 {
   "name": "comms-app-react-videocall",
-  "version": "1.4.5",
+  "version": "1.4.6",
   "scripts": {
     "dev": "ENV=web && vite",
     "build": "ENV=web && vite build",
