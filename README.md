@@ -62,7 +62,7 @@ npm install
 
 ### Paste the token
 
-Open file [src/App.tsx](https://github.com/dolbyio-samples/comms-app-react-videoconference/blob/main/src/App.tsx), find line 42 and replace `{YOUR_TOKEN}` with your access token string, prepared previously in [this step](#how-to-obtain-access-token). It should look like this:
+Open file [src/App.tsx](https://github.com/dolbyio-samples/comms-app-react-videoconference/blob/main/src/App.tsx), find line 14 and replace `{YOUR_TOKEN}` with your access token string, prepared previously in [this step](#how-to-obtain-access-token). It should look like this:
 
 ```javascript
   return (
