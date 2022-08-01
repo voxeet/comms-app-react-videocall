@@ -116,7 +116,7 @@ This command generated distribution packages in `/dist` directory.
 
 ## Known issues & limitations
 
-- Speaker selection available only on Chrome
+- Speaker device output selection available only on Chrome
 - Copy conference link works only for root directories by default
 - In some cases entering conference may take more than 3 seconds
 - On Safari 15.4 and below local user can hear echo
