@@ -1,14 +1,37 @@
-import { Space } from '@dolbyio/comms-uikit-react';
-import React from 'react';
+import { Space, useTheme } from '@dolbyio/comms-uikit-react';
+import React, { useMemo } from 'react';
 
 import Text from '../Text';
+import Version from '../Version';
 
 import styles from './ConferenceCreateFooter.module.scss';
 
+export const footerSizes = {
+  small: 32,
+  medium: 48,
+};
+
 export const ConferenceCreateFooter = () => {
+  const { isMobile, isMobileSmall, isTablet, isDesktop, isLandscape } = useTheme();
+
+  const footerHeight = useMemo(() => {
+    let value = footerSizes.medium;
+
+    if (isDesktop || isTablet) {
+      value = footerSizes.medium;
+    } else if (isMobile || isMobileSmall) {
+      value = footerSizes.small;
+    }
+
+    return value;
+  }, [isMobile, isMobileSmall, isTablet, isDesktop, isLandscape]);
+
   return (
-    <Space testID="ConferenceCreateFooter" className={styles.container}>
+    <Space fw testID="ConferenceCreateFooter" className={styles.container} style={{ height: footerHeight }}>
       <Text type="captionRegular" color="grey.300" id="copyright" values={{ year: new Date().getFullYear() }} />
+      <Space className={styles.version}>
+        <Version />
+      </Space>
     </Space>
   );
 };

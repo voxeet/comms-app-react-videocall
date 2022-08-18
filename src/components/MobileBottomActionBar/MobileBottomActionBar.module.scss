@@ -1,0 +1,25 @@
+@import '../../styles/zIndex';
+
+.actionBar {
+  display: flex;
+  justify-content: center;
+  z-index: $zI_mobileBottomBar;
+  box-sizing: border-box;
+  &.mobile {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, rgba(20, 20, 26, 0) 8.33%, #14141a 100%);
+  }
+  &.tablet {
+    height: 130px;
+  }
+
+  .openBar {
+    position: absolute;
+    bottom: 3px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}

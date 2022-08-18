@@ -1,11 +1,17 @@
 .wrapper {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
 }
 
-.container {
-  text-align: center;
-  width: 400px;
+.textContainer {
   margin-top: 100px;
+
+  &.smartphone {
+    margin-top: 56px;
+
+    &.landscape {
+      margin-top: 40px;
+    }
+  }
 }

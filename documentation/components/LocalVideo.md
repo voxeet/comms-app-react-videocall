@@ -6,7 +6,7 @@ The LocalVideo component is responsible for displaying the local participant's v
 
 | Name                 | Type                    | Default | Description                                    |
 | -------------------- | ----------------------- | ------- | ---------------------------------------------- |
-| `...VideoViewProps`? | Partial(VideoViewProps) | -       | Props that will be passed to the root element. |
+| `...ViewTileProps`? | Partial(ViewTileProps) | -       | Props that will be passed to the root element. |
 
 ## Examples
 

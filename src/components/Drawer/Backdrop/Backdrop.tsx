@@ -3,25 +3,23 @@
 import { useTheme, Space } from '@dolbyio/comms-uikit-react';
 import React from 'react';
 
-import useDrawer from '../../../hooks/useDrawer';
-
 import styles from './Backdrop.module.scss';
 
 type BackdropProps = {
   visible?: boolean;
+  onClick?: () => void;
 };
 
-export const Backdrop = ({ visible }: BackdropProps) => {
-  const { isDrawerOpen, closeDrawer } = useDrawer();
+export const Backdrop = ({ visible, onClick }: BackdropProps) => {
   const { getColor } = useTheme();
-  if (isDrawerOpen && visible) {
+  if (visible) {
     return (
       <Space
         testID="Backdrop"
         role="dialog"
         className={styles.backdrop}
-        onClick={closeDrawer}
-        style={{ backgroundColor: getColor('blackAlpha.400') }}
+        onClick={onClick}
+        style={{ backgroundColor: getColor('rgba(0,0,0, 0.24)') }}
       />
     );
   }

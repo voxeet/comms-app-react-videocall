@@ -14,6 +14,14 @@ The useTheme hook gathers functions responsible for managing themes.
 | `getColorOrGradient` | (string) => string  | Gets the gradient of the provided colors or the color that is used in the theme. |
 | `getColor`           | (string) => string  | Gets the color of the theme.                                                     |
 | `getGradient`        | (string) => string  | Gets the gradient value of the theme.                                            |
+| `windowWidth`        | number              | Gets the current window width.                                                   |
+| `windowHeight`       | number              | Gets the current window height.                                                  |
+| `isMobile`           | boolean             | Informs if current device is mobile.                                             |
+| `isMobileSmall`      | boolean             | Informs if current device is mobile and has less than 375px width.               |
+| `isTablet`           | boolean             | Informs if current device is tablet.                                             |
+| `isDesktop`          | boolean             | Informs if current device is desktop.                                            |
+| `isLandscape`        | boolean             | Informs if current device screen is in landscape mode.                           |
+| `isPortrait`         | boolean             | Informs if current device screen is in portrait mode.                            |
 
 ## Examples
 

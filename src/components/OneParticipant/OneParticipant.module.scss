@@ -3,6 +3,20 @@
   min-width: 340px;
   border-radius: 12px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+}
+
+.wrapperMobile {
+  padding-left: 24px;
+}
+
+.columnAlignMobile {
+  align-items: flex-start;
+  padding-top: 40px;
+  align-self: flex-start;
+
+  &.tabletAlignment {
+    align-items: center;
+  }
 }

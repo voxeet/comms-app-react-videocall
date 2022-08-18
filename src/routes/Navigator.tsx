@@ -2,7 +2,6 @@ import { useConference } from '@dolbyio/comms-uikit-react';
 import React, { useMemo } from 'react';
 import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 
-import Version from '../components/Version';
 import useConferenceCreate from '../hooks/useConferenceCreate';
 import { Routes as RoutesType } from '../types/routes.types';
 
@@ -43,7 +42,6 @@ const Router = () => {
 export const Navigator = () => {
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL}>
-      <Version />
       <Router />
     </BrowserRouter>
   );

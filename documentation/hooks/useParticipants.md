@@ -40,11 +40,11 @@ if (isSpeaking) {
 
 ```
 
-### Display mirrored VideoView if participant is local user
+### Display mirrored ViewTile if participant is local user
 
 ```javascript
 const { participantsStatus } = useParticipants();
 const { isLocal } = participantsStatus[participant.id] || {};
 
-<VideoView participant={participant} isMirrored={isLocal} />;
+<ViewTile participant={participant} isMirrored={isLocal} />;
 ```

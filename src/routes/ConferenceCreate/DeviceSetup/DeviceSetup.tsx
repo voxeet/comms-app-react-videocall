@@ -3,15 +3,16 @@ import {
   useCamera,
   useConference,
   useMicrophone,
-  useSession,
   useVideo,
   VideoLocalView,
-  Button,
   Space,
-  DeviceInfo,
+  Toast,
   useSpeaker,
+  useTheme,
+  BlockedAudioStateType,
+  JoinConferenceButton,
 } from '@dolbyio/comms-uikit-react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import DeviceSetupDrawer from '../../../components/DeviceSetupDrawer';
@@ -21,24 +22,28 @@ import useConferenceCreate from '../../../hooks/useConferenceCreate';
 import { Routes } from '../../../types/routes.types';
 
 import styles from './DeviceSetup.module.scss';
+import MobileContent from './MobileContent';
 import ToggleMicrophoneButton from './ToggleMicrophoneButton';
 import ToggleVideoButton from './ToggleVideoButton';
 
 export const DeviceSetup = () => {
   const navigate = useNavigate();
-  const { openSession } = useSession();
-  const { createConference, joinConference, leaveConference, conference } = useConference();
+  const { leaveConference, conference } = useConference();
   const { getDefaultLocalCamera, getCameraPermission, localCamera, setLocalCamera } = useCamera();
   const { getMicrophonePermission, localMicrophone } = useMicrophone();
   const { localSpeakers } = useSpeaker();
   const { isVideo } = useVideo();
   const { isAudio } = useAudio();
   const { meetingName, username } = useConferenceCreate();
+  const { isTablet, isMobile, isMobileSmall } = useTheme();
+  const { blockedAudioState, markBlockedAudioActivated } = useAudio();
 
   const [isAllPermission, setIsAllPermission] = useState<boolean>(false);
   const [isCameraPermission, setIsCameraPermission] = useState<boolean>(false);
   const [isMicrophonePermission, setIsMicrophonePermission] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
   const checkPermissions = () => {
     (async () => {
@@ -80,18 +85,25 @@ export const DeviceSetup = () => {
     }
   }, [isAllPermission, localCamera]);
 
-  const join = async () => {
+  const allPermissionsOff = !isMicrophonePermission && !isCameraPermission;
+  const allMediaOff = !isAudio && !isVideo;
+
+  const willAudioBeBlocked = allPermissionsOff || allMediaOff;
+
+  const onInitialise = async () => {
+    if (blockedAudioState === BlockedAudioStateType.INACTIVATED && isSafari && willAudioBeBlocked) {
+      markBlockedAudioActivated();
+    }
+
     setIsLoading(true);
-    await openSession({
-      name: username,
-    });
+  };
 
-    const conferenceOptions = {
-      alias: meetingName,
-    };
-    const conf = await createConference(conferenceOptions);
+  const onSuccess = async () => {
+    navigate(`${Routes.Conference}?id=${encodeURIComponent(meetingName)}`);
+  };
 
-    const joinOptions = {
+  const joinOptions = useMemo(
+    () => ({
       constraints: {
         audio: isMicrophonePermission && isAudio,
         video:
@@ -108,14 +120,30 @@ export const DeviceSetup = () => {
               }
             : false,
       },
-    };
-
-    await joinConference(conf, joinOptions);
-    navigate(`${Routes.Conference}?id=${encodeURIComponent(meetingName)}`);
-  };
+    }),
+    [isCameraPermission, isMicrophonePermission, isVideo, isAudio],
+  );
 
   if (isLoading) {
     return <OverlaySpinner textID="joiningMeeting" />;
+  }
+
+  if (isTablet || isMobile || isMobileSmall) {
+    return (
+      <MobileContent
+        localMicrophone={localMicrophone}
+        localCamera={localCamera}
+        localSpeakers={localSpeakers}
+        username={username}
+        meetingName={meetingName}
+        isMicrophonePermission={isMicrophonePermission}
+        isCameraPermission={isCameraPermission}
+        isAllPermission={isAllPermission}
+        onInitialise={onInitialise}
+        onSuccess={onSuccess}
+        joinOptions={joinOptions}
+      />
+    );
   }
 
   return (
@@ -125,27 +153,36 @@ export const DeviceSetup = () => {
         <Space pr="xxxxl" className={styles.columnLeft}>
           <Space className={styles.localViewContainer}>
             <Space mt="s" className={styles.toastContainer}>
-              {localCamera && <DeviceInfo testID="CameraInfo" icon="camera" device={localCamera.label} />}
-              {localMicrophone && (
-                <DeviceInfo testID="MicrophoneInfo" icon="microphone" device={localMicrophone.label} />
+              {localCamera?.label && <Toast testID="CameraInfo" iconName="camera" text={localCamera.label} />}
+              {localMicrophone?.label && (
+                <Toast testID="MicrophoneInfo" iconName="microphone" text={localMicrophone.label} />
               )}
-              {localSpeakers && <DeviceInfo testID="SpeakersInfo" icon="speaker" device={localSpeakers.label} />}
+              {localSpeakers?.label && <Toast testID="SpeakersInfo" iconName="speaker" text={localSpeakers.label} />}
             </Space>
             <VideoLocalView testID="DeviceSetupVideoLocalView" username={username} />
           </Space>
           <Space mt="m" className={styles.buttonsBar}>
-            <ToggleMicrophoneButton permissions={isMicrophonePermission} />
+            <ToggleMicrophoneButton size="l" permissions={isMicrophonePermission} />
             <Space className={styles.spacer} />
-            <ToggleVideoButton permissions={isCameraPermission} />
+            <ToggleVideoButton size="l" permissions={isCameraPermission} />
           </Space>
         </Space>
         <Space className={styles.columnRight}>
           <Text testID="MeetingName" type="H1" color="black">
             {meetingName}
           </Text>
-          <Button testID="DeviceSetupJoinButton" variant="primary" onClick={join} style={{ width: 400, height: 56 }}>
+          <JoinConferenceButton
+            testID="DeviceSetupJoinButton"
+            joinOptions={joinOptions}
+            meetingName={meetingName}
+            tooltipText="Join"
+            username={username}
+            onInitialise={onInitialise}
+            onSuccess={onSuccess}
+            style={{ width: 400 }}
+          >
             <Text testID="JoinbuttonText" type="buttonDefault" id="joinNow" />
-          </Button>
+          </JoinConferenceButton>
           {!isAllPermission && (
             <Text
               testID="PermissionsWarning"

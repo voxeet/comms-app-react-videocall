@@ -17,17 +17,20 @@ export type DrawerProps = {
 };
 
 export const Drawer = ({ children, backgroundColor, backdrop, testID }: DrawerProps) => {
-  const { isDrawerOpen } = useDrawer();
-  const { getColor } = useTheme();
+  const { isDrawerOpen, closeDrawer } = useDrawer();
+  const { getColor, isMobile, isMobileSmall } = useTheme();
+
+  const isSmartphone = isMobile || isMobileSmall;
 
   return (
     <>
-      <Backdrop visible={backdrop} />
+      <Backdrop visible={backdrop && isDrawerOpen} onClick={closeDrawer} />
       <Space
+        fw={isSmartphone}
         fh
         testID={testID}
-        className={cx(styles.drawer, isDrawerOpen && styles.active)}
-        style={{ backgroundColor: getColor(backgroundColor, 'grey.900') }}
+        className={cx(styles.drawer, isSmartphone && styles.mobile, isDrawerOpen && styles.active)}
+        style={{ backgroundColor: getColor(backgroundColor, 'grey.800') }}
       >
         {isDrawerOpen && (
           <Space fw fh className={styles.container}>

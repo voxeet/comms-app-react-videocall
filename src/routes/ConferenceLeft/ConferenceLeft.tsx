@@ -1,4 +1,5 @@
-import { Layout, Space } from '@dolbyio/comms-uikit-react';
+import { Layout, Space, useTheme } from '@dolbyio/comms-uikit-react';
+import cx from 'classnames';
 import React from 'react';
 
 import Rejoin from '../../components/Rejoin';
@@ -8,14 +9,18 @@ import Text from '../../components/Text';
 import styles from './ConferenceLeft.module.scss';
 
 export const ConferenceLeft = () => {
+  const { isMobile, isMobileSmall, isLandscape } = useTheme();
+
+  const isSmartphone = isMobile || isMobileSmall;
+
   return (
     <Layout testID="ConferenceLeftRoute">
-      <Space className={styles.wrapper}>
-        <Space className={styles.container}>
-          <Text type="H0" align="center" id="conferenceLeft" />
-          <ReturnToHome />
-          <Rejoin />
+      <Space fw className={styles.wrapper}>
+        <Space className={cx(styles.textContainer, isSmartphone && styles.smartphone, isLandscape && styles.landscape)}>
+          <Text type={isSmartphone ? 'H1' : 'H0'} align="center" id="conferenceLeft" />
         </Space>
+        <ReturnToHome />
+        <Rejoin />
       </Space>
     </Layout>
   );

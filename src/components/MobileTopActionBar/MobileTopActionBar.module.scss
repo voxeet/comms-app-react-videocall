@@ -1,0 +1,30 @@
+@import '../../styles/zIndex';
+
+.actionBar {
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: $zI_mobileTopBar;
+
+  .leftSection {
+    flex-grow: 0;
+  }
+  .middleSection {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .rightSection {
+    flex-grow: 0;
+  }
+  &.mobile {
+    background: linear-gradient(180deg, #14141a 8.33%, rgba(20, 20, 26, 0) 100%);
+  }
+  &.tablet {
+    position: initial;
+  }
+}

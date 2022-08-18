@@ -3,7 +3,7 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 
 type ToggleMicrophoneButtonProps = {
-  size?: 's' | 'm';
+  size?: 's' | 'm' | 'l';
   permissions?: boolean;
 };
 

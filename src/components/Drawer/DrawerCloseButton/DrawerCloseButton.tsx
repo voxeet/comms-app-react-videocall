@@ -6,20 +6,35 @@ import React from 'react';
 import useDrawer from '../../../hooks/useDrawer';
 
 import styles from './DrawerCloseButton.module.scss';
+import MobileContent from './MobileContent';
 
 type DrawerCloseButtonProps = {
-  backgroundColor?: ColorKey;
+  outsideColor: ColorKey;
+  mobileIconColor: ColorKey;
 } & Partial<IconButtonProps>;
 
-export const DrawerCloseButton = ({ backgroundColor, ...rest }: DrawerCloseButtonProps) => {
+export const DrawerCloseButton = ({
+  iconColor,
+  backgroundColor,
+  outsideColor,
+  strokeColor,
+  mobileIconColor,
+  ...rest
+}: DrawerCloseButtonProps) => {
   const { closeDrawer } = useDrawer();
-  const { getColor } = useTheme();
+  const { getColor, isMobile, isMobileSmall } = useTheme();
+
+  if (isMobile || isMobileSmall) {
+    return <MobileContent close={closeDrawer} iconColor={mobileIconColor} />;
+  }
 
   return (
-    <Space className={styles.closeButtonWrapper} style={{ backgroundColor: getColor(backgroundColor, 'background') }}>
+    <Space className={styles.closeButtonWrapper} style={{ backgroundColor: getColor(outsideColor) }}>
       <IconButton
         {...rest}
         backgroundColor={backgroundColor}
+        iconColor={iconColor}
+        strokeColor={strokeColor}
         variant="circle"
         icon="close"
         size="s"

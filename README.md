@@ -4,7 +4,7 @@
 
 The application available in this repository demonstrates the capabilities of Dolby.io's video call solution for browser applications, built using React.
 
-This repository will demonstrate how to develop the core Dolby.io features and will also provide an understanding of how our service works. If you run into problems, the full Dolby.io React SDK documentation can be found at <https://docs.dolby.io/communications-apis/docs/js-overview>
+This repository will demonstrate how to develop the core Dolby.io features and will also provide an understanding of how our service works. If you run into problems, the full Dolby.io Communications SDK for JavaScript documentation can be found at <https://docs.dolby.io/communications-apis/docs/js-overview>
 
 The application provided allows you to evaluate solutions offered by Dolby.io Comms API. You can download the repository yourself, run the application locally and verify that it meets your requirements. If you are interested in more details about Dolby.io’s video conference call capabilities, more information can be found here:
 <https://dolby.io/products/video-call/>

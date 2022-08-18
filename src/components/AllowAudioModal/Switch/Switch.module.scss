@@ -1,0 +1,22 @@
+.switch {
+  position: relative;
+  width: 42px;
+  height: 24px;
+  border-radius: 75px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  cursor: pointer;
+
+  .switchHandler {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 3px solid;
+
+    &.active {
+      right: 0;
+    }
+  }
+}
