@@ -7,9 +7,9 @@ The useMicrophone hook gathers functions responsible for managing microphones.
 | Name                        | Type                                   | Description                                     |
 | --------------------------- | -------------------------------------- | ----------------------------------------------- |
 | `getMicrophones`            | () => Promise<Mic[]>                   | Gets a list of the available microphones.       |
-| `selectMicrophone`          | (Mic) => void)                         | Selects a microphone.                           |
-| `getDefaultLocalMicrophone` | () => Promise<MediaDeviceInfo \| null> | Gets data of default microphone.                |
-| `getMicrophonePermission`   | () => Promise<boolean>)                | Check status of browser microphone permissions. |
+| `selectMicrophone`          | (Mic) => void                         | Selects a microphone.                           |
+| `getDefaultLocalMicrophone` | () => Promise<MediaDeviceInfo\|null> | Gets data of default microphone.                |
+| `getMicrophonePermission`   | () => Promise<boolean>                | Check status of browser microphone permissions. |
 
 ## Examples
 

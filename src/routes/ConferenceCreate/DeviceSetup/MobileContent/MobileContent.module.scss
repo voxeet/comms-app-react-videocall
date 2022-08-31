@@ -1,0 +1,23 @@
+.toastContainer {
+  position: fixed;
+}
+
+.container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .mediaButtonsSection {
+    display: flex;
+
+    .spacer {
+      width: 24px;
+    }
+  }
+
+  .mediaWarning {
+    display: flex;
+    justify-content: center;
+  }
+}

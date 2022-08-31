@@ -8,7 +8,7 @@ The useSpeaker hook gathers functions responsible for managing speakers.
 | ------------------------ | -------------------------------------- | ---------------------------------------- |
 | `getSpeakers`            | () => Promise<MediaDeviceInfo[]>       | Gets the list of the available speakers. |
 | `selectSpeaker`          | (string) => Promise<string>            | Selects a speaker.                       |
-| `getDefaultLocalSpeaker` | () => Promise<MediaDeviceInfo \| null> | Gets data of default speaker.            |
+| `getDefaultLocalSpeaker` | () => Promise<MediaDeviceInfo\|null> | Gets data of default speaker.            |
 
 ## Examples
 

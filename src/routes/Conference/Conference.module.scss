@@ -1,6 +1,24 @@
 .container {
   display: flex;
   flex-direction: column;
+
+  .bottomDrawer {
+    position: fixed;
+    left: 50%;
+    bottom: -150px;
+    transform: translateX(-50%);
+    z-index: 1000;
+    transition: 0.15s linear;
+
+    &.active {
+      bottom: 24px;
+      top: auto;
+
+      &.smartphones {
+        bottom: 0;
+      }
+    }
+  }
 }
 
 .row {
@@ -18,8 +36,7 @@
 }
 
 .videoGrid {
-  flex: 1;
-  height: 100%;
+  box-sizing: border-box;
 }
 
 .one {
@@ -29,4 +46,30 @@
   > div:first-child {
     width: calc(100% - 340px);
   }
+}
+
+.mobile {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.mobileColumnOneParticipant {
+  flex-direction: column;
+  width: 100%;
+}
+
+.mobileLandscapeOneParticipant {
+  justify-content: flex-start;
+}
+
+.layoutWrapper {
+  min-height: 100% !important;
+  height: 100% !important;
+}
+
+* {
+  box-sizing: border-box;
 }

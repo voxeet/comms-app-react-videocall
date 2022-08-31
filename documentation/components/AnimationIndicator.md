@@ -1,13 +1,14 @@
-# SpeakingIndicator
+# AnimationIndicator
 
-The SpeakingIndicator component is responsible for indicating if a participant is actively talking.
+The AnimationIndicator component is responsible for indicating status update by playing a specific animation.
 
 ## Props
 
 | Name                 | Type                    | Default | Description                                               |
 | -------------------- | ----------------------- | ------- | --------------------------------------------------------- |
 | `backgroundColor`?   | ColorKey                | -       | The background color of the indicator.                    |
-| `iconColor` ?        | ColorKey                | -       | The color of the displayed speaking icon.                 |
+| `contentColor` ?     | ColorKey                | -       | The color of the animation content.                       |
+| `animationData`      | Record<string, unknown> | -       | The animation data which could be played by lottie-web
 | `size` ?             | 's' , 'm'               | 'm'     | The size of the indicator.                                |
 | `testID` ?           | string                  | -       | The unique E2E test handler.                              |
 | `...HTMLDivElement`? | Partial(HTMLDivElement) | -       | Props that will be passed to the root of the div element. |
@@ -17,5 +18,6 @@ The SpeakingIndicator component is responsible for indicating if a participant i
 ### React
 
 ```javascript
-return <SpeakingIndicator size="small" />;
+import animationData from '<your lottie animation data path>'
+return <AnimationIndicator animationData={animationData} />;
 ```

@@ -1,5 +1,10 @@
-.container {
-  margin-top: 88px;
+.wrapper {
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.contentContainer {
   width: 400px;
   text-align: center;
 }

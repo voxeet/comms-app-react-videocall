@@ -1,20 +1,57 @@
-import type { ColorKey } from '@dolbyio/comms-uikit-react';
-import { Text, Space } from '@dolbyio/comms-uikit-react';
+import type { ColorKey } from '@dolbyio/comms-uikit-common';
+import { Text, Space, useTheme } from '@dolbyio/comms-uikit-react';
+import cx from 'classnames';
 import React from 'react';
+
+import { DrawerCloseButton } from '../DrawerCloseButton/DrawerCloseButton';
 
 import styles from './DrawerHeader.module.scss';
 
 export type DrawerHeaderProps = {
   title: string;
   color?: ColorKey;
+  height?: number;
+  borderColor?: ColorKey;
+  closeButtonBackgroundColor?: ColorKey;
+  closeButtonOutsideColor?: ColorKey;
+  closeButtonIconColor?: ColorKey;
+  closeButtonStrokeColor?: ColorKey;
+  mobileCloseButtonColor?: ColorKey;
 };
 
-export const DrawerHeader = ({ title, color }: DrawerHeaderProps) => {
+export const DrawerHeader = ({
+  title,
+  color,
+  height = 80,
+  borderColor = 'grey.100',
+  closeButtonBackgroundColor = 'white',
+  closeButtonOutsideColor = 'white',
+  closeButtonIconColor = 'purple',
+  closeButtonStrokeColor = 'purple',
+  mobileCloseButtonColor = 'black',
+}: DrawerHeaderProps) => {
+  const { getColor, isMobile, isMobileSmall } = useTheme();
+
+  const isSmartphone = isMobile || isMobileSmall;
+
   return (
-    <Space testID="DrawerHeader" pt="m" className={styles.topSection}>
+    <Space
+      testID="DrawerHeader"
+      className={cx(styles.container, isSmartphone && styles.mobile)}
+      style={{ height, borderColor: getColor(borderColor) }}
+    >
       <Text type="H3" color={color}>
         {title}
       </Text>
+      <Space className={styles.buttonPosition}>
+        <DrawerCloseButton
+          iconColor={closeButtonIconColor}
+          backgroundColor={closeButtonBackgroundColor}
+          outsideColor={closeButtonOutsideColor}
+          strokeColor={closeButtonStrokeColor}
+          mobileIconColor={mobileCloseButtonColor}
+        />
+      </Space>
     </Space>
   );
 };

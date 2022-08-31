@@ -1,5 +1,5 @@
-import { Button, useAudio, useVideo, Space } from '@dolbyio/comms-uikit-react';
-import React from 'react';
+import { Button, useAudio, useVideo, Space, useTheme } from '@dolbyio/comms-uikit-react';
+import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import useConferenceCreate from '../../hooks/useConferenceCreate';
@@ -12,6 +12,10 @@ export const ReturnToHome = () => {
   const { resetVideo } = useVideo();
   const { resetAudio } = useAudio();
 
+  const { isMobile, isMobileSmall } = useTheme();
+
+  const isSmartphone = isMobile || isMobileSmall;
+
   const homeScreen = () => {
     resetVideo();
     resetAudio();
@@ -19,9 +23,18 @@ export const ReturnToHome = () => {
     navigate(Routes.ConferenceCreate);
   };
 
+  const customStyles = useMemo(() => {
+    const styles = {
+      width: isSmartphone ? 275 : 400,
+      height: isSmartphone ? 44 : 56,
+    };
+
+    return styles;
+  }, [isSmartphone]);
+
   return (
     <Space mt="l">
-      <Button onClick={homeScreen} testID="ReturnToHomeButton" variant="primary" style={{ width: 400, height: 56 }}>
+      <Button onClick={homeScreen} testID="ReturnToHomeButton" variant="primary" style={customStyles}>
         <Text type="buttonDefault" id="returnToHome" />
       </Button>
     </Space>

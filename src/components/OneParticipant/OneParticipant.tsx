@@ -1,48 +1,66 @@
-import { Button, Icon, useConference, useTheme, Space, ConferenceName } from '@dolbyio/comms-uikit-react';
-import React from 'react';
+import { useConference, useTheme, Space, ConferenceName, CopyConferenceLinkButton } from '@dolbyio/comms-uikit-react';
+import cx from 'classnames';
+import React, { useMemo } from 'react';
 
-import { copyTextToClipboard } from '../../utils/copyTextToClipboard.util';
 import Text from '../Text';
 
 import styles from './OneParticipant.module.scss';
 
 export const OneParticipant = () => {
-  const { getColor } = useTheme();
+  const { getColor, isMobileSmall, isLandscape, isMobile, isTablet, isDesktop } = useTheme();
   const { conference } = useConference();
+
+  const isTabletPortrait = useMemo(() => isTablet && !isLandscape, [isTablet, isLandscape]);
+
+  const getLeftContainerMargin = useMemo(() => {
+    if (isDesktop) return 'm';
+    if (isTablet && isLandscape) return 's';
+    return undefined;
+  }, [isTablet, isDesktop, isLandscape]);
+
   if (conference) {
-    const copy = () => {
-      copyTextToClipboard(window.location.href);
-    };
     return (
       <Space
         testID="OneParticipant"
-        ml="m"
-        p="m"
+        ml={getLeftContainerMargin}
+        p={!isMobile ? 'm' : undefined}
         fh
-        className={styles.wrapper}
-        style={{ backgroundColor: getColor('grey.800') }}
+        className={cx(styles.wrapper, {
+          [styles.columnAlignMobile]: (isMobile && !isLandscape) || isMobileSmall || isTabletPortrait,
+          [styles.tabletAlignment]: isTabletPortrait,
+        })}
+        style={
+          (isTablet && isLandscape) || isDesktop ? { backgroundColor: getColor('grey.800') } : { paddingLeft: '24px' }
+        }
       >
         <Space>
           <Space mb="xs">
-            <Text testID="Alone" type="H2" id="alone" />
+            <Text testID="Alone" type={isMobile ? 'h6' : 'H2'} id="alone" />
           </Space>
           <Space mb="s">
-            <Text testID="Invite" id="invite" />
+            <Text testID="Invite" id="invite" type={isMobile ? 'bodySmall' : 'bodyDefault'} />
           </Space>
-          <Text testID="ConferenceTitleId" type="H4" id="conferenceTitleId" style={{ display: 'block' }} />
-          <Space mb="s">
-            <Space mb="s">
-              <Space>
-                <ConferenceName type="bodySmall" testID="ConferenceName" />
+          {!isMobileSmall && (
+            <>
+              <Text testID="ConferenceTitleId" type="H4" id="conferenceTitleId" style={{ display: 'block' }} />
+              <Space mb="s">
+                <Space mb="s">
+                  <Space>
+                    <ConferenceName type="bodySmall" testID="ConferenceName" />
+                  </Space>
+                </Space>
               </Space>
-            </Space>
-          </Space>
-          <Button testID="CopyButton" variant="primary" onClick={copy}>
-            <Space mr="xs">
-              <Text type="buttonDefault" id="copyLinkShort" />
-            </Space>
-            <Icon name="copy" size="s" />
-          </Button>
+              <CopyConferenceLinkButton
+                url={window.location.href}
+                size="m"
+                testID="ShareLinkButton"
+                icon="copy"
+                backgroundColor="grey.600"
+              >
+                <Text type="buttonDefault" id="copyLinkShort" />
+              </CopyConferenceLinkButton>
+            </>
+          )}
         </Space>
       </Space>
     );

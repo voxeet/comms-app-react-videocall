@@ -23,7 +23,7 @@ The MediaButton component is a base for building camera or audio buttons for loc
 | `tooltipPosition`?         | "top", "bottom                  | "top"         | The position of the tooltip.                                          |
 | `isActive`                 | boolean                         | -             | Sets the active state of the button.                                  |
 | `isDisabled`               | boolean                         | -             | Sets the disabled state of the button.                                |
-| `size`?                    | "s", "m"                        | "m"           | The size of the button.                                               |
+| `size`?                    | "s", "m", "l"                   | "m"           | The size of the button.                                               |
 | `onClick`                  | () => void                      | -             | The event handler property for processing click events on the button. |
 | `testID`?                  | string                          | -             | The unique E2E test handler.                                          |
 
