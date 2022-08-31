@@ -1,4 +1,6 @@
 .content {
   flex: 5;
   overflow: auto;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
 }

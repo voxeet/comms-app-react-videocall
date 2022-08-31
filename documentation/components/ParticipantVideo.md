@@ -7,7 +7,7 @@ The ParticipantVideo component is responsible for displaying participants' video
 | Name                 | Type                    | Default | Description                                    |
 | -------------------- | ----------------------- | ------- | ---------------------------------------------- |
 | `participant`        | Participant             | -       | The object of the selected participant.        |
-| `...VideoViewProps`? | Partial(VideoViewProps) | -       | Props that will be passed to the root element. |
+| `...ViewTileProps`? | Partial(ViewTileProps) | -       | Props that will be passed to the root element. |
 
 ## Examples
 

@@ -17,8 +17,8 @@
   "speakers": "Speakers",
   "you": "You",
   "returnToHome": "Return to the home screen",
-  "alone": "You are the only person on this call",
-  "invite": "Please wait for participants to arrive, or invite others to join.",
+  "alone": "You’re the 1st to arrive",
+  "invite": "Wait or invite other participants to join.",
   "conferenceTitleId": "Conference Title / ID:",
   "cameraOn": "Camera on",
   "cameraOff": "Camera off",
@@ -56,5 +56,11 @@
   "videoOff": "Video off",
   "version": "Version: {v}",
   "sdk": "SDK: {v}",
-  "success": "Success!"
+  "success": "Success!",
+  "allowAudio": "Allow playing audio",
+  "allowAudioDescr": "If you want to hear other participants, you must allow playing the audio.",
+  "playingAudio": "Playing audio",
+  "confirm": "Confirm",
+  "inviteLabel": "Invite",
+  "participantsLabel": "Participants"
 }

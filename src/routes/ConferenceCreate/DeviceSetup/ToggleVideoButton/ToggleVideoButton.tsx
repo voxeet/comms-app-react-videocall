@@ -3,10 +3,11 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 
 type ToggleVideoButtonProps = {
+  size?: 's' | 'm' | 'l';
   permissions?: boolean;
 };
 
-export const ToggleVideoButton = ({ permissions = false }: ToggleVideoButtonProps) => {
+export const ToggleVideoButton = ({ size = 'm', permissions = false }: ToggleVideoButtonProps) => {
   const { isVideo, toggleVideo } = useVideo();
   const intl = useIntl();
 
@@ -29,6 +30,7 @@ export const ToggleVideoButton = ({ permissions = false }: ToggleVideoButtonProp
       isActive={isVideo}
       isDisabled={!permissions}
       onClick={toggleVideo}
+      size={size}
       testID="DeviceSetupToggleVideoButton"
     />
   );

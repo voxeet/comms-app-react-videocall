@@ -1,6 +1,6 @@
-# VideoView
+# ViewTile
 
-The VideoView component is responsible for displaying video stream of each conference participant.
+The ViewTile component is responsible for displaying video stream of each conference participant.
 
 ## Props
 
@@ -20,6 +20,6 @@ The VideoView component is responsible for displaying video stream of each confe
 
 ```javascript
 return (
-  <VideoView participant={...} width={200} height={300} />
+  <ViewTile participant={...} width={200} height={300} />
 );
 ```

@@ -1,7 +1,28 @@
-.topSection {
+.container {
+  position: relative;
   box-sizing: border-box;
-  height: 80px;
   display: flex;
   justify-content: center;
   align-items: center;
+  border-bottom: 1px solid;
+
+  .buttonPosition {
+    position: absolute;
+    top: 50%;
+    left: -30px;
+    transform: translateY(-50%);
+  }
+
+  &.mobile {
+    .buttonPosition {
+      left: auto;
+      right: 0;
+      top: 50%;
+      width: 48px;
+      display:flex;
+      justify-content: center;
+      align-items: center;
+
+    }
+  }
 }

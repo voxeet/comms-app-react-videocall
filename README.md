@@ -4,9 +4,9 @@
 
 The application available in this repository demonstrates the capabilities of Dolby.io's video call solution for browser applications, built using React.
 
-This repository will demonstrate how to develop the core Dolby.io features and will also provide an understanding of how our service works. If you run into problems, the full Dolby.io React SDK documentation can be found at <https://docs.dolby.io/communications-apis/docs/js-overview>
+This repository demonstrates how to develop the core Dolby.io features and also provides an understanding of how our service works. If you run into problems, the full Dolby.io Communications SDK for JavaScript documentation can be found at <https://docs.dolby.io/communications-apis/docs/js-overview>.
 
-The application provided allows you to evaluate solutions offered by Dolby.io Comms API. You can download the repository yourself, run the application locally and verify that it meets your requirements. If you are interested in more details about Dolby.io’s video conference call capabilities, more information can be found here:
+The application provided allows you to evaluate solutions offered by Dolby.io Communications APIs. You can download the repository yourself, run the application locally and verify that it meets your requirements. If you are interested in more details about Dolby.io’s video conference call capabilities, more information can be found here:
 <https://dolby.io/products/video-call/>
 
 Its scope covers:
@@ -19,11 +19,11 @@ Its scope covers:
 
 ## Getting Started
 
-The steps below will quickly get you started testing Dolby.io’s capabilities
+The steps below will quickly get you started testing Dolby.io’s capabilities.
 
 ### How to get a Dolby.io account
 
-Dolby.io Comms API requires you to create a Dolby.io account.
+Dolby.io Communications APIs requires you to create a Dolby.io account.
 To set it up, you need to go to <https://dashboard.dolby.io/signup/> and complete the form. After confirming your email address, you will be logged in.
 
 ### Dolby.io dashboard
@@ -34,7 +34,7 @@ From this page <https://dashboard.dolby.io/dashboard/applications/summary> you c
 
 ### How to obtain access token
 
-To run the application, you need to generate a special access token and paste it into the source code of the app. Go to the _Dashboard_, and find the _Launch Demos_ button. On the next screen, will be a token field where you can copy the client access token to your clipboard. The generated token is active for 12 hours.
+To run the application, you need to generate a special access token and paste it into the source code of the app. Go to the _Dashboard_, and find the _Launch Demos_ button. On the next screen, there is a token field where you can copy the client access token to your clipboard. The generated token is active for 12 hours.
 
 ## How to run the Video Conferencing app
 
@@ -44,17 +44,17 @@ Below is a list of steps necessary to run the application locally.
 
 Use git to clone the repository with
 `git clone git@github.com:dolbyio-samples/comms-app-react-videoconference.git`
-or simply download using the green button on the top of this page and unzip the repository
+or simply download using the green button on the top of this page and unzip the repository.
 
 ### Install dependencies
 
-Open the main directory with the terminal. If you are using [Yarn](https://yarnpkg.com/), install dependencies with command
+Open the main directory with the terminal. If you are using [Yarn](https://yarnpkg.com/), install dependencies with the following command:
 
 ```bash
 yarn
 ```
 
-and if you are using [NPM](https://www.npmjs.com/), type command
+and if you are using [NPM](https://www.npmjs.com/), type the following command:
 
 ```bash
 npm install
@@ -62,7 +62,7 @@ npm install
 
 ### Paste the token
 
-Open file [src/App.tsx](https://github.com/dolbyio-samples/comms-app-react-videocall/blob/main/src/App.tsx), find and replace `{YOUR_TOKEN}` with your access token string, prepared previously in [this step](#how-to-obtain-access-token). It should look like this:
+Open file [src/App.tsx](./src/App.tsx), find line 14 and replace `{YOUR_TOKEN}` with your access token string, prepared previously in [this step](#how-to-obtain-access-token). It should look like this:
 
 ```javascript
   return (
@@ -78,7 +78,7 @@ Open file [src/App.tsx](https://github.com/dolbyio-samples/comms-app-react-video
 
 ### Start the app
 
-After installing the dependencies, execute the command
+After installing the dependencies, execute the following command:
 
 ```bash
 yarn dev
@@ -98,7 +98,7 @@ After printing the appropriate message in the terminal window, open <http://loca
 
 #### Base URL configuration
 
-In case you need to fully configure the application path (e.g. extend localhost:3000/ to localhost:3000/videoconference/) please add the `/.env.production` file with such content:
+In case you need to fully configure the application path (e.g. extend localhost:3000/ to localhost:3000/videoconference/) please add the `/.env.production` file with the following content:
 
 ```
 BASE_URL=<YOUR BASE URL PATH>
@@ -108,18 +108,20 @@ Change the BASE_URL environment variable and restart the application.
 
 ## How to build the Video Conferencing app
 
-Follow the steps of installing dependencies & token configuration from "How to run" section
+Follow the steps of installing dependencies & token configuration from the "How to run the Video Conferencing app" section
 
-After installing the dependencies, execute the command
+After installing the dependencies, execute the following command:
+
 `yarn build`
+
 This command generated distribution packages in `/dist` directory.
 
 ## Known issues & limitations
 
-- Speaker device output selection available only on Chrome
+- Speaker selection is available only on Chrome
 - Copy conference link works only for root directories by default
-- In some cases entering conference may take more than 3 seconds
-- On Safari 15.4 and below local user can hear echo
+- In some cases entering a conference may take more than three seconds
+- On Safari 15.4 and below, the local user can hear echo
 
 ## Requirements & supported platforms
 

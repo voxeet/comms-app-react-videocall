@@ -7,13 +7,21 @@ The useTheme hook gathers functions responsible for managing themes.
 | Name                 | Type                | Description                                                                      |
 | -------------------- | ------------------- | -------------------------------------------------------------------------------- |
 | `theme`              | Theme               | Gets the theme object.                                                           |
-| `themes`             | CustomThemes        | Gets the object of themes in project.                                            |
+| `themes`             | CustomThemes        | Gets all themes in the project.                                            |
 | `activeTheme`        | string              | Gets the currently used theme mode name.                                         |
 | `availableThemes`    | string[]            | Gets array of available theme names.                                             |
 | `setActiveTheme`     | (ThemeMode) => void | Sets a theme mode.                                                               |
 | `getColorOrGradient` | (string) => string  | Gets the gradient of the provided colors or the color that is used in the theme. |
 | `getColor`           | (string) => string  | Gets the color of the theme.                                                     |
 | `getGradient`        | (string) => string  | Gets the gradient value of the theme.                                            |
+| `windowWidth`        | number              | Gets the current window width.                                                   |
+| `windowHeight`       | number              | Gets the current window height.                                                  |
+| `isMobile`           | boolean             | Informs if current device is mobile.                                             |
+| `isMobileSmall`      | boolean             | Informs if current device is mobile and has less than 375px width.               |
+| `isTablet`           | boolean             | Informs if current device is tablet.                                             |
+| `isDesktop`          | boolean             | Informs if current device is desktop.                                            |
+| `isLandscape`        | boolean             | Informs if current device screen is in landscape mode.                           |
+| `isPortrait`         | boolean             | Informs if current device screen is in portrait mode.                            |
 
 ## Examples
 

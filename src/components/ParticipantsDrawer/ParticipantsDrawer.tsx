@@ -1,9 +1,9 @@
-import { useParticipants, IconButton, Space, ParticipantsList } from '@dolbyio/comms-uikit-react';
+import { useParticipants, IconButton, Space, ParticipantsList, useTheme } from '@dolbyio/comms-uikit-react';
 import React from 'react';
 import { useIntl } from 'react-intl';
 
 import useDrawer from '../../hooks/useDrawer';
-import { Drawer, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader } from '../Drawer';
+import { Drawer, DrawerContent, DrawerFooter, DrawerHeader } from '../Drawer';
 
 import styles from './ParticipantsDrawer.module.scss';
 
@@ -11,11 +11,23 @@ const ParticipantsDrawer = () => {
   const intl = useIntl();
   const { closeDrawer } = useDrawer();
   const { participants } = useParticipants();
+  const { isDesktop, isMobile, isMobileSmall } = useTheme();
+
+  const isSmartphone = isMobile || isMobileSmall;
 
   return (
-    <Drawer testID="ParticipantsDrawer">
-      <DrawerCloseButton />
-      <DrawerHeader title={`Participants (${participants.length})`} color="grey.100" />
+    <Drawer backdrop={!isDesktop} testID="ParticipantsDrawer">
+      <DrawerHeader
+        title={`Participants (${participants.length})`}
+        color="grey.100"
+        borderColor="transparent"
+        height={isSmartphone ? 48 : 110}
+        closeButtonBackgroundColor="grey.500"
+        closeButtonOutsideColor="grey.900"
+        closeButtonIconColor="white"
+        closeButtonStrokeColor="transparent"
+        mobileCloseButtonColor="white"
+      />
       <DrawerContent>
         <ParticipantsList
           localText={intl.formatMessage({ id: 'you' })}
@@ -25,18 +37,20 @@ const ParticipantsDrawer = () => {
           soundOffText={intl.formatMessage({ id: 'soundOff' })}
         />
       </DrawerContent>
-      <DrawerFooter>
-        <Space className={styles.closeButtonBottom}>
-          <IconButton
-            testID="CloseParticipantsDrawerButton"
-            badge
-            backgroundColor="transparent"
-            badgeColor="primary.300"
-            icon="participants"
-            onClick={closeDrawer}
-          />
-        </Space>
-      </DrawerFooter>
+      {isDesktop && (
+        <DrawerFooter>
+          <Space className={styles.closeButtonBottom}>
+            <IconButton
+              testID="CloseParticipantsDrawerButton"
+              badge
+              backgroundColor="transparent"
+              badgeColor="primary.300"
+              icon="participants"
+              onClick={closeDrawer}
+            />
+          </Space>
+        </DrawerFooter>
+      )}
     </Drawer>
   );
 };

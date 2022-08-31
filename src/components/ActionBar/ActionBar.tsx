@@ -27,7 +27,7 @@ export const ActionBar = () => {
   }
 
   return (
-    <Space testID="ActionBar" className={styles.actionBar}>
+    <Space testID="ActionBar" className={styles.actionBar} p="m">
       <Space className={styles.row} style={{ width: 330 }}>
         <Copy />
         <Space style={{ flex: 1 }}>

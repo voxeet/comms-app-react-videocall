@@ -1,6 +1,12 @@
 .container {
-  height: 60px;
+  flex-grow: 0;
   display: flex;
   justify-content: center;
-  align-items: center;
+  position: fixed;
+  bottom: 0;
+
+  .version {
+    position: absolute;
+    bottom: 0;
+  }
 }
