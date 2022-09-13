@@ -6,21 +6,33 @@ import {
   MicrophoneSelect,
   CameraSelect,
   useTheme,
+  useVideo,
 } from '@dolbyio/comms-uikit-react';
 import React, { useMemo } from 'react';
 import { useIntl } from 'react-intl';
 
 import useConferenceCreate from '../../hooks/useConferenceCreate';
+import useDrawer from '../../hooks/useDrawer';
 import { Drawer, DrawerContent, DrawerHeader } from '../Drawer';
 
 import styles from './DeviceSetupDrawer.module.scss';
 
-export const DeviceSetupDrawer = () => {
+type DeviceSetupDrawerProps = {
+  isMicrophonePermission: boolean;
+  isCameraPermission?: boolean;
+};
+
+export const DeviceSetupDrawer = ({ isMicrophonePermission, isCameraPermission }: DeviceSetupDrawerProps) => {
   const intl = useIntl();
   const { username } = useConferenceCreate();
   const { isTablet, isMobile, isMobileSmall, isLandscape, isDesktop } = useTheme();
+  const { isDrawerOpen } = useDrawer();
 
   const videoDimensions = {
+    desktop: {
+      short: 158,
+      long: 280,
+    },
     tablet: {
       short: 135,
       long: 240,
@@ -32,10 +44,13 @@ export const DeviceSetupDrawer = () => {
   };
 
   const videoSizes = useMemo(() => {
-    let width = videoDimensions.tablet.short;
-    let height = videoDimensions.tablet.long;
+    let width = videoDimensions.desktop.long;
+    let height = videoDimensions.desktop.short;
 
-    if (isMobile || isMobileSmall) {
+    if (isDesktop) {
+      width = videoDimensions.desktop.long;
+      height = videoDimensions.desktop.short;
+    } else if (isMobile || isMobileSmall) {
       if (isLandscape) {
         width = videoDimensions.mobile.long;
         height = videoDimensions.mobile.short;
@@ -54,7 +69,7 @@ export const DeviceSetupDrawer = () => {
     }
 
     return { width, height };
-  }, [isMobile, isMobileSmall, isLandscape, videoDimensions]);
+  }, [isMobile, isMobileSmall, isLandscape, videoDimensions, isDesktop]);
 
   return (
     <Drawer testID="DeviceSetupDrawer" backgroundColor="white" backdrop>
@@ -74,9 +89,11 @@ export const DeviceSetupDrawer = () => {
               username={username}
               indicator={false}
               audio={false}
+              disabled={!isDrawerOpen}
+              isMicrophonePermission={isMicrophonePermission}
             />
           </Space>
-          {isDesktop && (
+          {isDesktop && isCameraPermission && (
             <Space mb="m">
               <CameraSelect
                 testID="CameraSelect"
@@ -85,13 +102,15 @@ export const DeviceSetupDrawer = () => {
               />
             </Space>
           )}
-          <Space mb="m">
-            <MicrophoneSelect
-              testID="MicrophoneSelect"
-              label={intl.formatMessage({ id: 'microphone' })}
-              placeholder={intl.formatMessage({ id: 'microphone' })}
-            />
-          </Space>
+          {isMicrophonePermission && (
+            <Space mb="m">
+              <MicrophoneSelect
+                testID="MicrophoneSelect"
+                label={intl.formatMessage({ id: 'microphone' })}
+                placeholder={intl.formatMessage({ id: 'microphone' })}
+              />
+            </Space>
+          )}
           <Space mb="m">
             <SpeakersSelect
               testID="SpeakersSelect"

@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { ConferenceCreateContext } from '../context/ConferenceCreateContext';
 import { CreateStep } from '../types/routes.types';
 
-const useConferenceCreate = () => {
+const useConferenceCreate = (type?: 'user' | 'meeting') => {
   const { step, setStep, username, setUsername, meetingName, setMeetingName } = useContext(ConferenceCreateContext);
 
   const nextStep = () => {
@@ -27,6 +27,7 @@ const useConferenceCreate = () => {
     setMeetingName,
     nextStep,
     prevStep,
+    setValue: type === 'user' ? setUsername : setMeetingName,
   };
 };
 

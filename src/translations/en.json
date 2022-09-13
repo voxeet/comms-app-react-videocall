@@ -16,7 +16,7 @@
   "microphone": "Microphone",
   "speakers": "Speakers",
   "you": "You",
-  "returnToHome": "Return to the home screen",
+  "returnToHome": "Return to home screen",
   "alone": "You’re the 1st to arrive",
   "invite": "Wait or invite other participants to join.",
   "conferenceTitleId": "Conference Title / ID:",
@@ -39,13 +39,14 @@
   "meetingTitleDisclaimer": "What's the meeting name?",
   "create": "Create",
   "meetingTitleValidation": "Meeting titles cannot contain special characters ( % # @ ! > $ % < > ^ & * _ - + = { } [ ] ; : , . ‘ “ ~ / )",
-  "usernameValidation": "Name must have 3-30 characters and can use only letters, numbers and @%!#?_.-",
+  "usernameValidation": "Name must have 2-30 characters and can use only letters, numbers and @%!#?_.-",
   "setUp": "Set up",
   "permissions": "Be sure to provide access to the camera and microphone so that other participants can see and hear you.",
   "joinNow": "Join now",
   "join": "Join",
   "copyLink": "Copy conference link to clipboard",
   "copyLinkShort": "Copy link",
+  "shareLinkShort": "Share link",
   "settings": "Settings",
   "isConnected": "{device} is connected",
   "theme": "Theme",
@@ -62,5 +63,6 @@
   "playingAudio": "Playing audio",
   "confirm": "Confirm",
   "inviteLabel": "Invite",
-  "participantsLabel": "Participants"
+  "participantsLabel": "Participants",
+  "pleaseRotateYourPhone": "Please rotate your phone"
 }

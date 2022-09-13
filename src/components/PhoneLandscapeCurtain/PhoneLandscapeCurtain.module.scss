@@ -1,0 +1,23 @@
+@import '../../styles/zIndex';
+
+.rotationCurtain {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: $zI_version - 1;
+}
+
+@media only screen and (orientation: landscape) and (min-width: 568px) {
+  .rotationCurtain {
+    display: flex;
+  }
+}
+
+.description {
+  align-self: center;
+  margin-left: auto;
+  margin-right: auto;
+}

@@ -1,7 +1,6 @@
 import {
   useAudio,
   useCamera,
-  useConference,
   useMicrophone,
   useVideo,
   VideoLocalView,
@@ -29,7 +28,6 @@ import ToggleVideoButton from './ToggleVideoButton';
 
 export const DeviceSetup = () => {
   const navigate = useNavigate();
-  const { leaveConference, conference } = useConference();
   const { getDefaultLocalCamera, getCameraPermission, localCamera, setLocalCamera } = useCamera();
   const { getMicrophonePermission, localMicrophone } = useMicrophone();
   const { localSpeakers } = useSpeaker();
@@ -64,19 +62,6 @@ export const DeviceSetup = () => {
 
   useEffect(() => {
     checkPermissions();
-  }, []);
-
-  useEffect(() => {
-    (async () => {
-      if (conference) {
-        try {
-          await leaveConference();
-        } catch (error) {
-          // eslint-disable-next-line no-console
-          console.error(error);
-        }
-      }
-    })();
   }, []);
 
   useEffect(() => {
@@ -150,7 +135,6 @@ export const DeviceSetup = () => {
 
   return (
     <Space className={styles.container}>
-      <DeviceSetupDrawer />
       <Space className={styles.row}>
         <Space pr="xxxxl" className={styles.columnLeft}>
           <Space className={styles.localViewContainer}>
@@ -161,7 +145,12 @@ export const DeviceSetup = () => {
               )}
               {localSpeakers?.label && <Toast testID="SpeakersInfo" iconName="speaker" text={localSpeakers.label} />}
             </Space>
-            <VideoLocalView testID="DeviceSetupVideoLocalView" username={username} disabled={isDrawerOpen} />
+            <VideoLocalView
+              testID="DeviceSetupVideoLocalView"
+              username={username}
+              disabled={isDrawerOpen}
+              isMicrophonePermission={isMicrophonePermission}
+            />
           </Space>
           <Space mt="m" className={styles.buttonsBar}>
             <ToggleMicrophoneButton size="l" permissions={isMicrophonePermission} />
@@ -178,6 +167,7 @@ export const DeviceSetup = () => {
             joinOptions={joinOptions}
             meetingName={meetingName}
             tooltipText="Join"
+            tooltipPosition="bottom"
             username={username}
             onInitialise={onInitialise}
             onSuccess={onSuccess}
@@ -196,6 +186,7 @@ export const DeviceSetup = () => {
           )}
         </Space>
       </Space>
+      <DeviceSetupDrawer isMicrophonePermission={isMicrophonePermission} isCameraPermission={isCameraPermission} />
     </Space>
   );
 };
