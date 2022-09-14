@@ -1,0 +1,15 @@
+@import '../../styles/breakpoints.scss';
+
+.button {
+  width: 400px;
+  height: 48px;
+
+  @include rwd('mobile') {
+    width: 327px;
+    height: 48px;
+  }
+  @include rwd('mobileSmall') {
+    width: 272px;
+    height: 44px;
+  }
+}

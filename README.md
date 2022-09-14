@@ -62,7 +62,7 @@ npm install
 
 ### Paste the token
 
-Open file [src/App.tsx](./src/App.tsx), find line 14 and replace `{YOUR_TOKEN}` with your access token string, prepared previously in [this step](#how-to-obtain-access-token). It should look like this:
+Open file [src/App.tsx](./src/App.tsx), find line 23 and replace `{YOUR_TOKEN}` with your access token string, prepared previously in [this step](#how-to-obtain-access-token). It should look like this:
 
 ```javascript
   return (
@@ -96,16 +96,6 @@ to run the application locally.
 
 After printing the appropriate message in the terminal window, open <http://localhost:3000> in the browser. The application will launch at this address.
 
-#### Base URL configuration
-
-In case you need to fully configure the application path (e.g. extend localhost:3000/ to localhost:3000/videoconference/) please add the `/.env.production` file with the following content:
-
-```
-BASE_URL=<YOUR BASE URL PATH>
-```
-
-Change the BASE_URL environment variable and restart the application.
-
 ## How to build the Video Conferencing app
 
 Follow the steps of installing dependencies & token configuration from the "How to run the Video Conferencing app" section
@@ -115,6 +105,16 @@ After installing the dependencies, execute the following command:
 `yarn build`
 
 This command generated distribution packages in `/dist` directory.
+
+#### Base URL configuration
+
+In case you need to serve production content from different path then `/` root, (e.g. extend example.app to example.app/videoconference/) please add the `/.env.production` file with the following content:
+
+```
+BASE_URL=<YOUR BASE URL PATH>
+```
+
+More about Base URL configuration can be found [here](https://vitejs.dev/config/shared-options.html#base).
 
 ## Known issues & limitations
 

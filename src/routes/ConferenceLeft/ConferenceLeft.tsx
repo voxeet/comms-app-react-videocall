@@ -5,12 +5,13 @@ import React from 'react';
 import Rejoin from '../../components/Rejoin';
 import ReturnToHome from '../../components/ReturnToHome';
 import Text from '../../components/Text';
+import useConferenceCleanup from '../../hooks/useConferenceCleanup';
 
 import styles from './ConferenceLeft.module.scss';
 
 export const ConferenceLeft = () => {
+  useConferenceCleanup();
   const { isMobile, isMobileSmall, isLandscape } = useTheme();
-
   const isSmartphone = isMobile || isMobileSmall;
 
   return (
