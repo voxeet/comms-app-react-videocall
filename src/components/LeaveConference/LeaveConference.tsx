@@ -10,7 +10,7 @@ const LeaveConference = () => {
   const navigate = useNavigate();
 
   const onSuccess = () => {
-    navigate(Routes.ConferenceLeft, { replace: true });
+    navigate(`${Routes.ConferenceLeft}${window.location.search}`, { replace: true });
   };
 
   return (

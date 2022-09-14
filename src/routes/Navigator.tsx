@@ -1,6 +1,6 @@
 import { useConference } from '@dolbyio/comms-uikit-react';
 import React, { useMemo } from 'react';
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import useConferenceCreate from '../hooks/useConferenceCreate';
 import { Routes as RoutesType } from '../types/routes.types';
@@ -14,13 +14,10 @@ import Home from './Home';
 const Router = () => {
   const { conference } = useConference();
   const { meetingName } = useConferenceCreate();
-  const location = useLocation();
 
-  const meetingId = useMemo(() => {
-    return encodeURIComponent(new URLSearchParams(window.location.search).get('id') || '');
-  }, [location]);
-
-  const redirect = <Navigate replace to={`${RoutesType.ConferenceCreate}${meetingId ? `?id=${meetingId}` : ``}`} />;
+  const redirect = useMemo(() => {
+    return <Navigate replace to={`${RoutesType.ConferenceCreate}${window.location.search}`} />;
+  }, [window.location.search]);
 
   const isConference = conference ? <Conference /> : redirect;
   const hasLeft = meetingName.length > 0 ? <ConferenceLeft /> : redirect;

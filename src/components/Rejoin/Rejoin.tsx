@@ -17,7 +17,11 @@ export const Rejoin = () => {
   const { isMobile, isMobileSmall, getColor } = useTheme();
 
   const onSuccess = () => {
-    navigate(`${Routes.Conference}?id=${encodeURIComponent(meetingName)}`, { replace: true });
+    const params = new URLSearchParams(window.location.search);
+    if (!params.get('id')) {
+      params.append('id', encodeURIComponent(meetingName));
+    }
+    navigate(`${Routes.Conference}?${params.toString()}`, { replace: true });
   };
 
   return (

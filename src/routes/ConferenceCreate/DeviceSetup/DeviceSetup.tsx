@@ -86,7 +86,11 @@ export const DeviceSetup = () => {
   };
 
   const onSuccess = async () => {
-    navigate(`${Routes.Conference}?id=${encodeURIComponent(meetingName)}`);
+    const params = new URLSearchParams(window.location.search);
+    if (!params.get('id')) {
+      params.append('id', encodeURIComponent(meetingName));
+    }
+    navigate(`${Routes.Conference}?${params.toString()}`);
   };
 
   const joinOptions = useMemo(
