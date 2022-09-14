@@ -18,7 +18,7 @@ export const ReturnToHome = () => {
     resetVideo();
     resetAudio();
     setStep(CreateStep.meetingName);
-    navigate(Routes.ConferenceCreate);
+    navigate(`${Routes.ConferenceCreate}${window.location.search}`);
   };
 
   return (
