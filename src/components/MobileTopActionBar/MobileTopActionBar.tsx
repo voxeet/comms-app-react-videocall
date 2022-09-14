@@ -23,7 +23,7 @@ const isDeviceMobile =
 
 export const MobileTopActionBar = () => {
   const { conference } = useConference();
-  const { isMobile, isMobileSmall } = useTheme();
+  const { isMobile } = useTheme();
   const { swapCamera } = useCamera();
   const { toggleMuteParticipants, isPageMuted } = useAudio();
 
@@ -38,7 +38,7 @@ export const MobileTopActionBar = () => {
   return (
     <Space
       testID="MobileTopActionBar"
-      className={cx(styles.actionBar, { [styles.mobileSmall]: isMobileSmall })}
+      className={cx(styles.actionBar)}
       pv={isMobile ? 's' : 'm'}
       ph={isMobile ? 's' : 'm'}
     >

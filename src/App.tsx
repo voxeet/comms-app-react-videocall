@@ -1,6 +1,7 @@
 import { CommsProvider, ThemeProvider } from '@dolbyio/comms-uikit-react';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { createRoot } from 'react-dom/client';
+import { BrowserRouter, useLocation } from 'react-router-dom';
 
 import './App.module.scss';
 import TranslationProvider from './components/TranslationProvider';
@@ -8,6 +9,14 @@ import { ConferenceCreateProvider } from './context/ConferenceCreateContext';
 import { Navigator } from './routes/Navigator';
 
 const App = () => {
+  const location = useLocation();
+
+  const urlToken = useMemo(() => {
+    return encodeURIComponent(new URLSearchParams(window.location.search).get('token') || '');
+  }, [location]);
+
+  const YOUR_TOKEN = urlToken;
+
   return (
     <TranslationProvider>
       <ConferenceCreateProvider>
@@ -31,6 +40,8 @@ const container = document.getElementById('root');
 const root = createRoot(container!);
 root.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
+      <App />
+    </BrowserRouter>
   </React.StrictMode>,
 );

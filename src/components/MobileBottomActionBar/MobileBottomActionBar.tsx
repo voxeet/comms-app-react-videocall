@@ -30,7 +30,6 @@ export const MobileBottomActionBar = ({ openBottomDrawer }: MobileBottomActionBa
   }
 
   const isSmartphone = isMobile || isMobileSmall;
-  const isBigSmartphoneOrTablet = isMobile || isMobileSmall || isTablet;
 
   return (
     <Space
@@ -48,7 +47,7 @@ export const MobileBottomActionBar = ({ openBottomDrawer }: MobileBottomActionBa
       <Space mh="xs">
         <LocalToggleVideoButton />
       </Space>
-      {isBigSmartphoneOrTablet && (
+      {(isMobile || isTablet) && (
         <Space mh="xs">
           <IconButton
             testID="OpenDrawerButton"

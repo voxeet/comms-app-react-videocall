@@ -61,7 +61,7 @@ function App() {
 export default App;
 ```
 
-Let's customise a example application using the source code provided [here](examples/example_App.js).
+Let's customise a example application using the source code provided [here](../../examples/example_App.js).
 
 ```javascript
 // examples/example_App.js
@@ -123,15 +123,15 @@ function App() {
           200: 'cyan',
         },
       },
-      'My Pink Theme': {
-        colors: {
-          purple: {
-            400: 'pink',
-          },
-          grey: {
-            100: 'black',
-            200: 'pink',
-          },
+    },
+    'My Pink Theme': {
+      colors: {
+        purple: {
+          400: 'pink',
+        },
+        grey: {
+          100: 'black',
+          200: 'pink',
         },
       },
     },

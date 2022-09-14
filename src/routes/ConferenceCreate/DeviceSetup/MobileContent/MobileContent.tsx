@@ -185,30 +185,22 @@ const MobileContent = ({
 
   return (
     <>
-      <Space mt="s" className={styles.toastContainer}>
-        {localCamera?.label && <Toast testID="CameraInfo" iconName="camera" text={localCamera.label} />}
-        {localMicrophone?.label && <Toast testID="MicrophoneInfo" iconName="microphone" text={localMicrophone.label} />}
-        {localSpeakers?.label && <Toast testID="SpeakersInfo" iconName="speaker" text={localSpeakers.label} />}
-      </Space>
       <Space fw className={styles.container}>
-        <DeviceSetupDrawer />
         <Space mt={meetingNameTopMargin} className={styles.conferenceName}>
           <Text testID="MeetingName" type={titleTextType} color="black">
             {meetingName}
           </Text>
         </Space>
         <Space mt={videoTopMargin} className={styles.localVideo}>
-          {!isDrawerOpen ? (
-            <VideoLocalView
-              width={videoSizes.width}
-              height={videoSizes.height}
-              testID="DeviceSetupVideoLocalView"
-              username={username}
-              cameraReverseButton={isCameraPermission}
-            />
-          ) : (
-            <Space style={{ height: videoSizes.height }} />
-          )}
+          <VideoLocalView
+            width={videoSizes.width}
+            height={videoSizes.height}
+            testID="DeviceSetupVideoLocalView"
+            username={username}
+            cameraReverseButton={isCameraPermission}
+            disabled={isDrawerOpen}
+            isMicrophonePermission={isMicrophonePermission}
+          />
         </Space>
         <Space mt={buttonsSectionTopMargin} className={styles.mediaButtonsSection}>
           <ToggleMicrophoneButton size={isTablet ? 'l' : 's'} permissions={isMicrophonePermission} />
@@ -244,7 +236,19 @@ const MobileContent = ({
             />
           )}
         </Space>
+        <Space mt="s" className={styles.toastContainer}>
+          {localCamera?.label && (
+            <Toast testID="CameraInfo" iconName="camera" text={localCamera.label} duration={4000} />
+          )}
+          {localMicrophone?.label && (
+            <Toast testID="MicrophoneInfo" iconName="microphone" text={localMicrophone.label} duration={4000} />
+          )}
+          {localSpeakers?.label && (
+            <Toast testID="SpeakersInfo" iconName="speaker" text={localSpeakers.label} duration={4000} />
+          )}
+        </Space>
       </Space>
+      <DeviceSetupDrawer isMicrophonePermission={isMicrophonePermission} />
     </>
   );
 };

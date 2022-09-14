@@ -57,7 +57,7 @@ export const OneParticipant = () => {
                 icon="copy"
                 backgroundColor="grey.600"
               >
-                <Text type="buttonDefault" id="copyLinkShort" />
+                <Text type="captionSmallDemiBold" id={isDesktop ? 'copyLinkShort' : 'shareLinkShort'} />
               </CopyConferenceLinkButton>
             </>
           )}

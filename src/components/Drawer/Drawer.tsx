@@ -2,7 +2,7 @@
 import type { ColorKey } from '@dolbyio/comms-uikit-react';
 import { useTheme, Space } from '@dolbyio/comms-uikit-react';
 import cx from 'classnames';
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import useDrawer from '../../hooks/useDrawer';
 
@@ -16,15 +16,17 @@ export type DrawerProps = {
   testID?: string;
 };
 
+const isSafariMobile = navigator.userAgent.match(/safari/i) && !('chrome' in window);
+
 export const Drawer = ({ children, backgroundColor, backdrop, testID }: DrawerProps) => {
   const { isDrawerOpen, closeDrawer } = useDrawer();
   const { getColor, isMobile, isMobileSmall } = useTheme();
 
   const isSmartphone = isMobile || isMobileSmall;
+  const isSafariTablet = isSafariMobile && !isSmartphone;
 
-  return (
-    <>
-      <Backdrop visible={backdrop && isDrawerOpen} onClick={closeDrawer} />
+  const content = useMemo(
+    () => (
       <Space
         fw={isSmartphone}
         fh
@@ -32,12 +34,18 @@ export const Drawer = ({ children, backgroundColor, backdrop, testID }: DrawerPr
         className={cx(styles.drawer, isSmartphone && styles.mobile, isDrawerOpen && styles.active)}
         style={{ backgroundColor: getColor(backgroundColor, 'grey.800') }}
       >
-        {isDrawerOpen && (
-          <Space fw fh className={styles.container}>
-            {children}
-          </Space>
-        )}
+        <Space fw fh className={styles.container}>
+          {isDrawerOpen && children}
+        </Space>
       </Space>
+    ),
+    [isSmartphone, isDrawerOpen],
+  );
+
+  return (
+    <>
+      <Backdrop visible={backdrop && isDrawerOpen} onClick={closeDrawer} />
+      {(!isSafariTablet || isDrawerOpen) && content}
     </>
   );
 };

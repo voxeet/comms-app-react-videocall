@@ -5,19 +5,20 @@ import React, { useMemo, useState } from 'react';
 import ConferenceCreateFooter from '../../components/ConferenceCreateFooter';
 import ConferenceCreateHeader from '../../components/ConferenceCreateHeader';
 import { DrawerProvider } from '../../context/DrawerContext';
+import useConferenceCleanup from '../../hooks/useConferenceCleanup';
 import useConferenceCreate from '../../hooks/useConferenceCreate';
 import { CreateStep } from '../../types/routes.types';
 
 import styles from './ConferenceCreate.module.scss';
+import ConferenceCreateInput from './ConferenceCreateInput';
 import DeviceSetup from './DeviceSetup';
-import MeetingName from './MeetingName';
-import Username from './Username';
 
 const isIPhone = navigator.userAgent.match(/iPhone/i);
 
 export const ConferenceCreate = () => {
   const { step } = useConferenceCreate();
   const { isDesktop } = useTheme();
+  useConferenceCleanup();
 
   const [isInputFocused, setIsInputFocused] = useState(false);
 
@@ -52,14 +53,16 @@ export const ConferenceCreate = () => {
         <ConferenceCreateHeader />
 
         {step === CreateStep.username && (
-          <Username
+          <ConferenceCreateInput
+            type="user"
             inputAutoFocus={isDesktop}
             setInputAsFocused={setInputAsFocused}
             setInputAsUnfocused={setInputAsUnfocused}
           />
         )}
         {step === CreateStep.meetingName && (
-          <MeetingName
+          <ConferenceCreateInput
+            type="meeting"
             inputAutoFocus={isDesktop}
             setInputAsFocused={setInputAsFocused}
             setInputAsUnfocused={setInputAsUnfocused}
