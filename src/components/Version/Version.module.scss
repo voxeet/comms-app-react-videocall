@@ -2,7 +2,10 @@
 
 .version {
   z-index: $zI_version;
-  width: 150px;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
+}
+
+.spacer {
+  width: 8px;
 }

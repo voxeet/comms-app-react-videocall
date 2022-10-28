@@ -16,7 +16,7 @@ const LeaveConference = () => {
   return (
     <LeaveConferenceButton
       testID="LeaveConferenceButton"
-      tooltipText={intl.formatMessage({ id: 'leaveConference' })}
+      tooltipText={intl.formatMessage({ id: 'leaveCall' })}
       onSuccess={onSuccess}
     />
   );

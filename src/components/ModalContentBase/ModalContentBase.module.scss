@@ -1,0 +1,29 @@
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 40px;
+
+  .mainSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .description {
+      display: block;
+      text-align: center;
+    }
+  }
+
+  &.mobile {
+    padding-top: 88px;
+
+    &.smartphone {
+      &.landscape {
+        padding-top: 30px;
+        &.mobileSmall {
+          padding-top: 40px;
+        }
+      }
+    }
+  }
+}

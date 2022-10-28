@@ -105,7 +105,7 @@ export const ConferenceCreateInput = ({
     if (validation.valid && value.length !== 0) {
       setContextValue(value);
       const meetingId = searchParams.get('id');
-      if (meetingId) {
+      if (meetingId && type === 'user') {
         setMeetingName(meetingId);
         setStep(CreateStep.deviceSetup);
       } else {

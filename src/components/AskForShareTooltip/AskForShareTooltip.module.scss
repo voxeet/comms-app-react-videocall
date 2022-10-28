@@ -1,0 +1,21 @@
+.text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.buttonSection {
+  display: flex;
+  flex-direction: row;
+  & .button {
+    flex: 1 1 33.33%;
+  }
+}
+
+.spacer {
+  min-width: 16px;
+  max-width: 16px;
+}

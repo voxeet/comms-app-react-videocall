@@ -1,4 +1,12 @@
-import { useConference, useTheme, Space, ConferenceName, CopyConferenceLinkButton } from '@dolbyio/comms-uikit-react';
+import {
+  useConference,
+  useTheme,
+  Space,
+  ConferenceName,
+  CopyConferenceLinkButton,
+  ShareStatus,
+  useScreenSharing,
+} from '@dolbyio/comms-uikit-react';
 import cx from 'classnames';
 import React, { useMemo } from 'react';
 
@@ -7,10 +15,14 @@ import Text from '../Text';
 import styles from './OneParticipant.module.scss';
 
 export const OneParticipant = () => {
+  const { status, isLocalUserPresentationOwner, isPresentationModeActive } = useScreenSharing();
   const { getColor, isMobileSmall, isLandscape, isMobile, isTablet, isDesktop } = useTheme();
   const { conference } = useConference();
 
   const isTabletPortrait = useMemo(() => isTablet && !isLandscape, [isTablet, isLandscape]);
+
+  const isPresentationActive =
+    status === ShareStatus.Active || (isLocalUserPresentationOwner && isPresentationModeActive);
 
   const getLeftContainerMargin = useMemo(() => {
     if (isDesktop) return 'm';
@@ -22,9 +34,11 @@ export const OneParticipant = () => {
     return (
       <Space
         testID="OneParticipant"
-        ml={getLeftContainerMargin}
+        ml={isPresentationActive ? undefined : getLeftContainerMargin}
+        mb={isPresentationActive && isDesktop ? 'xs' : undefined}
         p={!isMobile ? 'm' : undefined}
         fh
+        fw={isPresentationActive}
         className={cx(styles.wrapper, {
           [styles.columnAlignMobile]: (isMobile && !isLandscape) || isMobileSmall || isTabletPortrait,
           [styles.tabletAlignment]: isTabletPortrait,
@@ -42,7 +56,7 @@ export const OneParticipant = () => {
           </Space>
           {!isMobileSmall && (
             <>
-              <Text testID="ConferenceTitleId" type="H4" id="conferenceTitleId" style={{ display: 'block' }} />
+              <Text testID="CallTitleId" type="H4" id="callTitleId" style={{ display: 'block' }} />
               <Space mb="s">
                 <Space mb="s">
                   <Space>

@@ -1,24 +1,23 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import type { ColorKey } from '@dolbyio/comms-uikit-react';
-import { useTheme, Space } from '@dolbyio/comms-uikit-react';
+import { useTheme, Space, Overlay } from '@dolbyio/comms-uikit-react';
 import cx from 'classnames';
 import React, { useMemo } from 'react';
 
 import useDrawer from '../../hooks/useDrawer';
 
-import Backdrop from './Backdrop';
 import styles from './Drawer.module.scss';
 
 export type DrawerProps = {
   children: React.ReactNode;
   backgroundColor?: ColorKey;
   backdrop?: boolean;
+  backdropOpacity?: number;
   testID?: string;
 };
 
 const isSafariMobile = navigator.userAgent.match(/safari/i) && !('chrome' in window);
 
-export const Drawer = ({ children, backgroundColor, backdrop, testID }: DrawerProps) => {
+export const Drawer = ({ children, backgroundColor, backdrop, backdropOpacity = 0.24, testID }: DrawerProps) => {
   const { isDrawerOpen, closeDrawer } = useDrawer();
   const { getColor, isMobile, isMobileSmall } = useTheme();
 
@@ -44,7 +43,7 @@ export const Drawer = ({ children, backgroundColor, backdrop, testID }: DrawerPr
 
   return (
     <>
-      <Backdrop visible={backdrop && isDrawerOpen} onClick={closeDrawer} />
+      <Overlay visible={backdrop && isDrawerOpen} onClick={closeDrawer} opacity={backdropOpacity} />
       {(!isSafariTablet || isDrawerOpen) && content}
     </>
   );

@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import { Text as UIText, TextProps as UITextProps } from '@dolbyio/comms-uikit-react';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';

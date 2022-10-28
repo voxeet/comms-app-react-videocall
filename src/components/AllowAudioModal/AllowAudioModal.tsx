@@ -1,22 +1,21 @@
-import { Space, Text, useTheme, Button, useAudio, BlockedAudioStateType } from '@dolbyio/comms-uikit-react';
-import cx from 'classnames';
+import { Space, Text, useTheme, useAudio, BlockedAudioStateType, Modal } from '@dolbyio/comms-uikit-react';
 import React, { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 
+import ModalContentBase from '../ModalContentBase';
+import Switch from '../Switch';
+
 import styles from './AllowAudioModal.module.scss';
-import Modal from './Modal';
-import ModalHeaderLogo from './ModalHeaderLogo';
-import Switch from './Switch';
 
 type AllowAudioModalProps = {
   testID?: string;
 };
 
-const AllowAudioModal = ({ testID }: AllowAudioModalProps) => {
+const AllowAudioModal = ({ testID = 'AllowAudioModal' }: AllowAudioModalProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAllowAudioChecked, setIsAllowAudioChecked] = useState(false);
   const intl = useIntl();
-  const { getColor, isDesktop, isMobile, isMobileSmall, isLandscape } = useTheme();
+  const { getColor } = useTheme();
   const { playBlockedAudio, blockedAudioState, markBlockedAudioEnabled } = useAudio();
 
   const openModal = () => {
@@ -45,32 +44,20 @@ const AllowAudioModal = ({ testID }: AllowAudioModalProps) => {
     closeModal();
   };
 
-  const isSmartphone = isMobile || isMobileSmall;
-
   return (
-    <Modal testID={testID} isVisible={isModalOpen} closeFunction={closeModal}>
-      <Space
-        className={cx(
-          styles.contentWrapper,
-          !isDesktop && styles.mobile,
-          isSmartphone && styles.smartphone,
-          isLandscape && styles.landscape,
-          isMobileSmall && styles.mobileSmall,
-        )}
+    <Modal testID={testID} isVisible={isModalOpen} close={closeModal} closeButton>
+      <ModalContentBase
+        buttons={[
+          {
+            onClick: handleAllowAudio,
+            label: intl.formatMessage({ id: 'confirm' }),
+            disabled: !isAllowAudioChecked,
+          },
+        ]}
+        headline={intl.formatMessage({ id: 'allowAudio' })}
+        description={intl.formatMessage({ id: 'allowAudioDescr' })}
+        headerLogo="speaker"
       >
-        <Space pb="m" className={styles.mainSection} style={{ borderColor: getColor('grey.700') }}>
-          {isMobileSmall && isLandscape ? null : <ModalHeaderLogo icon="speaker" />}
-          <Space mt="s">
-            <Text type="H2" color="grey.100">
-              {intl.formatMessage({ id: 'allowAudio' })}
-            </Text>
-          </Space>
-          <Space mt="xs" ph="xl">
-            <Text className={styles.allowAudioDescr} type="bodyDefault" color="grey.100">
-              {intl.formatMessage({ id: 'allowAudioDescr' })}
-            </Text>
-          </Space>
-        </Space>
         <Space fw pv="s" className={styles.switchSection} style={{ borderColor: getColor('grey.700') }}>
           <Space ml="l">
             <Text className={styles.allowAudioDescr} type="bodyDefault" color="grey.200">
@@ -81,12 +68,7 @@ const AllowAudioModal = ({ testID }: AllowAudioModalProps) => {
             <Switch isActive={isAllowAudioChecked} onClick={() => setIsAllowAudioChecked(!isAllowAudioChecked)} />
           </Space>
         </Space>
-        <Space pv="m" ph="m" className={styles.buttonSection}>
-          <Button disabled={!isAllowAudioChecked} style={{ width: '327px' }} onClick={handleAllowAudio}>
-            {intl.formatMessage({ id: 'confirm' })}
-          </Button>
-        </Space>
-      </Space>
+      </ModalContentBase>
     </Modal>
   );
 };

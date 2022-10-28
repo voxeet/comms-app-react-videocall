@@ -1,3 +1,6 @@
+@import '../../styles/breakpoints.scss';
+@import '../../styles/zIndex';
+
 .container {
   display: flex;
   flex-direction: column;
@@ -21,29 +24,75 @@
   }
 }
 
-.row {
+.contentWrapper {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.spinnerView {
-  height: 100vh;
-  display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: center;
+  &.isPresentationActive {
+    &.landscape {
+      .presentationGridWrapper {
+        flex-direction: row;
+        .presentationWrapper {
+          @media only screen and (orientation: landscape) and (max-width: 1200px) {
+            width: calc(100% - 370px);
+          }
+        }
+        .gridWrapper {
+          @media only screen and (orientation: landscape) and (max-width: 1200px) {
+            width: 370px;
+          }
+        }
+      }
+    }
+    .presentationGridWrapper {
+      flex: 1;
+      .presentationWrapper {
+        width: calc(100% - 480px);
+        @include rwd('tablet') {
+          width: 100%;
+          max-height: 50%;
+          flex-direction: column;
+          @media only screen and (orientation: landscape) {
+            max-height: 100%;
+          }
+        }
+      }
+      .gridWrapper {
+        width: 480px;
+        @include rwd('tablet') {
+          width: 100%;
+          flex: 1;
+        }
+      }
+    }
+    .oneParticipant {
+      flex-direction: column-reverse;
+      .gridWrapper {
+        width: 100%;
+      }
+    }
+  }
+  .presentationGridWrapper {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    .gridWrapper {
+      height: 100%;
+      width: 100%;
+    }
+    @include rwd('tablet') {
+      flex-direction: column;
+    }
+  }
 }
 
-.videoGrid {
-  box-sizing: border-box;
-}
-
-.one {
+.oneParticipant {
   display: flex;
   align-items: center;
   justify-content: center;
-  > div:first-child {
+  flex: 1;
+  height: 100%;
+  .oneParticipant {
     width: calc(100% - 340px);
   }
 }
@@ -70,6 +119,29 @@
   height: 100% !important;
 }
 
-* {
-  box-sizing: border-box;
+.pendingTakeoverBar {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.actionDetector {
+  z-index: $zI_mobileTopBar;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.topBarContainer {
+  z-index: $zI_mobileTopBar;
+}
+
+.infoBarContainer {
+  align-self: center;
+  position: absolute;
+  z-index: $zI_conferenceInfoBar;
+  transform-origin: center;
+  top: 0;
 }

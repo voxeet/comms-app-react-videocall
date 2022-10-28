@@ -10,7 +10,7 @@
   z-index: $zI_version - 1;
 }
 
-@media only screen and (orientation: landscape) and (min-width: 568px) {
+@media only screen and (orientation: landscape) and (max-width: 896px) and (min-aspect-ratio: 3/2) {
   .rotationCurtain {
     display: flex;
   }

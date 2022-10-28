@@ -20,7 +20,7 @@ const App = () => {
   return (
     <TranslationProvider>
       <ConferenceCreateProvider>
-        <CommsProvider token={YOUR_TOKEN}>
+        <CommsProvider token={YOUR_TOKEN} packageUrlPrefix={`${import.meta.env.BASE_URL}assets/wasm`}>
           <ThemeProvider
             customThemes={{
               'My Theme': { colors: { white: 'yellow', primary: { 400: 'red' }, secondary: { 400: 'blue' } } },
