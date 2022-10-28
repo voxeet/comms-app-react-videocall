@@ -16,6 +16,9 @@ Its scope covers:
 - Camera, microphone and audio output configuration
 - Full conference view with grid display of user streams
 - Basic video conferencing interactions (muting, camera switching)
+- Screen sharing
+- Recording
+- Background blur (available only on desktop Chrome and Edge)
 
 ## Getting Started
 

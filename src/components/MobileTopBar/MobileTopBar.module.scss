@@ -1,0 +1,40 @@
+@import '../../styles/breakpoints.scss';
+
+.topBar {
+  display: flex;
+  justify-content: space-between;
+  @include rwd('mobileSmall'){
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(180deg, #14141a 8.33%, rgba(20, 20, 26, 0) 100%);
+  }
+  @include rwd('tablet'){
+    position: initial;
+  }
+  &.visible {
+    @include rwd('mobileSmall') {
+      opacity: 1;
+      transform: translateY(0);
+      transition: all 250ms ease-in;
+    }
+  }
+  &.hidden {
+    opacity: 0;
+    transform: translateY(-100%);
+    transition: all 350ms ease-in;
+  }
+  .leftSection {
+    flex-grow: 0;
+  }
+  .middleSection {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .rightSection {
+    flex-grow: 0;
+  }
+}

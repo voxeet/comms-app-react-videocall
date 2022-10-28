@@ -1,37 +1,6 @@
-.contentWrapper {
+.switchSection {
+  border-bottom: 1px solid;
+  border-top: 1px solid;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 40px;
-
-  .mainSection {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-bottom: 1px solid;
-
-    .allowAudioDescr {
-      display: block;
-      text-align: center;
-    }
-  }
-
-  .switchSection {
-    border-bottom: 1px solid;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  &.mobile {
-    padding-top: 88px;
-
-    &.smartphone {
-      &.landscape {
-        padding-top: 30px;
-        &.mobileSmall {
-          padding-top: 40px;
-        }
-      }
-    }
-  }
+  justify-content: space-between;
 }

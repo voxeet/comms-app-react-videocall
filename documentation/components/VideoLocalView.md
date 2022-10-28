@@ -5,7 +5,7 @@ The VideoLocalView component is responsible for displaying video from the local 
 ## Props
 
 | Name                      | Type                    | Default | Description                                                                                                                                          |
-|---------------------------|-------------------------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ------------------------- | ----------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `width` ?                 | number                  | 712     | The width of the local participant's video tile.                                                                                                     |
 | `height` ?                | number                  | 400     | The height of the local participant's video tile.                                                                                                    |
 | `noVideoFallback` ?       | () => ReactNode         | -       | The function that overwrites the default way of displaying videos.                                                                                   |
@@ -16,7 +16,7 @@ The VideoLocalView component is responsible for displaying video from the local 
 | `audio` ?                 | boolean                 | true    | A boolean responsible for enabling the local participant's microphone. If set to true, the component plays audio from the microphone.                |
 | `disabled` ?              | boolean                 | false   | A boolean that allows turn off specific video.                                                                                                       |
 | `testID` ?                | string                  | -       | The unique E2E test handler.                                                                                                                         |
-| `isMicrophonePermission`? | boolean                 | _       | Prop for displaying information about sound                                                                                                          |   
+| `isMicrophonePermission`? | boolean                 | -       | Prop for displaying information about sound                                                                                                          |
 | `...HTMLDivElement`?      | Partial(HTMLDivElement) | -       | Props that will be passed to the root of the div element.                                                                                            |
 
 ## Examples

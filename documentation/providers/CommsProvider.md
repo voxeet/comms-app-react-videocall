@@ -6,11 +6,12 @@ For more information about the initialization process, see the [Dolby.io documen
 
 ## Props
 
-| Name           | Type                  | Description                     |
-| -------------- | --------------------- | ------------------------------- |
-| `children`     | ReactNode             | The content of the application. |
-| `token`        | string                | The initialization token.       |
-| `refreshToken` | () => Promise<string> | Refreshes the token.            |
+| Name                | Type                  | Description                            |
+| ------------------- | --------------------- | -------------------------------------- |
+| `children`          | ReactNode             | The content of the application.        |
+| `token`             | string                | The initialization token.              |
+| `refreshToken`      | () => Promise<string> | Refreshes the token.                   |
+| `packageUrlPrefix`? | string                | Sets VoxeetSDK packageUrlPrefix value. |
 
 ## Examples
 

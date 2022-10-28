@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import { IconButton, IconButtonProps } from '@dolbyio/comms-uikit-react';
 import React from 'react';
 

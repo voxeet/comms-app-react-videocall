@@ -1,6 +1,13 @@
-import type { SpaceValues } from '@dolbyio/comms-uikit-common/src/theme/types';
-import { VideoLocalView, JoinConferenceButton, Space, Toast, useTheme, TextProps } from '@dolbyio/comms-uikit-react';
-import { VideoViewProps } from '@dolbyio/comms-uikit-react/src/components/ui/VideoLocalView/VideoLocalView';
+import {
+  VideoLocalView,
+  JoinConferenceButton,
+  Space,
+  InfoBar,
+  useTheme,
+  TextProps,
+  SpaceValues,
+  VideoViewProps,
+} from '@dolbyio/comms-uikit-react';
 import React, { useMemo } from 'react';
 
 import DeviceSetupDrawer from '../../../../components/DeviceSetupDrawer';
@@ -236,15 +243,15 @@ const MobileContent = ({
             />
           )}
         </Space>
-        <Space mt="s" className={styles.toastContainer}>
+        <Space mt="s" className={styles.infoBarContainer}>
           {localCamera?.label && (
-            <Toast testID="CameraInfo" iconName="camera" text={localCamera.label} duration={4000} />
+            <InfoBar testID="CameraInfo" iconName="camera" text={localCamera.label} duration={4000} />
           )}
           {localMicrophone?.label && (
-            <Toast testID="MicrophoneInfo" iconName="microphone" text={localMicrophone.label} duration={4000} />
+            <InfoBar testID="MicrophoneInfo" iconName="microphone" text={localMicrophone.label} duration={4000} />
           )}
           {localSpeakers?.label && (
-            <Toast testID="SpeakersInfo" iconName="speaker" text={localSpeakers.label} duration={4000} />
+            <InfoBar testID="SpeakersInfo" iconName="speaker" text={localSpeakers.label} duration={4000} />
           )}
         </Space>
       </Space>

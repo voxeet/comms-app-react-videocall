@@ -5,17 +5,19 @@ import {
   useVideo,
   VideoLocalView,
   Space,
-  Toast,
+  InfoBar,
   useSpeaker,
   useTheme,
   BlockedAudioStateType,
   JoinConferenceButton,
+  Overlay,
+  Spinner,
 } from '@dolbyio/comms-uikit-react';
 import React, { useEffect, useMemo, useState } from 'react';
+import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
 import DeviceSetupDrawer from '../../../components/DeviceSetupDrawer';
-import OverlaySpinner from '../../../components/OverlaySpinner';
 import Text from '../../../components/Text';
 import useConferenceCreate from '../../../hooks/useConferenceCreate';
 import useDrawer from '../../../hooks/useDrawer';
@@ -42,6 +44,7 @@ export const DeviceSetup = () => {
   const [isCameraPermission, setIsCameraPermission] = useState<boolean>(false);
   const [isMicrophonePermission, setIsMicrophonePermission] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
+  const intl = useIntl();
 
   const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
@@ -65,12 +68,12 @@ export const DeviceSetup = () => {
   }, []);
 
   useEffect(() => {
-    if (isAllPermission && localCamera === null) {
+    if (isCameraPermission && localCamera === null) {
       (async () => {
         setLocalCamera(await getDefaultLocalCamera());
       })();
     }
-  }, [isAllPermission, localCamera]);
+  }, [localCamera, isCameraPermission]);
 
   const allPermissionsOff = !isMicrophonePermission && !isCameraPermission;
   const allMediaOff = !isAudio && !isVideo;
@@ -81,7 +84,6 @@ export const DeviceSetup = () => {
     if (blockedAudioState === BlockedAudioStateType.INACTIVATED && isSafari && willAudioBeBlocked) {
       markBlockedAudioActivated();
     }
-
     setIsLoading(true);
   };
 
@@ -89,6 +91,8 @@ export const DeviceSetup = () => {
     const params = new URLSearchParams(window.location.search);
     if (!params.get('id')) {
       params.append('id', encodeURIComponent(meetingName));
+    } else {
+      params.set('id', meetingName);
     }
     navigate(`${Routes.Conference}?${params.toString()}`);
   };
@@ -116,7 +120,11 @@ export const DeviceSetup = () => {
   );
 
   if (isLoading) {
-    return <OverlaySpinner textID="joiningMeeting" />;
+    return (
+      <Overlay opacity={1}>
+        <Spinner textContent={intl.formatMessage({ id: 'joiningMeeting' })} />
+      </Overlay>
+    );
   }
 
   if (isTablet || isMobile || isMobileSmall) {
@@ -142,12 +150,12 @@ export const DeviceSetup = () => {
       <Space className={styles.row}>
         <Space pr="xxxxl" className={styles.columnLeft}>
           <Space className={styles.localViewContainer}>
-            <Space mt="s" className={styles.toastContainer}>
-              {localCamera?.label && <Toast testID="CameraInfo" iconName="camera" text={localCamera.label} />}
+            <Space mt="s" className={styles.infoBarContainer}>
+              {localCamera?.label && <InfoBar testID="CameraInfo" iconName="camera" text={localCamera.label} />}
               {localMicrophone?.label && (
-                <Toast testID="MicrophoneInfo" iconName="microphone" text={localMicrophone.label} />
+                <InfoBar testID="MicrophoneInfo" iconName="microphone" text={localMicrophone.label} />
               )}
-              {localSpeakers?.label && <Toast testID="SpeakersInfo" iconName="speaker" text={localSpeakers.label} />}
+              {localSpeakers?.label && <InfoBar testID="SpeakersInfo" iconName="speaker" text={localSpeakers.label} />}
             </Space>
             <VideoLocalView
               testID="DeviceSetupVideoLocalView"

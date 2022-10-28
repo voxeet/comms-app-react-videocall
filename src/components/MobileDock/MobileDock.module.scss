@@ -1,0 +1,36 @@
+@import '../../styles/zIndex';
+@import '../../styles/breakpoints';
+
+.dock {
+  display: flex;
+  justify-content: center;
+  z-index: $zI_mobileBottomBar;
+  box-sizing: border-box;
+  @include rwd('mobileSmall') {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, rgba(20, 20, 26, 0) 8.33%, #14141a 100%);
+    opacity: 1;
+    transition: opacity 500ms, ease-in-out;
+  }
+  .openBar {
+    position: absolute;
+    bottom: 3px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  &.hidden {
+    opacity: 0;
+    transform: translateY(100%);
+    transition: all 350ms ease-in;
+  }
+  &.visible {
+    @include rwd('mobileSmall') {
+      opacity: 1;
+      transform: translateY(0);
+      transition: all 250ms ease-in;
+    }
+  }
+}

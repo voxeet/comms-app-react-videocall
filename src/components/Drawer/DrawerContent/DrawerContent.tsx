@@ -1,5 +1,4 @@
-import type { ColorKey } from '@dolbyio/comms-uikit-common';
-import { useTheme, Space } from '@dolbyio/comms-uikit-react';
+import { useTheme, Space, ColorKey } from '@dolbyio/comms-uikit-react';
 import cx from 'classnames';
 import React, { useMemo } from 'react';
 

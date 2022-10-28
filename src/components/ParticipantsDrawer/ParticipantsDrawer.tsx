@@ -23,7 +23,7 @@ const ParticipantsDrawer = () => {
         borderColor="transparent"
         height={isSmartphone ? 48 : 110}
         closeButtonBackgroundColor="grey.500"
-        closeButtonOutsideColor="grey.900"
+        closeButtonOutsideColor="grey.800"
         closeButtonIconColor="white"
         closeButtonStrokeColor="transparent"
         mobileCloseButtonColor="white"

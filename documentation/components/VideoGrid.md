@@ -1,20 +1,19 @@
 # VideoGrid
 
-The VideoGrid component is responsible for displaying video streams of participants in a grid layout. Supports mobile devices by default. On small mobile devices, there are six fixed video tiles with a built-in mechanism to show currently speaking participants if there are more than six participants in a meeting. On bigger mobile devices there are eight fixed videos with same mechanism. Tablet behavior is predefined for up to twelve participants and above it, video tiles will have 25% width and 20% height.
+The VideoGrid component is responsible for displaying video streams of participants in a grid layout. Supports mobile devices by default. The VideoGrid counts available space and tries to fit VideoTiles in it.
 
 ## Props
 
-| Name                 | Type                                       | Default | Description                                                    |
-| -------------------- | ------------------------------------------ | ------- | -------------------------------------------------------------- |
-| `participants` ?     | Participant[]                              | -       | The array of the participants objects.                         |
-| `gap` ?              | number                                     | 8       | The space between tiles.                                       |
-| `maxColumns` ?       | number                                     | 6       | The maximum number of columns.                                 |
-| `maxTiles` ?         | number                                     | 24      | The maximum number of tiles.                                   |
-| `minWidth` ?         | number                                     | 220     | The minimal width of the tile                                  |
-| `renderItem`         | (participant: Participant) => ReactNode    | -       | The function that overwrites the default grid tile layout.     |
-| `renderMaxTile`      | (participants: Participant[]) => ReactNode | -       | The function that overwrites the default grid max tile layout. |
-| `testID` ?           | string                                     | -       | The unique E2E test handler.                                   |
-| `...HTMLDivElement`? | Partial(HTMLDivElement)                    | -       | Props that will be passed to the root of the div element.      |
+| Name                 | Type                                       | Default | Description                                                                                                  |
+| -------------------- | ------------------------------------------ | ------- | ------------------------------------------------------------------------------------------------------------ |
+| `participants` ?     | Participant[]                              | -       | The array of the participants objects.                                                                       |
+| `gap` ?              | number                                     | 8       | The space between tiles.                                                                                     |
+| `maxTiles` ?         | number                                     | 24      | The maximum number of tiles. Value must be bigger than 2.                                                    |
+| `renderItem`         | (participant: Participant) => ReactNode    | -       | The function that overwrites the default grid tile layout.                                                   |
+| `renderMaxTile`      | (participants: Participant[]) => ReactNode | -       | The function that overwrites the default grid max tile layout.                                               |
+| `presenterFirst`     | boolean                                    | true    | This value determines if the user who is currently presenting should be at the first spot on the video grid. |
+| `testID` ?           | string                                     | -       | The unique E2E test handler.                                                                                 |
+| `...HTMLDivElement`? | Partial(HTMLDivElement)                    | -       | Props that will be passed to the root of the div element.                                                    |
 
 ## Examples
 
