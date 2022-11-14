@@ -46,7 +46,7 @@ Below is a list of steps necessary to run the application locally.
 ### Clone repository
 
 Use git to clone the repository with
-`git clone git@github.com:dolbyio-samples/comms-app-react-videoconference.git`
+`git clone git@github.com:dolbyio-samples/comms-app-react-videocall.git`
 or simply download using the green button on the top of this page and unzip the repository.
 
 ### Install dependencies
