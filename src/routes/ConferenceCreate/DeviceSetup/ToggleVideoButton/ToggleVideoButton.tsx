@@ -13,21 +13,21 @@ export const ToggleVideoButton = ({ size = 'm', permissions = false }: ToggleVid
 
   return (
     <MediaButton
+      defaultBackgroundColor="white"
       activeBackgroundColor="white"
-      inactiveBackgroundColor="white"
       disabledBackgroundColor="white"
-      activeIconColor="primary.500"
-      inactiveIconColor="grey.500"
-      disabledIconColor="grey.300"
-      activeStrokeColor="primary.500"
-      inactiveStrokeColor="grey.500"
-      disabledStrokeColor="grey.300"
-      activeIcon="camera"
-      inactiveIcon="cameraOff"
+      defaultIconColor="primary.400"
+      activeIconColor="grey.300"
+      disabledIconColor="grey.100"
+      defaultStrokeColor="primary.400"
+      activeStrokeColor="grey.300"
+      disabledStrokeColor="grey.100"
+      defaultIcon="camera"
+      activeIcon="cameraOff"
       disabledIcon="cameraOff"
-      activeTooltipText={intl.formatMessage({ id: 'cameraOff' })}
-      inactiveTooltipText={intl.formatMessage({ id: 'cameraOn' })}
-      isActive={isVideo}
+      defaultTooltipText={intl.formatMessage({ id: 'cameraOff' })}
+      activeTooltipText={intl.formatMessage({ id: 'cameraOn' })}
+      isActive={!isVideo}
       isDisabled={!permissions}
       onClick={toggleVideo}
       size={size}

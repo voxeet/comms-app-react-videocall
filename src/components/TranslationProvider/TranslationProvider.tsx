@@ -1,8 +1,8 @@
+import { SupportedLanguage } from '@src/types/translations';
 import React from 'react';
 import { IntlProvider } from 'react-intl';
 
 import enMessages from '../../translations/en.json';
-import { SupportedLanguage } from '../../types/translations.types';
 
 type TranslationProviderProps = {
   children: React.ReactNode;

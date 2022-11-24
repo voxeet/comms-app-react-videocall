@@ -1,8 +1,7 @@
+import Text from '@components/Text';
 import { useTheme, Space, Button } from '@dolbyio/comms-uikit-react';
 import React from 'react';
 import { useIntl } from 'react-intl';
-
-import Text from '../Text';
 
 import styles from './AskForShareTooltip.module.scss';
 

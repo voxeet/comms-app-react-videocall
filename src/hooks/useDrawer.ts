@@ -1,19 +1,10 @@
-import { useCallback, useContext } from 'react';
-
-import { DrawerContext } from '../context/DrawerContext';
+import { SideDrawerContext } from '@src/context/SideDrawerContext';
+import { useContext } from 'react';
 
 const useDrawer = () => {
-  const { isDrawerOpen, setIsDrawerOpen } = useContext(DrawerContext);
+  const { isDrawerOpen, contentType, openDrawer, closeDrawer } = useContext(SideDrawerContext);
 
-  const openDrawer = useCallback(() => {
-    setIsDrawerOpen(true);
-  }, []);
-
-  const closeDrawer = useCallback(() => {
-    setIsDrawerOpen(false);
-  }, []);
-
-  return { isDrawerOpen, openDrawer, closeDrawer };
+  return { isDrawerOpen, contentType, openDrawer, closeDrawer };
 };
 
 export default useDrawer;

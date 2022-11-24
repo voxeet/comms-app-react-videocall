@@ -1,8 +1,7 @@
+import Text from '@components/Text';
+import Version from '@components/Version';
 import { Space, useTheme } from '@dolbyio/comms-uikit-react';
 import React, { useMemo } from 'react';
-
-import Text from '../Text';
-import Version from '../Version';
 
 import styles from './ConferenceCreateFooter.module.scss';
 

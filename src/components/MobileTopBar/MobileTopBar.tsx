@@ -1,3 +1,4 @@
+import Timer from '@components/Timer';
 import {
   useConference,
   IconButton,
@@ -9,8 +10,6 @@ import {
 } from '@dolbyio/comms-uikit-react';
 import cx from 'classnames';
 import React from 'react';
-
-import Timer from '../Timer';
 
 import styles from './MobileTopBar.module.scss';
 

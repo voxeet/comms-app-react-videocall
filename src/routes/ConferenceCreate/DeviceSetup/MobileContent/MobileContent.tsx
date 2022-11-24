@@ -1,3 +1,5 @@
+import { SideDrawer } from '@components/SideDrawer';
+import Text from '@components/Text';
 import {
   VideoLocalView,
   JoinConferenceButton,
@@ -6,15 +8,11 @@ import {
   useTheme,
   TextProps,
   SpaceValues,
-  VideoViewProps,
 } from '@dolbyio/comms-uikit-react';
+import useDrawer from '@hooks/useDrawer';
+import ToggleMicrophoneButton from '@src/routes/ConferenceCreate/DeviceSetup/ToggleMicrophoneButton';
+import ToggleVideoButton from '@src/routes/ConferenceCreate/DeviceSetup/ToggleVideoButton';
 import React, { useMemo } from 'react';
-
-import DeviceSetupDrawer from '../../../../components/DeviceSetupDrawer';
-import Text from '../../../../components/Text';
-import useDrawer from '../../../../hooks/useDrawer';
-import ToggleMicrophoneButton from '../ToggleMicrophoneButton';
-import ToggleVideoButton from '../ToggleVideoButton';
 
 import styles from './MobileContent.module.scss';
 
@@ -30,21 +28,6 @@ type MobileContentProps = {
   onInitialise: () => Promise<void>;
   onSuccess: () => Promise<void>;
   joinOptions: Pick<React.ComponentProps<typeof JoinConferenceButton>, 'joinOptions'>['joinOptions'];
-};
-
-const videoDimensions = {
-  tablet: {
-    short: 224,
-    long: 399,
-  },
-  mobile: {
-    short: 184,
-    long: 328,
-  },
-  mobileSmall: {
-    short: 112,
-    long: 200,
-  },
 };
 
 const joinButtonWidthValue = {
@@ -123,39 +106,6 @@ const MobileContent = ({
     return value;
   }, [isMobile, isMobileSmall, isLandscape]);
 
-  const videoSizes = useMemo(() => {
-    let width = videoDimensions.tablet.short;
-    let height = videoDimensions.tablet.long;
-
-    if (isTablet) {
-      if (isLandscape) {
-        width = videoDimensions.tablet.long;
-        height = videoDimensions.tablet.short;
-      } else {
-        width = videoDimensions.tablet.short;
-        height = videoDimensions.tablet.long;
-      }
-    } else if (isMobile) {
-      if (isLandscape) {
-        width = videoDimensions.mobile.long;
-        height = videoDimensions.mobile.short;
-      } else {
-        width = videoDimensions.mobile.short;
-        height = videoDimensions.mobile.long;
-      }
-    } else if (isMobileSmall) {
-      if (isLandscape) {
-        width = videoDimensions.mobileSmall.long;
-        height = videoDimensions.mobileSmall.short;
-      } else {
-        width = videoDimensions.mobileSmall.short;
-        height = videoDimensions.mobileSmall.long;
-      }
-    }
-
-    return { width, height };
-  }, [isMobile, isMobileSmall, isTablet, isLandscape, videoDimensions]);
-
   const joinButtonWidth = useMemo(() => {
     let value: string | number = joinButtonWidthValue.medium;
 
@@ -200,13 +150,12 @@ const MobileContent = ({
         </Space>
         <Space mt={videoTopMargin} className={styles.localVideo}>
           <VideoLocalView
-            width={videoSizes.width}
-            height={videoSizes.height}
             testID="DeviceSetupVideoLocalView"
             username={username}
             cameraReverseButton={isCameraPermission}
             disabled={isDrawerOpen}
             isMicrophonePermission={isMicrophonePermission}
+            className={styles.videoRwd}
           />
         </Space>
         <Space mt={buttonsSectionTopMargin} className={styles.mediaButtonsSection}>
@@ -255,13 +204,9 @@ const MobileContent = ({
           )}
         </Space>
       </Space>
-      <DeviceSetupDrawer isMicrophonePermission={isMicrophonePermission} />
+      <SideDrawer />
     </>
   );
-};
-
-export const VoidFallbackComponent = ({ width = 712, height = 400 }: Pick<VideoViewProps, 'width' | 'height'>) => {
-  return <Space style={{ width, height, backgroundColor: 'transparent' }} />;
 };
 
 export default MobileContent;

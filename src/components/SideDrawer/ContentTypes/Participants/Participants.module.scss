@@ -1,0 +1,24 @@
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.closeButtonBottom {
+  position: absolute;
+  right: 35px;
+  bottom: 35px;
+}
+
+.footerContainer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  .buttonsSection {
+    display: flex;
+
+    .spacer {
+      width: 8px;
+    }
+  }
+}

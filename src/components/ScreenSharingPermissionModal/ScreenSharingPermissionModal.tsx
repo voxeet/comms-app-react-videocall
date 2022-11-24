@@ -1,8 +1,7 @@
+import ModalContentBase from '@components/ModalContentBase/ModalContentBase';
 import { Modal } from '@dolbyio/comms-uikit-react';
 import React from 'react';
 import { useIntl } from 'react-intl';
-
-import ModalContentBase from '../ModalContentBase/ModalContentBase';
 
 type ScreenSharingPermissionModalProps = {
   testID?: string;

@@ -1,9 +1,8 @@
+import ModalContentBase from '@components/ModalContentBase';
+import Switch from '@components/Switch';
 import { Space, Text, useTheme, useAudio, BlockedAudioStateType, Modal } from '@dolbyio/comms-uikit-react';
 import React, { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
-
-import ModalContentBase from '../ModalContentBase';
-import Switch from '../Switch';
 
 import styles from './AllowAudioModal.module.scss';
 

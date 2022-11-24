@@ -1,3 +1,4 @@
+import Text from '@components/Text';
 import {
   useConference,
   useTheme,
@@ -9,8 +10,7 @@ import {
 } from '@dolbyio/comms-uikit-react';
 import cx from 'classnames';
 import React, { useMemo } from 'react';
-
-import Text from '../Text';
+import { useIntl } from 'react-intl';
 
 import styles from './OneParticipant.module.scss';
 
@@ -18,6 +18,7 @@ export const OneParticipant = () => {
   const { status, isLocalUserPresentationOwner, isPresentationModeActive } = useScreenSharing();
   const { getColor, isMobileSmall, isLandscape, isMobile, isTablet, isDesktop } = useTheme();
   const { conference } = useConference();
+  const intl = useIntl();
 
   const isTabletPortrait = useMemo(() => isTablet && !isLandscape, [isTablet, isLandscape]);
 
@@ -34,9 +35,9 @@ export const OneParticipant = () => {
     return (
       <Space
         testID="OneParticipant"
-        ml={isPresentationActive ? undefined : getLeftContainerMargin}
-        mb={isPresentationActive && isDesktop ? 'xs' : undefined}
-        p={!isMobile ? 'm' : undefined}
+        ml={!isPresentationActive && getLeftContainerMargin}
+        mb={isPresentationActive && isDesktop && 'xs'}
+        p={!isMobile && 'm'}
         fh
         fw={isPresentationActive}
         className={cx(styles.wrapper, {
@@ -70,6 +71,7 @@ export const OneParticipant = () => {
                 testID="ShareLinkButton"
                 icon="copy"
                 backgroundColor="grey.600"
+                successText={intl.formatMessage({ id: 'success' })}
               >
                 <Text type="captionSmallDemiBold" id={isDesktop ? 'copyLinkShort' : 'shareLinkShort'} />
               </CopyConferenceLinkButton>

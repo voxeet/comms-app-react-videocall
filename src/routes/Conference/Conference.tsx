@@ -1,4 +1,14 @@
 /* eslint-disable no-nested-ternary */
+
+import ActionBar from '@components/ActionBar';
+import AllowAudioModal from '@components/AllowAudioModal';
+import { BottomDrawer } from '@components/BottomDrawer';
+import Dock from '@components/Dock';
+import MobileDock from '@components/MobileDock';
+import MobileTopBar from '@components/MobileTopBar';
+import OneParticipant from '@components/OneParticipant';
+import PendingTakeoverInfoBar from '@components/PendingTakeoverInfoBar';
+import ScreenSharingPermissionModal from '@components/ScreenSharingPermissionModal/ScreenSharingPermissionModal';
 import {
   Conference as ConferenceComponent,
   InfoBar,
@@ -24,23 +34,13 @@ import {
   useNotifications,
   ErrorCodes,
 } from '@dolbyio/comms-uikit-react';
+import useConferenceCreate from '@hooks/useConferenceCreate';
+import { SideDrawer } from '@src/components/SideDrawer';
+import Backdrop from '@src/components/SideDrawer/Backdrop';
+import { SideDrawerProvider } from '@src/context/SideDrawerContext';
 import cx from 'classnames';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
-
-import ActionBar from '../../components/ActionBar';
-import AllowAudioModal from '../../components/AllowAudioModal';
-import { BottomDrawer } from '../../components/BottomDrawer';
-import Dock from '../../components/Dock';
-import Backdrop from '../../components/Drawer/Backdrop';
-import MobileDock from '../../components/MobileDock';
-import MobileTopBar from '../../components/MobileTopBar';
-import OneParticipant from '../../components/OneParticipant';
-import ParticipantsDrawer from '../../components/ParticipantsDrawer';
-import PendingTakeoverInfoBar from '../../components/PendingTakeoverInfoBar';
-import ScreenSharingPermissionModal from '../../components/ScreenSharingPermissionModal/ScreenSharingPermissionModal';
-import { DrawerProvider } from '../../context/DrawerContext';
-import useConferenceCreate from '../../hooks/useConferenceCreate';
 
 import styles from './Conference.module.scss';
 
@@ -54,7 +54,7 @@ export const Conference = () => {
   const { isAudio } = useAudio();
   const { selectSpeaker, localSpeakers } = useSpeaker();
   const intl = useIntl();
-  const { isDesktop, isMobile, isMobileSmall, isTablet, isLandscape } = useTheme();
+  const { isDesktop, isMobile, isMobileSmall, isTablet, isLandscape, isPortrait } = useTheme();
   const mobileScreenShareRef = useRef<HTMLDivElement>(null);
   const actionBarRef = useRef<HTMLDivElement>(null);
   const dockRef = useRef<HTMLDivElement>(null);
@@ -74,6 +74,7 @@ export const Conference = () => {
   const { leaveConference } = useConference();
   const [isBottomDrawerOpen, setIsBottomDrawerOpen] = useState(false);
   const [showBars, setShowBars] = useState(true);
+  // const [rtmp, setRtmp] = useState('');
 
   useEffect(() => {
     if (ErrorCodes.IncorrectSession in sdkErrors) {
@@ -161,7 +162,7 @@ export const Conference = () => {
     status === ShareStatus.Active || (isLocalUserPresentationOwner && isPresentationModeActive);
 
   return (
-    <DrawerProvider>
+    <SideDrawerProvider>
       <ConferenceComponent id={conference?.id}>
         <Layout testID="ConferenceRoute" className={cx(styles.layoutWrapper)}>
           <Backdrop visible={isBottomDrawerOpen} />
@@ -220,14 +221,12 @@ export const Conference = () => {
                     ? 's'
                     : isDesktop
                     ? 'm'
-                    : isMobileSmall && !isPresentationActive
-                    ? 'xs'
-                    : undefined
+                    : isMobileSmall && !isPresentationActive && 'xs'
                 }
-                pb={isSmartphone ? 'xs' : undefined}
+                pb={isSmartphone && 'xs'}
               >
                 {isPresentationActive && (
-                  <Space className={styles.presentationWrapper} pb={!isDesktop && !isLandscape ? 'xs' : undefined}>
+                  <Space className={styles.presentationWrapper} pb={!isDesktop && !isLandscape && 'xs'}>
                     {!isDesktop && <ActionBar ref={mobileScreenShareRef} mobileShare />}
                     <ScreenSharingPresentationBox
                       fallbackText={intl.formatMessage({ id: 'screenShareDefaultFallbackText' })}
@@ -249,13 +248,7 @@ export const Conference = () => {
                     [styles.mobileColumnOneParticipant]:
                       isOneParticipant && ((isSmartphone && !isLandscape) || (!isLandscape && isTablet)),
                   })}
-                  pl={
-                    isDesktop && isPresentationActive
-                      ? 'm'
-                      : isTablet && isLandscape && isPresentationActive
-                      ? 'xs'
-                      : undefined
-                  }
+                  pl={isDesktop && isPresentationActive ? 'm' : isTablet && isLandscape && isPresentationActive && 'xs'}
                 >
                   <ParticipantsGrid
                     localText={intl.formatMessage({ id: 'you' })}
@@ -278,8 +271,10 @@ export const Conference = () => {
             </div>
             {!isDesktop && (
               <Space
+                fw={!isTablet && isPortrait}
                 className={cx(
                   styles.bottomDrawer,
+                  import.meta.env.VITE_STREAMING && !isTablet && styles.extended,
                   isBottomDrawerOpen && styles.active,
                   !isTablet && styles.smartphones,
                 )}
@@ -287,7 +282,7 @@ export const Conference = () => {
                 <BottomDrawer close={closeBottomDrawer} />
               </Space>
             )}
-            <ParticipantsDrawer />
+            <SideDrawer />
           </Space>
           <AllowAudioModal />
           <ScreenSharingPermissionModal isOpen={permissionError} closeModal={() => setSharingErrors()} />
@@ -314,6 +309,6 @@ export const Conference = () => {
           }
         />
       </Overlay>
-    </DrawerProvider>
+    </SideDrawerProvider>
   );
 };

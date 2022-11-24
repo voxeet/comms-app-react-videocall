@@ -1,0 +1,16 @@
+@import '@styles/breakpoints.scss';
+
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.videoContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.videoRwd {
+  @include videoRwd;
+}

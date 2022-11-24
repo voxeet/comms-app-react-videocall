@@ -9,8 +9,8 @@ The ParticipantToggleAudioButton component allows the local participant to enabl
 | `participant`          | Participant               | -            | The object of the selected participant.                           |
 | `size`?                | "s" , "m"                 | "m"          | The size of the button.                                           |
 | `tooltipPosition`?     | "top" , "bottom"          | "top"        | The position of the tooltip.                                      |
-| `activeIcon`?          | IconsKeys                 | "speaker"    | The icon displayed on the button when a participant is not muted. |
-| `inactiveIcon`?        | IconsKeys                 | "speakerOff" | The icon displayed on the button when a participant is muted.     |
+| `defaultIcon`?         | IconsKeys                 | "speaker"    | The icon displayed on the button when a participant is not muted. |
+| `activeIcon`?          | IconsKeys                 | "speakerOff" | The icon displayed on the button when a participant is muted.     |
 | `disabledIcon`?        | IconsKeys                 | "speakerOff" | The icon displayed on the button when the button is disabled.     |
 | `...MediaButtonProps`? | Partial(MediaButtonProps) | -            | Props that will be passed to the root of the button element.      |
 
@@ -19,5 +19,5 @@ The ParticipantToggleAudioButton component allows the local participant to enabl
 ### React
 
 ```javascript
-return <ParticipantToggleAudioButton participant={participant} activeTooltipText="Volume off" />;
+return <ParticipantToggleAudioButton participant={participant} defaultTooltipText="Volume off" />;
 ```

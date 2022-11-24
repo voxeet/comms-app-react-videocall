@@ -13,8 +13,8 @@ The RecordButton component is responsible for toggling viceocall recording.
 | `renderStartConfirmation`? | (isVisible:boolean, accept:()=>void, cancel:()=>void )=> ReactNode | -        | Render component to confirm start recording.                 |
 | `renderStopConfirmation`?  | (isVisible:boolean, accept:()=>void, cancel:()=>void )=> ReactNode | -        | Render component to confirm stop recording.                  |
 | `tooltipPosition`?         | "top" , "bottom"                                                   | "top"    | The position of the tooltip.                                 |
+| `defaultIcon`?             | IconsKeys                                                          | "record" | The icon of the default state of the button.                 |
 | `activeIcon`?              | IconsKeys                                                          | "record" | The icon of the active state of the button.                  |
-| `inactiveIcon`?            | IconsKeys                                                          | "record" | The icon of the inactive state of the button.                |
 | `disabledIcon`?            | IconsKeys                                                          | "record" | The icon of the disabled state of the button.                |
 | `...MediaButtonProps`?     | Partial(MediaButtonProps)                                          | -        | Props that will be passed to the root of the button element. |
 
@@ -23,5 +23,5 @@ The RecordButton component is responsible for toggling viceocall recording.
 ### React
 
 ```javascript
-return <RecordButton size="s" activeTooltipText="Stop recording" />;
+return <RecordButton size="s" defaultTooltipText="Stop recording" />;
 ```

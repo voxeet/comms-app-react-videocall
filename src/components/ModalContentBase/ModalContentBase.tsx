@@ -1,9 +1,9 @@
+import ModalHeaderLogo from '@components/ModalContentBase/ModalHeaderLogo';
 import { Space, useTheme, Button, Text, IconComponentName } from '@dolbyio/comms-uikit-react';
 import cx from 'classnames';
 import React, { ComponentProps } from 'react';
 
 import styles from './ModalContentBase.module.scss';
-import ModalHeaderLogo from './ModalHeaderLogo';
 
 export type Buttons = Array<ComponentProps<typeof Button> & { label: string }>;
 type ModalContentBaseProps = {
@@ -12,7 +12,7 @@ type ModalContentBaseProps = {
   buttons?: Buttons;
   headline?: string;
   description?: string;
-  headerLogo?: Extract<IconComponentName, 'present' | 'speaker' | 'record'>;
+  headerLogo?: Extract<IconComponentName, 'present' | 'speaker' | 'record' | 'stream'>;
 };
 
 const ModalContentBase = ({ children, buttons, headline, description, headerLogo }: ModalContentBaseProps) => {
@@ -30,8 +30,8 @@ const ModalContentBase = ({ children, buttons, headline, description, headerLogo
         isMobileSmall && styles.mobileSmall,
       )}
     >
-      <Space pb="m" className={styles.mainSection}>
-        {isMobileSmall && isLandscape ? null : <ModalHeaderLogo icon={headerLogo} />}
+      <Space className={styles.mainSection}>
+        {(isMobileSmall && isLandscape) || !headerLogo ? null : <ModalHeaderLogo icon={headerLogo} />}
         <Space mt="s">
           <Text type="H2" color="grey.100">
             {headline}
@@ -47,7 +47,7 @@ const ModalContentBase = ({ children, buttons, headline, description, headerLogo
       {buttons && (
         <Space pv="m" ph="m" fw>
           {buttons.map(({ label, ...buttonConfig }, idx) => (
-            <Space mb={idx < buttons.length - 1 ? 's' : undefined} key={label}>
+            <Space mb={idx < buttons.length - 1 && 's'} key={label}>
               <Button {...buttonConfig} size="s" fw>
                 <Text type="caption" style={{ lineHeight: '20px' }}>
                   {label}

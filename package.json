@@ -1,8 +1,10 @@
 {
   "name": "comms-app-react-videocall",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "scripts": {
     "dev": "cross-env ENV=web && vite",
+    "dev-proxy": "concurrently --kill-others \"cd api && yarn dev\" \"yarn dev\"",
+    "dev-proxy-host": "concurrently --kill-others \"cd api && yarn dev\" \"yarn dev --host --https\"",
     "build": "cross-env ENV=web && vite build",
     "preview": "cross-env ENV=web && vite preview",
     "lint": "eslint \"src/**/*.{js,ts,tsx}\"",
@@ -14,7 +16,7 @@
     "url": "https://github.com/dolbyio-samples/comms-app-react-videocall"
   },
   "dependencies": {
-    "@dolbyio/comms-uikit-react": "^0.6.0",
+    "@dolbyio/comms-uikit-react": "^0.7.0",
     "@emotion/react": "^11.9.0",
     "@voxeet/voxeet-web-sdk": "^3.7.0",
     "axios": "^0.26.1",
@@ -33,6 +35,7 @@
     "@types/react": "^18.0.6",
     "@types/react-dom": "^18.0.6",
     "@vitejs/plugin-react": "^1.0.7",
+    "concurrently": "^7.6.0",
     "cross-env": "^7.0.3",
     "license-checker": "^25.0.1",
     "typescript-plugin-css-modules": "^3.4.0",

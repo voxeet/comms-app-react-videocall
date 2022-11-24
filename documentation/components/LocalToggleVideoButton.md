@@ -8,8 +8,8 @@ The LocalToggleVideoButton component is responsible for enabling the local parti
 | ---------------------- | ------------------------- | ----------- | ------------------------------------------------------------ |
 | `size`?                | "s" , "m"                 | "m"         | The size of the button.                                      |
 | `tooltipPosition`?     | "top" , "bottom"          | "top"       | The position of the tooltip.                                 |
-| `activeIcon`?          | IconsKeys                 | "camera"    | The Icon of an active state of the button.                   |
-| `inactiveIcon`?        | IconsKeys                 | "cameraOff" | The Icon of an inactive state of the button.                 |
+| `defaultIcon`?         | IconsKeys                 | "camera"    | The Icon of an default state of the button.                  |
+| `activeIcon`?          | IconsKeys                 | "cameraOff" | The Icon of an active state of the button.                   |
 | `disabledIcon`?        | IconsKeys                 | "cameraOff" | The Icon of the disabled state of the button.                |
 | `...MediaButtonProps`? | Partial(MediaButtonProps) | -           | Props that will be passed to the root of the button element. |
 
@@ -18,5 +18,5 @@ The LocalToggleVideoButton component is responsible for enabling the local parti
 ### React
 
 ```javascript
-return <LocalToggleVideoButton size="s" activeTooltipText="Camera off" />;
+return <LocalToggleVideoButton size="s" defaultTooltipText="Camera off" />;
 ```

@@ -1,28 +1,33 @@
+import AskForShareTooltip from '@components/AskForShareTooltip/AskForShareTooltip';
+import BackgroundBlurToggle from '@components/BackgroundBlurToggle';
+import Copy from '@components/Copy';
+import LeaveConference from '@components/LeaveConference';
+import RecordingModal from '@components/RecordingModal';
+import ScreenSharingTakeOverModal from '@components/ScreenSharingTakeOverModal/ScreenSharingTakeOverModal';
+import ShareHandOverTooltip from '@components/ShareHandOverTooltip/ShareHandOverTooltip';
+import StopLiveStreamingModal from '@components/StopLiveStreamingModal';
+import ToggleSettingsDrawerButton from '@components/ToggleSettingsDrawerButton';
 import {
+  ConferenceName,
+  DialogTooltip,
+  IconButton,
+  LiveStreamButton,
+  LocalToggleAudioButton,
+  LocalToggleVideoButton,
+  RecordButton,
+  ScreenShareButton,
+  Space,
   useConference,
   useNotifications,
   useParticipants,
-  IconButton,
-  Space,
-  LocalToggleAudioButton,
-  LocalToggleVideoButton,
-  ConferenceName,
-  ScreenShareButton,
-  DialogTooltip,
   useScreenSharing,
-  RecordButton,
 } from '@dolbyio/comms-uikit-react';
+import useDrawer from '@hooks/useDrawer';
+import { useLiveStreaming } from '@hooks/useLiveStreaming';
+import LiveStreamingModal from '@src/components/LiveStreamingModal';
+import { SideDrawerContentTypes } from '@src/context/SideDrawerContext';
 import React from 'react';
 import { useIntl } from 'react-intl';
-
-import useDrawer from '../../hooks/useDrawer';
-import AskForShareTooltip from '../AskForShareTooltip/AskForShareTooltip';
-import BackgroundBlurToggle from '../BackgroundBlurToggle';
-import Copy from '../Copy';
-import LeaveConference from '../LeaveConference';
-import RecordingModal from '../RecordingModal';
-import ScreenSharingTakeOverModal from '../ScreenSharingTakeOverModal/ScreenSharingTakeOverModal';
-import ShareHandOverTooltip from '../ShareHandOverTooltip/ShareHandOverTooltip';
 
 import styles from './Dock.module.scss';
 
@@ -33,6 +38,7 @@ export const Dock = () => {
   const { showSuccessNotification, showErrorNotification } = useNotifications();
   const intl = useIntl();
   const { setSharingErrors } = useScreenSharing();
+  const { streamHandler } = useLiveStreaming();
 
   if (conference === null) {
     return null;
@@ -67,6 +73,21 @@ export const Dock = () => {
     <RecordingModal isOpen={isVisible} closeModal={cancel} accept={accept} />
   );
 
+  const renderDataInput = (isVisible: boolean, close: () => void) => (
+    <LiveStreamingModal isOpen={isVisible} closeModal={close} />
+  );
+
+  const renderStopStreamingModal = (isVisible: boolean, accept: () => void, cancel: () => void) => (
+    <StopLiveStreamingModal
+      isOpen={isVisible}
+      closeModal={cancel}
+      accept={() => {
+        accept();
+        showSuccessNotification(intl.formatMessage({ id: 'liveStreamingEnded' }));
+      }}
+    />
+  );
+
   return (
     <Space testID="Dock" className={styles.dock} p="m">
       <Space className={styles.row} style={{ width: 330 }}>
@@ -77,18 +98,18 @@ export const Dock = () => {
       </Space>
       <Space className={styles.row}>
         <LocalToggleAudioButton
-          activeTooltipText={intl.formatMessage({ id: 'mute' })}
-          inactiveTooltipText={intl.formatMessage({ id: 'unmute' })}
+          defaultTooltipText={intl.formatMessage({ id: 'mute' })}
+          activeTooltipText={intl.formatMessage({ id: 'unmute' })}
         />
         <Space className={styles.spacer} />
         <LocalToggleVideoButton
-          activeTooltipText={intl.formatMessage({ id: 'cameraOff' })}
-          inactiveTooltipText={intl.formatMessage({ id: 'cameraOn' })}
+          defaultTooltipText={intl.formatMessage({ id: 'cameraOff' })}
+          activeTooltipText={intl.formatMessage({ id: 'cameraOn' })}
         />
         <Space className={styles.spacer} />
         <ScreenShareButton
-          activeTooltipText={intl.formatMessage({ id: 'present' })}
-          inactiveTooltipText={intl.formatMessage({ id: 'stopPresenting' })}
+          defaultTooltipText={intl.formatMessage({ id: 'present' })}
+          activeTooltipText={intl.formatMessage({ id: 'stopPresenting' })}
           onStartSharingAction={() => showSuccessNotification(intl.formatMessage({ id: 'presentingSuccessfully' }))}
           onStopSharingAction={() => showSuccessNotification(intl.formatMessage({ id: 'screenSharingStopped' }))}
           onTakeOverDeclineAction={() => showErrorNotification(intl.formatMessage({ id: 'requestDeclined' }))}
@@ -99,8 +120,8 @@ export const Dock = () => {
         />
         <Space className={styles.spacer} />
         <RecordButton
-          activeTooltipText={intl.formatMessage({ id: 'record' })}
-          inactiveTooltipText={intl.formatMessage({ id: 'stopRecording' })}
+          defaultTooltipText={intl.formatMessage({ id: 'record' })}
+          activeTooltipText={intl.formatMessage({ id: 'stopRecording' })}
           onStopRecordingAction={() => showSuccessNotification(intl.formatMessage({ id: 'recordingStopped' }))}
           onError={() => showErrorNotification(intl.formatMessage({ id: 'recordingError' }))}
           renderStartConfirmation={renderRecordModal}
@@ -111,13 +132,28 @@ export const Dock = () => {
       </Space>
       <Space className={styles.row} style={{ width: 330, justifyContent: 'flex-end' }}>
         <BackgroundBlurToggle />
+        {import.meta.env.VITE_STREAMING === 'true' && (
+          <LiveStreamButton
+            stopStreaming={async () => {
+              await streamHandler('stop');
+            }}
+            activeIconColor="white"
+            disabledIconColor="grey.300"
+            defaultTooltipText={intl.formatMessage({ id: 'goLive' })}
+            renderDataInput={renderDataInput}
+            renderStopConfirmation={renderStopStreamingModal}
+            onError={() => showErrorNotification(intl.formatMessage({ id: 'liveStreamingError' }))}
+            onStopLiveStreamingAction={() => showSuccessNotification(intl.formatMessage({ id: 'liveStreamingEnded' }))}
+          />
+        )}
         <IconButton
           testID="OpenDrawerButton"
           icon="participants"
           backgroundColor="transparent"
           badge={participants.length}
-          onClick={openDrawer}
+          onClick={() => openDrawer(SideDrawerContentTypes.PARTICIPANTS)}
         />
+        <ToggleSettingsDrawerButton />
       </Space>
     </Space>
   );

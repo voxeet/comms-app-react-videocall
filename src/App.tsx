@@ -1,12 +1,12 @@
+import TranslationProvider from '@components/TranslationProvider';
+import { ConferenceCreateProvider } from '@context/ConferenceCreateContext';
 import { CommsProvider, ThemeProvider } from '@dolbyio/comms-uikit-react';
+import { Navigator } from '@src/routes/Navigator';
 import React, { useMemo } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, useLocation } from 'react-router-dom';
 
 import './App.module.scss';
-import TranslationProvider from './components/TranslationProvider';
-import { ConferenceCreateProvider } from './context/ConferenceCreateContext';
-import { Navigator } from './routes/Navigator';
 
 const App = () => {
   const location = useLocation();
