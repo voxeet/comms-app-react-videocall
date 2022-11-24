@@ -1,6 +1,5 @@
+import { CreateStep } from '@src/types/routes';
 import React, { useState, createContext, useMemo } from 'react';
-
-import { CreateStep } from '../types/routes.types';
 
 type ConferenceCreateContext = {
   step: CreateStep;

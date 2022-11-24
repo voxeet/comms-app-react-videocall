@@ -5,26 +5,45 @@
   box-shadow: 0px -4px 12px rgba(11, 11, 13, 0.48);
   background-color: rgba(41, 41, 48, 0.98);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
 
-  .close {
-    position: absolute;
-    top: 5px;
-    right: 5px;
+  &.smartphones {
+    width: 100vw;
+  }
+
+  &.extended {
+    height: 250px;
+  }
+
+  .closeButtonSection {
+    height: 48px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .buttonsSection {
+    flex-grow: 1;
+    padding: 0 12px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    &.center {
+      justify-content: center;
+    }
+  }
+
+  .spacer {
+    width: 8px;
   }
 
   .buttonContainer {
-    width: 72px;
     height: 72px;
+    width: 72px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-  }
-
-  &.smartphones {
-    width: 100vw;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
   }
 }

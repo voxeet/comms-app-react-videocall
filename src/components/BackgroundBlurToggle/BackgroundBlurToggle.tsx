@@ -1,8 +1,7 @@
+import Switch from '@components/Switch';
 import { Icon, Space, Tooltip, useBlur, useTheme, useVideo } from '@dolbyio/comms-uikit-react';
 import React from 'react';
 import { useIntl } from 'react-intl';
-
-import Switch from '../Switch';
 
 import styles from './BackgroundBlurToggle.module.scss';
 

@@ -1,3 +1,4 @@
+import Text from '@components/Text';
 import {
   useAudio,
   useCamera,
@@ -13,20 +14,18 @@ import {
   Overlay,
   Spinner,
 } from '@dolbyio/comms-uikit-react';
+import useConferenceCreate from '@hooks/useConferenceCreate';
+import useDrawer from '@hooks/useDrawer';
+import { SideDrawer } from '@src/components/SideDrawer';
+import MobileContent from '@src/routes/ConferenceCreate/DeviceSetup/MobileContent';
+import ToggleMicrophoneButton from '@src/routes/ConferenceCreate/DeviceSetup/ToggleMicrophoneButton';
+import ToggleVideoButton from '@src/routes/ConferenceCreate/DeviceSetup/ToggleVideoButton';
+import { Routes } from '@src/types/routes';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
-import DeviceSetupDrawer from '../../../components/DeviceSetupDrawer';
-import Text from '../../../components/Text';
-import useConferenceCreate from '../../../hooks/useConferenceCreate';
-import useDrawer from '../../../hooks/useDrawer';
-import { Routes } from '../../../types/routes.types';
-
 import styles from './DeviceSetup.module.scss';
-import MobileContent from './MobileContent';
-import ToggleMicrophoneButton from './ToggleMicrophoneButton';
-import ToggleVideoButton from './ToggleVideoButton';
 
 export const DeviceSetup = () => {
   const navigate = useNavigate();
@@ -90,7 +89,7 @@ export const DeviceSetup = () => {
   const onSuccess = async () => {
     const params = new URLSearchParams(window.location.search);
     if (!params.get('id')) {
-      params.append('id', encodeURIComponent(meetingName));
+      params.append('id', meetingName);
     } else {
       params.set('id', meetingName);
     }
@@ -198,7 +197,7 @@ export const DeviceSetup = () => {
           )}
         </Space>
       </Space>
-      <DeviceSetupDrawer isMicrophonePermission={isMicrophonePermission} isCameraPermission={isCameraPermission} />
+      <SideDrawer />
     </Space>
   );
 };

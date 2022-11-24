@@ -5,7 +5,7 @@ The useScreenSharing hook gathers functions responsible for managing screen shar
 ## Members
 
 | Name                           | Type                | Description                                                        |
-|--------------------------------|---------------------|--------------------------------------------------------------------|
+| ------------------------------ | ------------------- | ------------------------------------------------------------------ |
 | `startScreenShare`             | () => {}            | Starts screen sharing. Function available only on desktop devices. |
 | `stopScreenShare`              | () => {}            | Stops screen sharing. Function available only on desktop devices.  |
 | `owner`                        | Participant         | The object of the participant which sharing screen.                |
@@ -18,7 +18,7 @@ The useScreenSharing hook gathers functions responsible for managing screen shar
 | `sharingInProgressError`       | boolean             | True while trying share while sharing is already in Progress       |
 | `setSharingErrors`             | ()=> void           | Handler to remove ScreenSharing related errors                     |
 | `isPresentationModeActive`     | boolean             | Informs if local user has active presentation mode.                |
-| `resetScreenShareStatus`       | () => void          | Resets status of screen sharing for local user.                    |
+| `resetScreenSharingData`       | () => void          | Resets data of screen sharing for local user.                      |
 | `isAutoStartShareError`        | boolean             | Informs if a browser problem with auto start screen share exists.  |
 | `isLackOfBrowserPermissions`   | boolean             | Informs if exists browser problem with auto start screen share.    |
 

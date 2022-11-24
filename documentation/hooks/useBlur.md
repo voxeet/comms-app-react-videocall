@@ -9,6 +9,7 @@ The useBlur hook gathers functions responsible for toggling video background blu
 | `isBlurred`           | boolean    | Informs if local users video is currently blurred. |
 | `startBackgroundBlur` | () => void | Starts video processing with blur.                 |
 | `stopVideoProcessing` | () => void | Removes video processor.                           |
+| `isSupported`         | boolean    | Informs if blur is suppoorted by environment.      |
 
 ## Examples
 

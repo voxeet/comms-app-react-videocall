@@ -1,8 +1,7 @@
-import { useTheme, Modal, useMessage, ScreenShareTakeoverMessages, useScreenSharing } from '@dolbyio/comms-uikit-react';
+import ModalContentBase from '@components/ModalContentBase/ModalContentBase';
+import { Modal, useMessage, ScreenShareTakeoverMessages, useScreenSharing } from '@dolbyio/comms-uikit-react';
 import React from 'react';
 import { useIntl } from 'react-intl';
-
-import ModalContentBase from '../ModalContentBase/ModalContentBase';
 
 type ScreenSharingTakeOverModalProps = {
   testID?: string;
@@ -20,7 +19,9 @@ const ScreenSharingTakeOverModal = ({
   const { setPendingTakeoverRequest } = useScreenSharing();
 
   const handleAskForPermission = async () => {
-    await sendMessage(ScreenShareTakeoverMessages.REQUEST);
+    await sendMessage({
+      text: ScreenShareTakeoverMessages.REQUEST,
+    });
     setPendingTakeoverRequest(true);
     closeModal();
   };

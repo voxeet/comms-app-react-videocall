@@ -25,3 +25,39 @@ $breakpoints: (
           + "Available breakpoints are: #{map-keys($breakpoints)}.";
   }
 }
+
+@mixin videoRwd {
+  width: 280px !important;
+  height: 158px !important;
+  @include rwd('mobile') {
+    width: 112px !important;
+    height: 200px !important;
+  }
+
+  @include rwd('mobileSmall') {
+    width: 112px !important;
+    height: 200px !important;
+  }
+
+  @include rwd('tablet') {
+    width: 135px !important;
+    height: 240px !important;
+  }
+
+  @media only screen and (orientation: landscape) {
+    @include rwd('mobile') {
+      width: 200px !important;
+      height: 112px !important;
+    }
+
+    @include rwd('mobileSmall') {
+      width: 200px !important;
+      height: 112px !important;
+    }
+
+    @include rwd('tablet') {
+      width: 240px !important;
+      height: 135px !important;
+    }
+  }
+}

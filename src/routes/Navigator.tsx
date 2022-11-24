@@ -1,15 +1,13 @@
 import { useConference } from '@dolbyio/comms-uikit-react';
+import useConferenceCreate from '@hooks/useConferenceCreate';
+import Conference from '@src/routes/Conference';
+import { ConferenceComponents } from '@src/routes/ConferenceComponents/ConferenceComponents';
+import ConferenceCreate from '@src/routes/ConferenceCreate';
+import ConferenceLeft from '@src/routes/ConferenceLeft';
+import Home from '@src/routes/Home';
+import { Routes as RoutesType } from '@src/types/routes';
 import React, { useMemo } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-
-import useConferenceCreate from '../hooks/useConferenceCreate';
-import { Routes as RoutesType } from '../types/routes.types';
-
-import Conference from './Conference';
-import { ConferenceComponents } from './ConferenceComponents/ConferenceComponents';
-import ConferenceCreate from './ConferenceCreate';
-import ConferenceLeft from './ConferenceLeft';
-import Home from './Home';
 
 const Router = () => {
   const { conference } = useConference();

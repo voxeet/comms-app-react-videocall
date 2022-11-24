@@ -1,0 +1,30 @@
+@import '@styles/breakpoints.scss';
+
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.videoContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footerContainer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  .buttonsSection {
+    display: flex;
+
+    .spacer {
+      width: 8px;
+    }
+  }
+}
+
+.videoRwd {
+  @include videoRwd;
+}

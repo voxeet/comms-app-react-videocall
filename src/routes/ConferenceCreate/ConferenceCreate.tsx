@@ -1,17 +1,16 @@
+import ConferenceCreateFooter from '@components/ConferenceCreateFooter';
+import ConferenceCreateHeader from '@components/ConferenceCreateHeader';
 import { Layout, useTheme } from '@dolbyio/comms-uikit-react';
+import useConferenceCleanup from '@hooks/useConferenceCleanup';
+import useConferenceCreate from '@hooks/useConferenceCreate';
+import { SideDrawerProvider } from '@src/context/SideDrawerContext';
+import ConferenceCreateInput from '@src/routes/ConferenceCreate/ConferenceCreateInput';
+import DeviceSetup from '@src/routes/ConferenceCreate/DeviceSetup';
+import { CreateStep } from '@src/types/routes';
 import cx from 'classnames';
 import React, { useMemo, useState } from 'react';
 
-import ConferenceCreateFooter from '../../components/ConferenceCreateFooter';
-import ConferenceCreateHeader from '../../components/ConferenceCreateHeader';
-import { DrawerProvider } from '../../context/DrawerContext';
-import useConferenceCleanup from '../../hooks/useConferenceCleanup';
-import useConferenceCreate from '../../hooks/useConferenceCreate';
-import { CreateStep } from '../../types/routes.types';
-
 import styles from './ConferenceCreate.module.scss';
-import ConferenceCreateInput from './ConferenceCreateInput';
-import DeviceSetup from './DeviceSetup';
 
 const isIPhone = navigator.userAgent.match(/iPhone/i);
 
@@ -44,7 +43,7 @@ export const ConferenceCreate = () => {
     setIsInputFocused(false);
   };
   return (
-    <DrawerProvider>
+    <SideDrawerProvider>
       <Layout
         testID="ConferenceCreateRoute"
         backgroundColor="white"
@@ -72,6 +71,6 @@ export const ConferenceCreate = () => {
 
         {isFooterVisible && <ConferenceCreateFooter />}
       </Layout>
-    </DrawerProvider>
+    </SideDrawerProvider>
   );
 };

@@ -1,8 +1,7 @@
+import ModalContentBase, { type Buttons } from '@components/ModalContentBase/ModalContentBase';
 import { Modal, useRecording } from '@dolbyio/comms-uikit-react';
 import React, { useMemo } from 'react';
 import { useIntl } from 'react-intl';
-
-import ModalContentBase, { type Buttons } from '../ModalContentBase/ModalContentBase';
 
 type RecordingModalProps = {
   testID?: string;

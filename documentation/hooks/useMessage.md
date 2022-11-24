@@ -4,12 +4,12 @@ The useMessage hook gathers functions responsible for managing messages.
 
 ## Members
 
-| Name           | Type                      | Description                                       |
-| -------------- | ------------------------- | ------------------------------------------------- |
-| `sender`       | Participant               | Object of the participant which send the message. |
-| `message`      | string                    | Message which was received.                       |
-| `sendMessage`  | (message: string) => void | Sends the message to all participants.            |
-| `clearMessage` | () => void                | Clears received message data.                     |
+| Name           | Type                                        | Description                                       |
+| -------------- | ------------------------------------------- | ------------------------------------------------- |
+| `sender`       | Participant                                 | Object of the participant which send the message. |
+| `message`      | Record<string, unknown>                     | Object of message which was received.             |
+| `sendMessage`  | (message: Record<string, unknown> ) => void | Sends the message to all participants.            |
+| `clearMessage` | () => void                                  | Clears received message data.                     |
 
 ## Examples
 
@@ -20,7 +20,9 @@ The useMessage hook gathers functions responsible for managing messages.
 ```javascript
 const { sendMessage } = useMessage();
 
-await sendMessage('Hello World');
+await sendMessage({
+  text: 'Hello World',
+});
 ```
 
 ### Display received message
@@ -28,7 +30,9 @@ await sendMessage('Hello World');
 ```javascript
 const { message } = useMessage();
 
-<p>{message}</p>;
+const {text} = message
+
+<p>{text}</p>;
 ```
 
 ### Display name of the participant which send the message

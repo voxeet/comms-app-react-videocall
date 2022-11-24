@@ -1,13 +1,12 @@
+import Text from '@components/Text';
 import { Input, ValidationType, Button, Space, useTheme } from '@dolbyio/comms-uikit-react';
+import useConferenceCreate from '@hooks/useConferenceCreate';
+import { useEnter } from '@hooks/useEnter';
+import { CreateStep } from '@src/types/routes';
+import { isValid } from '@src/utils/validation';
 import React, { useMemo, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { useSearchParams } from 'react-router-dom';
-
-import Text from '../../../components/Text';
-import useConferenceCreate from '../../../hooks/useConferenceCreate';
-import { useEnter } from '../../../hooks/useEnter';
-import { CreateStep } from '../../../types/routes.types';
-import { isValid } from '../../../utils/validation.util';
 
 import styles from './ConferenceCreateInput.module.scss';
 
@@ -32,7 +31,8 @@ const typeValues = {
     disclaimerTestId: 'EnterNameDisclaimer',
     inputLabel: 'name',
     inputTestId: 'UsernameInput',
-    validationMessage: 'usernameValidation',
+    validationMessage: 'genericValidation',
+    // validationMessage: 'usernameValidation',
     submitButtonTestId: 'UsernameNextButton',
     submitButtonLabel: 'next',
     buttonHeight: 'unset',
@@ -45,7 +45,8 @@ const typeValues = {
     disclaimerTestId: 'MeetingTitleDisclaimer',
     inputLabel: 'meetingTitle',
     inputTestId: 'MeetingNameInput',
-    validationMessage: `meetingTitleValidation`,
+    validationMessage: `genericValidation`,
+    // validationMessage: `meetingTitleValidation`,
     submitButtonTestId: 'MeetingNameJoinButton',
     submitButtonLabel: 'join',
     submitButtonLabelTestId: 'JoinButtonText',
@@ -78,12 +79,13 @@ export const ConferenceCreateInput = ({
   const myRef = useRef<HTMLDivElement | null>(null);
 
   const validateInput = (value: string, callback?: () => void) => {
-    const valid = isValid(value, type === 'meeting' ? 3 : 2);
+    const minChar = type === 'meeting' ? 3 : 2;
+    const valid = isValid(value, minChar);
     setValidation(
       value.length
         ? {
             valid,
-            message: valid ? undefined : intl.formatMessage({ id: settings.validationMessage }),
+            message: valid ? undefined : intl.formatMessage({ id: settings.validationMessage }, { minChar }),
           }
         : { valid: true },
     );
@@ -121,7 +123,7 @@ export const ConferenceCreateInput = ({
   const onChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const { value } = e.target;
     if (!value.length || value.length >= 3) validateInput(value);
-    setValue(value);
+    setValue(value.replace(/^\s+/g, ''));
   };
 
   const isSmartphone = isMobile || isMobileSmall;
@@ -155,6 +157,7 @@ export const ConferenceCreateInput = ({
         <Space mt="l">
           <div ref={myRef}>
             <Input
+              labelBackground="white"
               testID={settings.inputTestId}
               label={intl.formatMessage({ id: settings.inputLabel })}
               value={value}

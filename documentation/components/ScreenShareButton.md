@@ -15,8 +15,8 @@ The ScreenShareButton component is responsible for toggling screen sharing.
 | `renderHandOver`?             | (isVisible:boolean, acceptTakeover:()=>void)=> ReactNode           | -         | Render prop to display component while someone is trying to take over sharing.       |
 | `renderAskForShare`?          | (isVisible:boolean, accept:()=>void, cancel:()=>void )=> ReactNode | -         | Render prop to display component when browser permissions error exists               |
 | `tooltipPosition`?            | "top" , "bottom"                                                   | "top"     | The position of the tooltip.                                                         |
+| `defaultIcon`?                | IconsKeys                                                          | "present" | The icon of the default state of the button.                                         |
 | `activeIcon`?                 | IconsKeys                                                          | "present" | The icon of the active state of the button.                                          |
-| `inactiveIcon`?               | IconsKeys                                                          | "present" | The icon of the inactive state of the button.                                        |
 | `disabledIcon`?               | IconsKeys                                                          | "present" | The icon of the disabled state of the button.                                        |
 | `...MediaButtonProps`?        | Partial(MediaButtonProps)                                          | -         | Props that will be passed to the root of the button element.                         |
 
@@ -25,5 +25,5 @@ The ScreenShareButton component is responsible for toggling screen sharing.
 ### React
 
 ```javascript
-return <ScreenShareButton size="s" activeTooltipText="Stop present" />;
+return <ScreenShareButton size="s" defaultTooltipText="Stop present" />;
 ```

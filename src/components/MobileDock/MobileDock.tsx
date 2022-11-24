@@ -1,3 +1,5 @@
+import LeaveConference from '@components/LeaveConference';
+import { SideDrawerContentTypes } from '@context/SideDrawerContext';
 import {
   useConference,
   useParticipants,
@@ -7,11 +9,9 @@ import {
   LocalToggleVideoButton,
   useTheme,
 } from '@dolbyio/comms-uikit-react';
+import useDrawer from '@hooks/useDrawer';
 import cx from 'classnames';
 import React from 'react';
-
-import useDrawer from '../../hooks/useDrawer';
-import LeaveConference from '../LeaveConference';
 
 import styles from './MobileDock.module.scss';
 
@@ -29,6 +29,10 @@ export const MobileDock = ({ openBottomDrawer, visible = true }: MobileDockProps
   if (conference === null) {
     return null;
   }
+
+  const openParticipantsDrawer = () => {
+    openDrawer(SideDrawerContentTypes.PARTICIPANTS);
+  };
 
   const isSmartphone = isMobile || isMobileSmall;
 
@@ -57,7 +61,7 @@ export const MobileDock = ({ openBottomDrawer, visible = true }: MobileDockProps
             testID="OpenDrawerButton"
             icon="participants"
             badge={participants.length}
-            onClick={openDrawer}
+            onClick={openParticipantsDrawer}
             rightBadge
             badgeColor="grey.300"
           />

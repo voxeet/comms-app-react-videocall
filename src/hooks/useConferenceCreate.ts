@@ -1,7 +1,6 @@
+import { ConferenceCreateContext } from '@context/ConferenceCreateContext';
+import { CreateStep } from '@src/types/routes';
 import { useContext } from 'react';
-
-import { ConferenceCreateContext } from '../context/ConferenceCreateContext';
-import { CreateStep } from '../types/routes.types';
 
 const useConferenceCreate = (type?: 'user' | 'meeting') => {
   const { step, setStep, username, setUsername, meetingName, setMeetingName } = useContext(ConferenceCreateContext);

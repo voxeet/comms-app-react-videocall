@@ -5,7 +5,7 @@ The Input component is responsible for interactive controls for forms in order t
 ## Props
 
 | Name                   | Type                                 | Default | Description                                                                                                                                            |
-| ---------------------- | ------------------------------------ | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+|------------------------|--------------------------------------|---------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `value`                | string                               | -       | The value of the input element that is required for a controlled component.                                                                            |
 | `label` ?              | string                               | -       | The text displayed above the input element.                                                                                                            |
 | `borderColor` ?        | ColorKey                             | -       | The color of the border.                                                                                                                               |
@@ -15,6 +15,7 @@ The Input component is responsible for interactive controls for forms in order t
 | `textColor` ?          | ColorKey                             | -       | The color of the input element.                                                                                                                        |
 | `validation` ?         | { valid: boolean; message?: string } | -       | The validation of the provided value.                                                                                                                  |
 | `onChange`             | function                             | -       | The event handler property for processing change events on the input element. You can pull out the new value by accessing event.target.value (string). |
+| `secure`               | boolean                              | -       | Setting input as a secure password input.                                                                                                              |
 | `testID` ?             | string                               | -       | The unique E2E test handler.                                                                                                                           |
 | `...HTMLInputElement`? | Partial(HTMLInputElement)            | -       | Props that will be passed to the input element.                                                                                                        |
 

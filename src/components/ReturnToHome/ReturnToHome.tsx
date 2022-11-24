@@ -1,10 +1,9 @@
+import Text from '@components/Text';
 import { Button, useAudio, useVideo, Space } from '@dolbyio/comms-uikit-react';
+import useConferenceCreate from '@hooks/useConferenceCreate';
+import { CreateStep, Routes } from '@src/types/routes';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-
-import useConferenceCreate from '../../hooks/useConferenceCreate';
-import { CreateStep, Routes } from '../../types/routes.types';
-import Text from '../Text';
 
 import styles from './ReturnToHome.module.scss';
 

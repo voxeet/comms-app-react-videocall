@@ -1,7 +1,6 @@
+import Text from '@components/Text';
 import { ColorKey, Space, useTheme } from '@dolbyio/comms-uikit-react';
 import React from 'react';
-
-import Text from '../Text/index';
 
 import styles from './PhoneLandscapeCurtain.module.scss';
 

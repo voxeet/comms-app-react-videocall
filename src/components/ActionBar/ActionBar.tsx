@@ -1,37 +1,130 @@
 /* eslint-disable no-nested-ternary */
+import { FacebookLive, Twitch, YouTubeStudio } from '@assets/index';
+import LiveStreamingModal from '@components/LiveStreamingModal';
+import StopLiveStreamingModal from '@components/StopLiveStreamingModal';
+import Text from '@components/Text';
+import Timer from '@components/Timer';
 import {
+  GenericStatus,
+  LiveStreamingActionBar,
   RecordingActionBar,
   ScreenSharingActionBar,
   Space,
+  useNotifications,
   useRecording,
   useScreenSharing,
   useTheme,
-  GenericStatus,
-  useNotifications,
 } from '@dolbyio/comms-uikit-react';
-import React, { forwardRef, useState } from 'react';
+import { useLiveStreaming } from '@hooks/useLiveStreaming';
+import React, { forwardRef, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
-
-import Text from '../Text';
-import Timer from '../Timer';
 
 type ActionBarProps = {
   mobileShare?: boolean;
 };
 
+const providers = {
+  twitch: <Twitch />,
+  youtube: <YouTubeStudio />,
+  facebook: <FacebookLive />,
+  other: null,
+};
+
+function isActive(...args: GenericStatus[]) {
+  return args.every((arg) => arg === GenericStatus.Active);
+}
+
+function isSomeActive(...args: GenericStatus[]) {
+  return args.some((arg) => arg === GenericStatus.Active);
+}
+
 export const ActionBar = forwardRef<HTMLDivElement, ActionBarProps>(({ mobileShare }, ref) => {
   const { isDesktop, isMobile, isMobileSmall, isTablet } = useTheme();
   const intl = useIntl();
-  const [activeBar, setActiveBar] = useState('presenting');
+  const [activeBar, setActiveBar] = useState<'presenting' | 'recording' | 'streaming'>('presenting');
   const { showSuccessNotification } = useNotifications();
   const { owner, isPresentationModeActive, status: sharingStatus, isLocalUserPresentationOwner } = useScreenSharing();
-  const { isLocalUserRecordingOwner, isRecordingModeActive, status: recordingStatus } = useRecording();
+  const {
+    isLocalUserRecordingOwner,
+    isRecordingModeActive,
+    status: recordingStatus,
+    timestamp: recordingTimestamp,
+  } = useRecording();
+  const {
+    owner: liveStreamingOwner,
+    provider,
+    status: streamingStatus,
+    timestamp,
+    isLiveStreamingModeActive,
+    streamHandler,
+    isLocalUserLiveStreamingOwner,
+  } = useLiveStreaming();
+  const [isStreamingModal, setStreamingModal] = useState(false);
+
+  const serviceProviderLogo = useMemo(() => {
+    return (
+      <Space mr="xs" style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
+        {providers[provider as keyof typeof providers]}
+      </Space>
+    );
+  }, [provider]);
+
+  const showStreamingModal = () => setStreamingModal(true);
+  const hideStreamingModal = () => setStreamingModal(false);
+
+  const liveStreamingHandler = useMemo(
+    () => ({
+      start: showStreamingModal,
+      stop: showStreamingModal,
+    }),
+    [],
+  );
+
+  const streamingLabel = useMemo(() => {
+    if (!isActive(streamingStatus)) {
+      return null;
+    }
+    return (
+      <>
+        <Timer startTime={timestamp ?? undefined} />
+        {!((isMobileSmall && isRecordingModeActive) || isActive(recordingStatus)) && (
+          <>
+            <Text> | </Text>
+            <Text
+              id={isLocalUserLiveStreamingOwner ? 'streaming' : 'isStreaming'}
+              values={{ participant: liveStreamingOwner?.info.name }}
+            />
+          </>
+        )}
+      </>
+    );
+  }, [streamingStatus, isLocalUserLiveStreamingOwner, timestamp, recordingStatus, isRecordingModeActive]);
+
+  const streamingModal = useMemo(() => {
+    if (!isStreamingModal) {
+      return null;
+    }
+    if (isActive(streamingStatus)) {
+      return (
+        <StopLiveStreamingModal
+          isOpen={isStreamingModal}
+          closeModal={hideStreamingModal}
+          accept={async () => {
+            hideStreamingModal();
+            await streamHandler('stop');
+            showSuccessNotification(intl.formatMessage({ id: 'liveStreamingEnded' }));
+          }}
+        />
+      );
+    }
+    return <LiveStreamingModal closeModal={hideStreamingModal} isOpen={isStreamingModal} />;
+  }, [streamingStatus, isStreamingModal]);
 
   if (
     !isLocalUserPresentationOwner &&
     !isLocalUserRecordingOwner &&
-    sharingStatus !== GenericStatus.Active &&
-    recordingStatus !== GenericStatus.Active
+    !isLocalUserLiveStreamingOwner &&
+    !isSomeActive(sharingStatus, recordingStatus, streamingStatus)
   ) {
     return null;
   }
@@ -39,21 +132,28 @@ export const ActionBar = forwardRef<HTMLDivElement, ActionBarProps>(({ mobileSha
   return (
     <div className="actionBarRef" ref={ref}>
       <Space
-        ph={isDesktop ? 'm' : !mobileShare ? (isTablet ? 'm' : 'xs') : undefined}
-        pt={isMobile || isMobileSmall ? 'xs' : isDesktop ? 'm' : undefined}
-        pb={!isDesktop && !isMobileSmall && !mobileShare ? 'xs' : undefined}
+        ph={isDesktop ? 'm' : !mobileShare && (isTablet ? 'm' : 'xs')}
+        pt={isMobile || isMobileSmall ? 'xs' : isDesktop && 'm'}
+        pb={!isDesktop && !isMobileSmall && !mobileShare && 'xs'}
         style={{ display: 'flex' }}
       >
-        {(isLocalUserRecordingOwner || recordingStatus === GenericStatus.Active) && !mobileShare && (
+        {(isLocalUserRecordingOwner || isActive(recordingStatus)) && !mobileShare && (
           <RecordingActionBar
+            onMount={() => setActiveBar('recording')}
             onClick={() => setActiveBar('recording')}
-            compact={activeBar !== 'recording' && isPresentationModeActive}
+            compact={
+              activeBar !== 'recording' && (isPresentationModeActive || isSomeActive(streamingStatus, sharingStatus))
+            }
             statusLabels={{
               active: (
                 <>
-                  <Timer />
-                  <Text> | </Text>
-                  <Text id="recording" />
+                  <Timer startTime={recordingTimestamp ?? undefined} />
+                  {!(isMobileSmall && (isLiveStreamingModeActive || isActive(streamingStatus))) && (
+                    <>
+                      <Text> | </Text>
+                      <Text id="recording" />
+                    </>
+                  )}
                 </>
               ),
               error: intl.formatMessage({ id: 'recordingFailed' }),
@@ -71,39 +171,74 @@ export const ActionBar = forwardRef<HTMLDivElement, ActionBarProps>(({ mobileSha
               },
             }}
             onActionSuccess={() => {
-              if (recordingStatus === GenericStatus.Active) {
+              if (isActive(recordingStatus)) {
                 showSuccessNotification(intl.formatMessage({ id: 'recordingStopped' }));
               }
-              if (recordingStatus === GenericStatus.Error) {
+              if (isActive(recordingStatus)) {
                 showSuccessNotification(intl.formatMessage({ id: 'recordingSuccessfully' }));
               }
             }}
           />
         )}
-        {(isDesktop || mobileShare) && (isPresentationModeActive || sharingStatus === GenericStatus.Active) && (
+        {(isLiveStreamingModeActive || isActive(streamingStatus)) && !mobileShare && (
           <>
-            {(isLocalUserRecordingOwner || recordingStatus === GenericStatus.Active) && !mobileShare && (
-              <Space mh="xxs" />
-            )}
-            <ScreenSharingActionBar
-              onClick={() => setActiveBar('presenting')}
-              compact={activeBar !== 'presenting' && isRecordingModeActive}
+            <LiveStreamingActionBar
+              ml={isActive(recordingStatus) || isRecordingModeActive ? 'xs' : undefined}
+              onMount={() => setActiveBar('streaming')}
+              actions={liveStreamingHandler}
+              streamingServiceLogo={serviceProviderLogo}
+              onClick={() => setActiveBar('streaming')}
+              compact={(isActive(sharingStatus) || isActive(recordingStatus)) && activeBar !== 'streaming'}
               statusLabels={{
-                active: intl.formatMessage({ id: 'screenSharing' }),
-                error: intl.formatMessage({ id: 'screenSharingIssue' }),
-                loading: `${intl.formatMessage({ id: 'screenSharing' })}...`,
+                active: streamingLabel,
+                error: intl.formatMessage({ id: 'streamingFailed' }),
+                loading: `${intl.formatMessage({ id: 'streaming' })}...`,
                 other: '',
               }}
               buttonLabels={{
-                tooltip: intl.formatMessage({ id: 'stopPresenting' }),
-                label: intl.formatMessage({ id: 'stopPresenting' }),
+                active: {
+                  label: intl.formatMessage({ id: !isDesktop ? 'stop' : 'stopStreaming' }),
+                },
+                error: {
+                  label: intl.formatMessage({ id: 'tryAgain' }),
+                },
               }}
-              onActionSuccess={() => {
-                showSuccessNotification(intl.formatMessage({ id: 'screenSharingStopped' }));
-              }}
-              guestLabel={intl.formatMessage({ id: 'isPresenting' }, { participant: owner?.info.name })}
+              guestLabel={streamingLabel}
             />
+            {isStreamingModal && streamingModal}
           </>
+        )}
+        {(isDesktop || mobileShare) && (isPresentationModeActive || isActive(sharingStatus)) && (
+          <ScreenSharingActionBar
+            ml={
+              (isLocalUserRecordingOwner ||
+                isActive(recordingStatus) ||
+                isLiveStreamingModeActive ||
+                isActive(streamingStatus)) &&
+              !mobileShare
+                ? 'xs'
+                : undefined
+            }
+            onMount={() => setActiveBar('presenting')}
+            onClick={() => setActiveBar('presenting')}
+            compact={
+              activeBar !== 'presenting' &&
+              (isRecordingModeActive || isLiveStreamingModeActive || isSomeActive(streamingStatus, recordingStatus))
+            }
+            statusLabels={{
+              active: intl.formatMessage({ id: 'screenSharing' }),
+              error: intl.formatMessage({ id: 'screenSharingIssue' }),
+              loading: `${intl.formatMessage({ id: 'screenSharing' })}...`,
+              other: '',
+            }}
+            buttonLabels={{
+              label: intl.formatMessage({ id: 'stopPresenting' }),
+            }}
+            onActionSuccess={() => {
+              showSuccessNotification(intl.formatMessage({ id: 'screenSharingStopped' }));
+            }}
+            guestLabel={intl.formatMessage({ id: 'isPresenting' }, { participant: owner?.info.name })}
+          />
         )}
       </Space>
     </div>

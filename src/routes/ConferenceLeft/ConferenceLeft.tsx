@@ -1,11 +1,10 @@
+import Rejoin from '@components/Rejoin';
+import ReturnToHome from '@components/ReturnToHome';
+import Text from '@components/Text';
 import { Layout, Space, useTheme } from '@dolbyio/comms-uikit-react';
+import useConferenceCleanup from '@hooks/useConferenceCleanup';
 import cx from 'classnames';
 import React from 'react';
-
-import Rejoin from '../../components/Rejoin';
-import ReturnToHome from '../../components/ReturnToHome';
-import Text from '../../components/Text';
-import useConferenceCleanup from '../../hooks/useConferenceCleanup';
 
 import styles from './ConferenceLeft.module.scss';
 

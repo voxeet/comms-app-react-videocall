@@ -1,8 +1,8 @@
+import Text from '@components/Text';
 import { Space, useSession } from '@dolbyio/comms-uikit-react';
 import React from 'react';
 
 import packageJson from '../../../package.json';
-import Text from '../Text';
 
 import styles from './Version.module.scss';
 

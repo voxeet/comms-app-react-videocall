@@ -1,10 +1,10 @@
+import Text from '@components/Text';
+import { SideDrawerContentTypes } from '@context/SideDrawerContext';
 import { IconButton, useTheme, Space } from '@dolbyio/comms-uikit-react';
+import useConferenceCreate from '@hooks/useConferenceCreate';
+import useDrawer from '@hooks/useDrawer';
+import { CreateStep } from '@src/types/routes';
 import React, { useMemo } from 'react';
-
-import useConferenceCreate from '../../hooks/useConferenceCreate';
-import useDrawer from '../../hooks/useDrawer';
-import { CreateStep } from '../../types/routes.types';
-import Text from '../Text';
 
 import styles from './ConferenceCreateHeader.module.scss';
 
@@ -65,7 +65,7 @@ export const ConferenceCreateHeader = () => {
             testID="SettingsButton"
             backgroundColor="transparent"
             icon="settings"
-            onClick={openDrawer}
+            onClick={() => openDrawer(SideDrawerContentTypes.DEVICE_SETUP)}
             iconColor="black"
           />
         )}

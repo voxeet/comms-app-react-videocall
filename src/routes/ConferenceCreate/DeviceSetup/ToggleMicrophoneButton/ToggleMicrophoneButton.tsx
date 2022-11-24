@@ -13,21 +13,21 @@ export const ToggleMicrophoneButton = ({ size = 'm', permissions = false }: Togg
 
   return (
     <MediaButton
+      defaultBackgroundColor="white"
       activeBackgroundColor="white"
-      inactiveBackgroundColor="white"
       disabledBackgroundColor="white"
-      activeIconColor="primary.500"
-      inactiveIconColor="grey.500"
-      disabledIconColor="grey.300"
-      activeStrokeColor="primary.500"
-      inactiveStrokeColor="grey.500"
-      disabledStrokeColor="grey.300"
-      activeIcon="microphone"
-      inactiveIcon="microphoneOff"
+      defaultIconColor="primary.400"
+      activeIconColor="grey.300"
+      disabledIconColor="grey.100"
+      defaultStrokeColor="primary.400"
+      activeStrokeColor="grey.300"
+      disabledStrokeColor="grey.100"
+      defaultIcon="microphone"
+      activeIcon="microphoneOff"
       disabledIcon="microphoneOff"
-      activeTooltipText={intl.formatMessage({ id: 'mute' })}
-      inactiveTooltipText={intl.formatMessage({ id: 'unmute' })}
-      isActive={isAudio}
+      defaultTooltipText={intl.formatMessage({ id: 'mute' })}
+      activeTooltipText={intl.formatMessage({ id: 'unmute' })}
+      isActive={!isAudio}
       isDisabled={!permissions}
       onClick={toggleAudio}
       size={size}
