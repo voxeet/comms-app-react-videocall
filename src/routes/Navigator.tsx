@@ -1,10 +1,8 @@
 import { useConference } from '@dolbyio/comms-uikit-react';
 import useConferenceCreate from '@hooks/useConferenceCreate';
 import Conference from '@src/routes/Conference';
-import { ConferenceComponents } from '@src/routes/ConferenceComponents/ConferenceComponents';
 import ConferenceCreate from '@src/routes/ConferenceCreate';
 import ConferenceLeft from '@src/routes/ConferenceLeft';
-import Home from '@src/routes/Home';
 import { Routes as RoutesType } from '@src/types/routes';
 import React, { useMemo } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
@@ -27,8 +25,6 @@ const Router = () => {
       </Route>
       <Route path={RoutesType.ConferenceCreate} element={<ConferenceCreate />} />
       <Route path={RoutesType.ConferenceLeft} element={hasLeft} />
-      <Route path={RoutesType.Home} element={<Home />} />
-      <Route path={RoutesType.ConferenceComponents} element={<ConferenceComponents />} />
       <Route path="*" element={redirect} />
     </Routes>
   );

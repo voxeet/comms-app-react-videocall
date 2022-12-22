@@ -37,6 +37,8 @@ The Icon component is responsible for displaying icon files in SVG format.
 | settings        | ![Alt text](./IconComponents/Settings.tsx)       |
 | speaker         | ![Alt text](./IconComponents/Speaker.tsx)        |
 | speaker-off     | ![Alt text](./IconComponents/Speaker-off.tsx)    |
+| tune            | ![Alt text](./IconComponents/Tune.tsx)           |
+| stream          | ![Alt text](./IconComponents/Stream.tsx)         |
 
 ## Examples
 

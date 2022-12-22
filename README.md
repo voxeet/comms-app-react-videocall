@@ -2,11 +2,9 @@
 
 ## Video Call App
 
-The application available in this repository demonstrates the capabilities of the Dolby.io video call solution for browser applications, built using React.
+The application available in this repository demonstrates the capabilities of the Dolby.io video call solution for browser applications, built using React. If you run into problems, the full Dolby.io Communications SDK for JavaScript documentation can be found at <https://docs.dolby.io/communications-apis/docs/js-overview>.
 
-This repository demonstrates how to develop the core Dolby.io features and also provides an understanding of how our service works. If you run into problems, the full Dolby.io Communications SDK for JavaScript documentation can be found at <https://docs.dolby.io/communications-apis/docs/js-overview>.
-
-The application provided allows you to evaluate solutions offered by the Dolby.io Communications APIs. You can download the repository yourself, run the application locally and verify that it meets your requirements. If you are interested in more details about Dolby.io video conference call capabilities, more information can be found here:
+You can download the repository yourself, run the application locally and verify that it meets your requirements. If you are interested in more details about Dolby.io video conference call capabilities, more information can be found here:
 <https://dolby.io/products/video-call/>
 
 The scope covers:
@@ -19,6 +17,7 @@ The scope covers:
 - Screen sharing
 - Recording
 - Background blur (available only on desktop Chrome and Edge)
+- Music mode (available only on desktop Chrome and Edge)
 - Live-streaming through the Dolby.io API after additional setup process [Using Live-streaming features](#using-live-streaming-features)
 
 ## Getting Started
@@ -38,7 +37,12 @@ From this page <https://dashboard.dolby.io/dashboard/applications/summary> you c
 
 ### How to obtain access token
 
-To run the application, you need to generate a special access token and paste it into the source code of the app. Go to the _Dashboard_, and find the _Launch Demos_ button. On the next screen, there is a token field where you can copy the client access token to your clipboard. The generated token is active for 12 hours.
+To run the application, you need to generate an access token and paste it into the source code of the app.
+1. Go to the _Dashboard_, and find the _Launch Demos_ button.
+![dashboard](documentation/assets/Dashboard.png)
+
+2. On the next screen, there is a token field where you can copy the client access token to your clipboard. The generated token is active for 12 hours.
+![token](documentation/assets/apps-dashboard.png)
 
 ## How to run the Video Conferencing app
 
@@ -52,17 +56,13 @@ or simply download using the green button on the top of this page and unzip the 
 
 ### Install dependencies
 
-Open the root directory with the terminal. If you are using [Yarn](https://yarnpkg.com/), install dependencies with the following command:
+**note** : This guide is written with [Yarn](https://yarnpkg.com/) in mind.
+
+Open the root directory with the terminal and install the dependencies with the following command:
 
 ```bash
+# With yarn...
 yarn
-```
-
-and if you are using [NPM](https://www.npmjs.com/), type the following command:
-
-```bash
-npm install
-```
 
 ### Paste the token
 
@@ -86,12 +86,6 @@ After installing the dependencies, execute the following command:
 
 ```bash
 yarn dev
-```
-
-or
-
-```bash
-npm run dev
 ```
 
 to run the application locally.
@@ -119,6 +113,20 @@ BASE_URL=<YOUR BASE URL PATH>
 ```
 
 Additional information about Base URL configuration can be found [here](https://vitejs.dev/config/shared-options.html#base).
+
+### Setting up music mode
+
+1. In the project root folder, add the following variable in `.env` file:
+
+```env
+VITE_MUSIC_MODE=true
+```
+
+2. To start the application run the following command in the **root** directory
+
+```bash
+yarn dev
+```
 
 ### Using live streaming features
 
@@ -156,22 +164,10 @@ Your `APP_KEY` and `APP_SECRET` can be found in your Dolby.io dashboard, under t
 yarn
 ```
 
-or
-
-```bash
-npm install
-```
-
-4. To start both the server and application together, run the following command in the **root** directory:
+1. To start both the server and application together, run the following command in the **root** directory:
 
 ```bash
 yarn run dev-proxy
-```
-
-or
-
-```bash
-npm run dev-proxy
 ```
 
 > Ports and hostnames in both `.env` files can be set freely by the user but they need to be the same.

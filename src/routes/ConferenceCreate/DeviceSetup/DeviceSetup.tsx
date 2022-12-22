@@ -1,51 +1,62 @@
 import Text from '@components/Text';
 import {
+  BlockedAudioStateType,
+  InfoBar,
+  JoinConferenceButton,
+  Overlay,
+  Space,
+  Spinner,
   useAudio,
   useCamera,
   useMicrophone,
-  useVideo,
-  VideoLocalView,
-  Space,
-  InfoBar,
+  useNotifications,
+  useSession,
   useSpeaker,
   useTheme,
-  BlockedAudioStateType,
-  JoinConferenceButton,
-  Overlay,
-  Spinner,
+  useVideo,
+  VideoLocalView,
 } from '@dolbyio/comms-uikit-react';
 import useConferenceCreate from '@hooks/useConferenceCreate';
-import useDrawer from '@hooks/useDrawer';
 import { SideDrawer } from '@src/components/SideDrawer';
 import MobileContent from '@src/routes/ConferenceCreate/DeviceSetup/MobileContent';
 import ToggleMicrophoneButton from '@src/routes/ConferenceCreate/DeviceSetup/ToggleMicrophoneButton';
 import ToggleVideoButton from '@src/routes/ConferenceCreate/DeviceSetup/ToggleVideoButton';
-import { Routes } from '@src/types/routes';
+import { CreateStep, Routes } from '@src/types/routes';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
+
+import setJoinOptions, { JoinParams } from '../../../utils/setJoinOptions';
 
 import styles from './DeviceSetup.module.scss';
 
 export const DeviceSetup = () => {
   const navigate = useNavigate();
-  const { getDefaultLocalCamera, getCameraPermission, localCamera, setLocalCamera } = useCamera();
+  const { getDefaultLocalCamera, getCameraPermission, localCamera, setLocalCamera, videoError, removeError } =
+    useCamera();
   const { getMicrophonePermission, localMicrophone } = useMicrophone();
   const { localSpeakers } = useSpeaker();
   const { isVideo } = useVideo();
-  const { isAudio } = useAudio();
-  const { meetingName, username } = useConferenceCreate();
+  const { isAudio, blockedAudioState, markBlockedAudioActivated } = useAudio();
+  const { meetingName, username, setStep } = useConferenceCreate();
   const { isTablet, isMobile, isMobileSmall } = useTheme();
-  const { blockedAudioState, markBlockedAudioActivated } = useAudio();
-  const { isDrawerOpen } = useDrawer();
 
   const [isAllPermission, setIsAllPermission] = useState<boolean>(false);
   const [isCameraPermission, setIsCameraPermission] = useState<boolean>(false);
   const [isMicrophonePermission, setIsMicrophonePermission] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
   const intl = useIntl();
+  const { openSession, participant, closeSession, isSessionOpened } = useSession();
+  const { showErrorNotification } = useNotifications();
 
   const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+  useEffect(() => {
+    if (videoError) {
+      showErrorNotification(intl.formatMessage({ id: 'videoRetrying' }));
+      removeError();
+    }
+  }, [videoError]);
 
   const checkPermissions = () => {
     (async () => {
@@ -62,8 +73,24 @@ export const DeviceSetup = () => {
     })();
   };
 
+  const sessionSetup = async () => {
+    if (!isSessionOpened()) {
+      return openSession({
+        name: username,
+      });
+    }
+    if (participant?.info.name !== username) {
+      await closeSession();
+      return openSession({
+        name: username,
+      });
+    }
+    return true;
+  };
+
   useEffect(() => {
     checkPermissions();
+    sessionSetup();
   }, []);
 
   useEffect(() => {
@@ -94,29 +121,19 @@ export const DeviceSetup = () => {
       params.set('id', meetingName);
     }
     navigate(`${Routes.Conference}?${params.toString()}`);
+    setStep(CreateStep.meetingName);
   };
 
-  const joinOptions = useMemo(
-    () => ({
-      constraints: {
-        audio: isMicrophonePermission && isAudio,
-        video:
-          isCameraPermission && isVideo
-            ? {
-                width: {
-                  min: '1280',
-                  max: '1920',
-                },
-                height: {
-                  min: '720',
-                  max: '1080',
-                },
-              }
-            : false,
-      },
-    }),
-    [isCameraPermission, isMicrophonePermission, isVideo, isAudio],
-  );
+  const joinParams: JoinParams = {
+    isMicrophonePermission,
+    isCameraPermission,
+    isAudio,
+    isVideo,
+  };
+
+  const joinOptions = useMemo(() => {
+    return setJoinOptions(joinParams);
+  }, [isMicrophonePermission, isCameraPermission, isAudio, isVideo]);
 
   if (isLoading) {
     return (
@@ -159,7 +176,6 @@ export const DeviceSetup = () => {
             <VideoLocalView
               testID="DeviceSetupVideoLocalView"
               username={username}
-              disabled={isDrawerOpen}
               isMicrophonePermission={isMicrophonePermission}
             />
           </Space>
@@ -179,7 +195,6 @@ export const DeviceSetup = () => {
             meetingName={meetingName}
             tooltipText="Join"
             tooltipPosition="bottom"
-            username={username}
             onInitialise={onInitialise}
             onSuccess={onSuccess}
             style={{ width: 400 }}

@@ -1,0 +1,92 @@
+@mixin thumb {
+  pointer-events: auto;
+  height: 20px;
+  width: 20px;
+  appearance: none;
+  background: #fff;
+  border-radius: 12px;
+  border: 4px solid var(--primary);
+  -webkit-appearance: none;
+}
+@mixin thumbHover {
+  outline: rgba(255, 255, 255, 0.2) solid 4px;
+}
+
+@mixin track {
+  height: 6px;
+  pointer-events: none;
+  border-radius: 3px;
+  background: var(--primary);
+}
+
+input[type='range'] {
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -moz-appearance: none;
+  //-webkit-appearance: none;
+  margin: 16px 0 0 0;
+  background: none;
+  cursor: pointer;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+}
+
+//input[type='range']::-webkit-slider-thumb:hover {
+//  @include thumbHover;
+//}
+//
+//input[type='range']::-webkit-slider-thumb {
+//  @include thumb;
+//  border-radius: 24px;
+//  margin-top: -6px;
+//}
+
+//input[type='range']::-webkit-slider-runnable-track {
+//  @include track;
+//  background: var(--primary);
+//}
+
+input[type='range']::-moz-range-thumb:hover {
+  @include thumbHover;
+}
+
+input[type='range']::-moz-range-thumb {
+  @include thumb;
+  margin-top: -10px;
+  border-radius: 24px;
+}
+
+input[type='range']::-moz-range-track {
+  @include track;
+  background: var(--neutral);
+}
+
+input[type='range']::-moz-range-progress {
+  border: 0;
+  margin-top: 0;
+  @include track;
+}
+
+input[type='range']::-ms-track {
+  @include track;
+}
+
+input[type='range']::-ms-thumb {
+  @include thumb;
+}
+
+input[type='range']::-ms-fill-lower {
+  @include track;
+}
+
+input[type='range']::-ms-fill-upper {
+  @include track;
+  background: var(--neutral);
+}
+
+input[type='range']::-ms-tooltip {
+  display: none;
+}

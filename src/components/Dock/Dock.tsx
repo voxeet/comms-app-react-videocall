@@ -2,6 +2,7 @@ import AskForShareTooltip from '@components/AskForShareTooltip/AskForShareToolti
 import BackgroundBlurToggle from '@components/BackgroundBlurToggle';
 import Copy from '@components/Copy';
 import LeaveConference from '@components/LeaveConference';
+import MusicModeModal from '@components/MusicModeModal';
 import RecordingModal from '@components/RecordingModal';
 import ScreenSharingTakeOverModal from '@components/ScreenSharingTakeOverModal/ScreenSharingTakeOverModal';
 import ShareHandOverTooltip from '@components/ShareHandOverTooltip/ShareHandOverTooltip';
@@ -21,12 +22,14 @@ import {
   useNotifications,
   useParticipants,
   useScreenSharing,
+  MusicModeButton,
+  useAudioProcessing,
 } from '@dolbyio/comms-uikit-react';
 import useDrawer from '@hooks/useDrawer';
 import { useLiveStreaming } from '@hooks/useLiveStreaming';
 import LiveStreamingModal from '@src/components/LiveStreamingModal';
 import { SideDrawerContentTypes } from '@src/context/SideDrawerContext';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useIntl } from 'react-intl';
 
 import styles from './Dock.module.scss';
@@ -35,10 +38,18 @@ export const Dock = () => {
   const { openDrawer } = useDrawer();
   const { conference } = useConference();
   const { participants } = useParticipants();
-  const { showSuccessNotification, showErrorNotification } = useNotifications();
+  const { showSuccessNotification, showErrorNotification, showNeutralNotification } = useNotifications();
   const intl = useIntl();
   const { setSharingErrors } = useScreenSharing();
   const { streamHandler } = useLiveStreaming();
+  const { isMusicModeSupported, isError: musicModeError, removeAudioCaptureError } = useAudioProcessing();
+
+  useEffect(() => {
+    if (musicModeError) {
+      showErrorNotification('Problem with music mode');
+      removeAudioCaptureError?.();
+    }
+  }, [musicModeError]);
 
   if (conference === null) {
     return null;
@@ -71,6 +82,10 @@ export const Dock = () => {
   );
   const renderRecordModal = (isVisible: boolean, accept: () => void, cancel: () => void) => (
     <RecordingModal isOpen={isVisible} closeModal={cancel} accept={accept} />
+  );
+
+  const renderMusicModeModal = (isVisible: boolean, accept: () => void, cancel: () => void) => (
+    <MusicModeModal isOpen={isVisible} closeModal={cancel} accept={accept} />
   );
 
   const renderDataInput = (isVisible: boolean, close: () => void) => (
@@ -132,6 +147,30 @@ export const Dock = () => {
       </Space>
       <Space className={styles.row} style={{ width: 330, justifyContent: 'flex-end' }}>
         <BackgroundBlurToggle />
+        {import.meta.env.VITE_MUSIC_MODE === 'true' && isMusicModeSupported && (
+          <MusicModeButton
+            activeIconColor="white"
+            defaultTooltipText={intl.formatMessage({ id: 'musicMode' })}
+            renderStartConfirmation={renderMusicModeModal}
+            renderStopConfirmation={renderMusicModeModal}
+            onStartMusicModeAction={() =>
+              showNeutralNotification(intl.formatMessage({ id: 'musicModeActivated' }), {
+                icon: 'tune',
+                width: 210,
+                close: false,
+              })
+            }
+            onRemoteStartMusicModeAction={(participantName: string) =>
+              showNeutralNotification(
+                intl.formatMessage({ id: 'someoneActivatedMusicMode' }, { participant: participantName }),
+                {
+                  icon: 'tune',
+                  close: false,
+                },
+              )
+            }
+          />
+        )}
         {import.meta.env.VITE_STREAMING === 'true' && (
           <LiveStreamButton
             stopStreaming={async () => {

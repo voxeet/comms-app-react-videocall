@@ -41,9 +41,9 @@ export const BackgroundBlurToggle = () => {
             }}
           >
             <Space mr="xs">
-              <Icon name="backgroundBlur" />
+              <Icon name="backgroundBlur" testID="BackgroundBlurIcon" />
             </Space>
-            <Switch isActive={isBlurred} />
+            <Switch isActive={isBlurred} testID="BackgroundBlurSwitch" />
           </Space>
         </Tooltip>
         <Space mh="xs" className={styles.separator} style={{ backgroundColor: getColor('grey.700') }} />

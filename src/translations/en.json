@@ -125,5 +125,18 @@
   "streamingStopped": "Streaming stopped",
   "streamingStarted": "Streaming has started",
   "isStreaming": "{participant} is streaming",
-  "defaultSpeaker": "default speaker"
+  "defaultSpeaker": "default speaker",
+  "activate": "activate",
+  "turnOff": "turn off",
+  "musicMode": "Music mode",
+  "turnOffMusicMode": "Turn off Music mode",
+  "musicModeStartModalDesc": "Activate music mode to improve your sound quality when singing or playing.",
+  "musicModeStopModalDesc": "Confirm that you want to disable Music Mode.",
+  "musicModeActivated": "Music Mode activated",
+  "echoOptionHeadline": "Echo cancellation",
+  "echoOptionDsc": "Turn on echo canceling mode to avoid echoing when speaking.",
+  "videoForwardingOptionHeadline": "Participant tiles number",
+  "videoForwardingOptionDsc": "Adjust the video forwarding value. You will be receiving video streams accordingly.",
+  "someoneActivatedMusicMode": "{participant} activated Music Mode",
+  "videoRetrying": "We are retrying to get  video information, please wait..."
 }

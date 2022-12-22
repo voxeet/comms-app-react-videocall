@@ -11,11 +11,7 @@ export const useLiveStreaming = () => {
   const { conference } = useConference();
 
   const streamHandler = async (variant: 'start' | 'stop', rtmp?: string) => {
-    const {
-      VITE_PROXY_PROTOCOL,
-      VITE_API_PROXY,
-      VITE_PROXY_PORT,
-    } = import.meta.env;
+    const { VITE_PROXY_PROTOCOL, VITE_API_PROXY, VITE_PROXY_PORT } = import.meta.env;
     const params = {
       method: 'POST',
       data: {

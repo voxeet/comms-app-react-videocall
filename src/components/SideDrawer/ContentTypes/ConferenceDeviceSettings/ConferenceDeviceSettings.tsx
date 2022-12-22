@@ -1,4 +1,6 @@
 import ToggleSettingsDrawerButton from '@components//ToggleSettingsDrawerButton';
+import RangeInput from '@components/RangeInput';
+import Switch from '@components/Switch';
 import {
   IconButton,
   Space,
@@ -12,9 +14,12 @@ import {
   useCamera,
   useSession,
   useBlur,
+  useAudioProcessing,
+  useConference,
 } from '@dolbyio/comms-uikit-react';
 import useDrawer from '@hooks/useDrawer';
-import { DrawerMainContent, DrawerFooter, DrawerHeader } from '@src/components/SideDrawer';
+import { DrawerMainContent, DrawerFooter, DrawerHeader, DrawerOption } from '@src/components/SideDrawer';
+import { debounce } from '@src/utils/misc';
 import React, { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 
@@ -37,6 +42,8 @@ const Settings = () => {
   const { isDrawerOpen } = useDrawer();
   const { isDesktop, isMobile, isMobileSmall } = useTheme();
   const { participant } = useSession();
+  const { toggleEchoCancellation, echoCancellation } = useAudioProcessing();
+  const { setVideoForwarding, maxVideoForwarding } = useConference();
 
   const { getMicrophonePermission } = useMicrophone();
   const { getCameraPermission } = useCamera();
@@ -59,6 +66,10 @@ const Settings = () => {
     checkCameraPermission();
   }, []);
 
+  const setParticipantsVideoTiles = (value: number) => {
+    setVideoForwarding(value);
+  };
+
   return (
     <Space fw fh className={styles.contentContainer} testID="ConferenceDeviceSettings">
       <DrawerHeader
@@ -72,57 +83,85 @@ const Settings = () => {
         closeButtonStrokeColor="transparent"
         mobileCloseButtonColor="white"
       />
+      <Space mb="m" className={styles.videoContainer}>
+        <VideoLocalView
+          cameraReverseButton={!isDesktop}
+          testID="ConferenceSettingsDrawerLocalView"
+          username={participant?.info.name}
+          indicator={false}
+          audio={false}
+          disabled={!isDrawerOpen}
+          isMicrophonePermission={isMicrophonePermission}
+          className={styles.videoRwd}
+        />
+      </Space>
       <DrawerMainContent scrollbarColor="grey.600">
-        <Space ph="m">
-          <Space mb="m" className={styles.videoContainer}>
-            <VideoLocalView
-              cameraReverseButton={!isDesktop}
-              testID="ConferenceSettingsDrawerLocalView"
-              username={participant?.info.name}
-              indicator={false}
-              audio={false}
-              disabled={!isDrawerOpen}
-              isMicrophonePermission={isMicrophonePermission}
-              className={styles.videoRwd}
-            />
-          </Space>
-          {isDesktop && isCameraPermission && (
-            <Space mb="m">
-              <CameraSelect
-                testID="CameraSelect"
-                label={intl.formatMessage({ id: 'camera' })}
-                placeholder={intl.formatMessage({ id: 'camera' })}
-                {...darkProps}
+        <Space>
+          <DrawerOption
+            testID="EchoOption"
+            icon="echo"
+            headline="echoOptionHeadline"
+            description="echoOptionDsc"
+            headlineActionComponent={<Switch isActive={!!echoCancellation} onClick={toggleEchoCancellation} />}
+          />
+          {isDesktop && (
+            <DrawerOption icon="tiles" headline="videoForwardingOptionHeadline" description="videoForwardingOptionDsc">
+              <RangeInput
+                minValue={1}
+                maxValue={24}
+                callback={debounce<[value: number]>((value) => {
+                  setParticipantsVideoTiles(value);
+                }, 350)}
+                value={maxVideoForwarding}
               />
-            </Space>
+            </DrawerOption>
+          )}
+          {isDesktop && isCameraPermission && (
+            <DrawerOption testID="CameraOption">
+              {(containerProps) => (
+                <CameraSelect
+                  testID="CameraSelect"
+                  label={intl.formatMessage({ id: 'camera' })}
+                  placeholder={intl.formatMessage({ id: 'camera' })}
+                  containerProps={containerProps}
+                  {...darkProps}
+                />
+              )}
+            </DrawerOption>
           )}
           {isMicrophonePermission && (
-            <Space mb="m">
-              <MicrophoneSelect
-                testID="MicrophoneSelect"
-                label={intl.formatMessage({ id: 'microphone' })}
-                placeholder={intl.formatMessage({ id: 'microphone' })}
+            <DrawerOption testID="MicrophoneOption">
+              {(containerProps) => (
+                <MicrophoneSelect
+                  testID="MicrophoneSelect"
+                  label={intl.formatMessage({ id: 'microphone' })}
+                  placeholder={intl.formatMessage({ id: 'microphone' })}
+                  containerProps={containerProps}
+                  {...darkProps}
+                />
+              )}
+            </DrawerOption>
+          )}
+          <DrawerOption testID="SpeakerOption">
+            {(containerProps) => (
+              <SpeakersSelect
+                testID="SpeakersSelect"
+                label={intl.formatMessage({ id: 'speakers' })}
+                placeholder={intl.formatMessage({ id: 'speakers' })}
+                defaultDeviceLabel={intl.formatMessage({ id: 'defaultSpeaker' })}
+                containerProps={containerProps}
                 {...darkProps}
               />
-            </Space>
-          )}
-          <Space mb="m">
-            <SpeakersSelect
-              testID="SpeakersSelect"
-              label={intl.formatMessage({ id: 'speakers' })}
-              placeholder={intl.formatMessage({ id: 'speakers' })}
-              defaultDeviceLabel={intl.formatMessage({ id: 'defaultSpeaker' })}
-              {...darkProps}
-            />
-          </Space>
-          <Space mb="m">
+            )}
+          </DrawerOption>
+          <DrawerOption testID="ThemeOption">
             <ThemeSelect
               testID="ThemeSelect"
               label={intl.formatMessage({ id: 'theme' })}
               placeholder={intl.formatMessage({ id: 'theme' })}
               {...darkProps}
             />
-          </Space>
+          </DrawerOption>
         </Space>
       </DrawerMainContent>
       {isDesktop && (
