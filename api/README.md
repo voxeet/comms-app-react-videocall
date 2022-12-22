@@ -6,16 +6,12 @@ Use this proxy server sample code to connect your Dolby.io communications API ba
 
 ## Setup
 
+**note** This guide is written with [Yarn](https://yarnpkg.com) in mind.
+
 1. Go to the `/api` directory and run following command to install all necessary dependencies:
 
 ```bash
 yarn
-```
-
-or
-
-```bash
-npm install
 ```
 
 2. In the `/api` directory, create an `.env` file and fill it with the following properties.
@@ -37,13 +33,7 @@ Your `APP_KEY` and `APP_SECRET` can be found in your Dolby.io dashboard, under t
 yarn dev
 ```
 
-or
-
-```bash
-npm dev
-```
-
-1. Observe the traffic on your terminal window. Once the live stream feature is enabled in the app, ensure you can see logs pertaining to `start` and `stop` and HTTP response codes to indicate a successful connection.
+4. Observe the traffic on your terminal window. Once the live stream feature is enabled in the app, ensure you can see logs pertaining to `start` and `stop` and HTTP response codes to indicate a successful connection.
 
 ```bash
 [0] 2:28:03 pm - Found 0 errors. Watching for file changes.

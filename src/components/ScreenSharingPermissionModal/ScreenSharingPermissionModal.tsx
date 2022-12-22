@@ -5,7 +5,7 @@ import { useIntl } from 'react-intl';
 
 type ScreenSharingPermissionModalProps = {
   testID?: string;
-  isOpen: boolean;
+  isOpen?: boolean;
   closeModal: () => void;
 };
 

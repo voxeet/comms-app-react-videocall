@@ -5,7 +5,7 @@ The Notification component is responsible for displaying informative text from m
 ## Props
 
 | Name                 | Type                  | Default | Description                                               |
-|----------------------|-----------------------|---------|-----------------------------------------------------------|
+| -------------------- | --------------------- | ------- | --------------------------------------------------------- |
 | `duration` ?         | number                | 4000    | Time of persist in the DOM in ms.                         |
 | `notificationiId` ?  | number                | -       | Notification identifier.                                  |
 | `message`            | string                | -       | Notification identifier.                                  |

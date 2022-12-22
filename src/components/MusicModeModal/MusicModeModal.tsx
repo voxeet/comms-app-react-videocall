@@ -1,32 +1,30 @@
 import ModalContentBase, { type Buttons } from '@components/ModalContentBase/ModalContentBase';
-import { Modal, useRecording } from '@dolbyio/comms-uikit-react';
+import { Modal, useAudioProcessing } from '@dolbyio/comms-uikit-react';
 import React from 'react';
 import { useIntl } from 'react-intl';
 
-type RecordingModalProps = {
+type MusicModeModalProps = {
   testID?: string;
   isOpen: boolean;
   closeModal: () => void;
   accept: () => void;
 };
 
-const RecordingModal = ({ testID = 'RecordingModal', isOpen, closeModal, accept }: RecordingModalProps) => {
+const MusicModeModal = ({ testID = 'MusicModeModal', isOpen, closeModal, accept }: MusicModeModalProps) => {
   const intl = useIntl();
-  const { isRecordingModeActive } = useRecording();
+  const { isMusicMode } = useAudioProcessing();
 
   const buttonsConfig: Buttons = [
     {
       onClick: accept,
       label: intl.formatMessage({
-        id: isRecordingModeActive ? 'stopRecording' : 'startRecording',
+        id: isMusicMode ? 'turnOff' : 'activate',
       }),
-      testID: isRecordingModeActive ? 'StopRecordingButton' : 'StartRecordingButton',
     },
     {
       onClick: closeModal,
       label: intl.formatMessage({ id: 'cancel' }),
       variant: 'secondary',
-      testID: 'CancelButton',
     },
   ];
 
@@ -34,12 +32,16 @@ const RecordingModal = ({ testID = 'RecordingModal', isOpen, closeModal, accept 
     <Modal testID={testID} isVisible={isOpen} close={closeModal} closeButton>
       <ModalContentBase
         buttons={buttonsConfig}
-        headline={intl.formatMessage({ id: isRecordingModeActive ? 'stopRecording' : 'recordModalHeadline' })}
-        description={intl.formatMessage({ id: 'recordModalDesc' })}
-        headerLogo="record"
+        headline={intl.formatMessage({
+          id: isMusicMode ? 'turnOffMusicMode' : 'musicMode',
+        })}
+        description={intl.formatMessage({
+          id: isMusicMode ? 'musicModeStopModalDesc' : 'musicModeStartModalDesc',
+        })}
+        headerLogo="tune"
       />
     </Modal>
   );
 };
 
-export default RecordingModal;
+export default MusicModeModal;

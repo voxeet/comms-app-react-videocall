@@ -9,7 +9,6 @@ import {
   TextProps,
   SpaceValues,
 } from '@dolbyio/comms-uikit-react';
-import useDrawer from '@hooks/useDrawer';
 import ToggleMicrophoneButton from '@src/routes/ConferenceCreate/DeviceSetup/ToggleMicrophoneButton';
 import ToggleVideoButton from '@src/routes/ConferenceCreate/DeviceSetup/ToggleVideoButton';
 import React, { useMemo } from 'react';
@@ -54,7 +53,6 @@ const MobileContent = ({
   joinOptions,
 }: MobileContentProps) => {
   const { isLandscape, isMobile, isMobileSmall, isTablet } = useTheme();
-  const { isDrawerOpen } = useDrawer();
 
   const meetingNameTopMargin = useMemo(() => {
     let value: SpaceValues = 'xxl';
@@ -153,7 +151,6 @@ const MobileContent = ({
             testID="DeviceSetupVideoLocalView"
             username={username}
             cameraReverseButton={isCameraPermission}
-            disabled={isDrawerOpen}
             isMicrophonePermission={isMicrophonePermission}
             className={styles.videoRwd}
           />
@@ -169,7 +166,6 @@ const MobileContent = ({
             testID="DeviceSetupJoinButton"
             meetingName={meetingName}
             tooltipText="Join"
-            username={username}
             onInitialise={onInitialise}
             onSuccess={onSuccess}
             style={{ width: joinButtonWidth, height: 48 }}
