@@ -45,7 +45,7 @@ import { useIntl } from 'react-intl';
 import styles from './Conference.module.scss';
 
 export const Conference = () => {
-  const { conference } = useConference();
+  const { conference, leaveConference } = useConference();
   const { participants } = useParticipants();
   const { meetingName } = useConferenceCreate();
   const { selectCamera, localCamera } = useCamera();
@@ -59,7 +59,6 @@ export const Conference = () => {
   const actionBarRef = useRef<HTMLDivElement>(null);
   const dockRef = useRef<HTMLDivElement>(null);
   const mobileTopRef = useRef<HTMLDivElement>(null);
-
   const {
     status,
     permissionError,
@@ -71,10 +70,8 @@ export const Conference = () => {
   const { status: recordingStatus, ownerId, isLocalUserRecordingOwner } = useRecording();
   const { showWarningNotification, showErrorNotification } = useNotifications();
   const { sdkErrors, removeSdkErrors } = useErrors();
-  const { leaveConference } = useConference();
   const [isBottomDrawerOpen, setIsBottomDrawerOpen] = useState(false);
   const [showBars, setShowBars] = useState(true);
-  // const [rtmp, setRtmp] = useState('');
 
   useEffect(() => {
     if (ErrorCodes.IncorrectSession in sdkErrors) {
@@ -120,13 +117,13 @@ export const Conference = () => {
     (async () => {
       if (localCamera && localCamera.deviceId && isVideo) {
         try {
-          await selectCamera(localCamera.deviceId);
+          await selectCamera(localCamera.deviceId!);
         } catch (error) {
           console.error(error);
         }
       }
     })();
-  }, [localCamera, isVideo]);
+  }, [localCamera]);
 
   useEffect(() => {
     (async () => {
@@ -285,7 +282,7 @@ export const Conference = () => {
             <SideDrawer />
           </Space>
           <AllowAudioModal />
-          <ScreenSharingPermissionModal isOpen={permissionError} closeModal={() => setSharingErrors()} />
+          <ScreenSharingPermissionModal isOpen={!!permissionError} closeModal={() => setSharingErrors()} />
         </Layout>
       </ConferenceComponent>
       {isMobileSmall && !showBars && (

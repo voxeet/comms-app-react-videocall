@@ -12,7 +12,7 @@ type ModalContentBaseProps = {
   buttons?: Buttons;
   headline?: string;
   description?: string;
-  headerLogo?: Extract<IconComponentName, 'present' | 'speaker' | 'record' | 'stream'>;
+  headerLogo?: Extract<IconComponentName, 'present' | 'speaker' | 'record' | 'stream' | 'tune'>;
 };
 
 const ModalContentBase = ({ children, buttons, headline, description, headerLogo }: ModalContentBaseProps) => {

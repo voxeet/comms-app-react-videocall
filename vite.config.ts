@@ -39,6 +39,18 @@ export default defineConfig(({ mode }) => {
             src: 'node_modules/@voxeet/voxeet-web-sdk/dist/vsl_impl.wasm',
             dest: 'assets/wasm',
           },
+          {
+            src: 'node_modules/@voxeet/voxeet-web-sdk/dist/dvwc_impl.wasm',
+            dest: 'assets/wasm',
+          },
+          {
+            src: 'node_modules/@voxeet/voxeet-web-sdk/dist/voxeet-dvwc-worker.js',
+            dest: 'assets/wasm',
+          },
+          {
+            src: 'node_modules/@voxeet/voxeet-web-sdk/dist/voxeet-worklet.js',
+            dest: 'assets/wasm',
+          },
         ],
       }),
     ],
