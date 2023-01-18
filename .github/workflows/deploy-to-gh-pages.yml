@@ -34,6 +34,7 @@ jobs:
         run: |
           touch .env.production
           echo "BASE_URL=/comms-app-react-videocall/" > .env.production
+          echo "VITE_MUSIC_MODE=true" >> .env.production
           yarn
           yarn build
           cp dist/index.html dist/404.html
