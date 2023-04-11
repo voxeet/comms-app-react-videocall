@@ -36,15 +36,15 @@ To get started building this app you will need a Dolby.io account and access tok
 
 To setup your Dolby.io account, go to [Dolby.io dashboard](https://dashboard.dolby.io) and complete the form. After confirming your email address, you will be logged in.
 
-
 #### How to obtain access token
 
 You will need to generate a client access token to run this app. Follow the steps to obtain a token.
 
-1. Go to the _Dashboard_, and find the _Launch Demos_ button.
+1. Go to the Dashboard, and find the _Applications_ menu item..
    ![dashboard](documentation/assets/Dashboard.png)
 
-2. On the next screen, there is a token field where you can copy the client access token to your clipboard. The generated token is active for 12 hours.
+2. On the next screen, there is a token field where you can copy the client access token to your clipboard. The generated token is active for the indicated amount of time.
+
    ![token](documentation/assets/apps-dashboard.png)
 
 ## How to run the Video Conferencing app
