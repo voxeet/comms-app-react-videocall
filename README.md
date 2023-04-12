@@ -32,6 +32,15 @@ To get started building this app you will need a Dolby.io account and access tok
 - Yarn v 1.22.19
 - Node v16
 
+### Supported Browsers
+
+The Video Call App supports the following browsers
+
+- Chrome 100+
+- Safari 15+
+- Firefox 100+
+- Edge 100+
+
 #### How to get a Dolby.io account
 
 To setup your Dolby.io account, go to [Dolby.io dashboard](https://dashboard.dolby.io) and complete the form. After confirming your email address, you will be logged in.
@@ -103,21 +112,6 @@ This command generates distribution packages in the `/dist` directory.
 
 Please see the [additional configuration options](additional-configurations.md) guide to learn more about additional settings such as music mode. 
 
-## Known issues and limitations
-
-- Speaker selection is available only on Chrome
-- The copy conference link works only for root directories by default
-- In some cases entering a conference may take more than three seconds
-- On Safari 15.4 and below, the local user can hear echo
-
-## Requirements and supported platforms
-
-Video Conference Call App supports four main browsers
-
-- Chrome 100+
-- Safari 15+
-- Firefox 100+
-- Edge 100+
 
 ## More resources 
 
