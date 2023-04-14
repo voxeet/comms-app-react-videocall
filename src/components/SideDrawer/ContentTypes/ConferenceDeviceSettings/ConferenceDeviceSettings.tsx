@@ -64,6 +64,8 @@ const Settings = () => {
   useEffect(() => {
     checkMicrophonePermission();
     checkCameraPermission();
+    // This is an on component mount hook
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const setParticipantsVideoTiles = (value: number) => {
@@ -104,7 +106,7 @@ const Settings = () => {
             description="echoOptionDsc"
             headlineActionComponent={<Switch isActive={!!echoCancellation} onClick={toggleEchoCancellation} />}
           />
-          {isDesktop && (
+          {isDesktop && import.meta.env.VITE_VIDEO_FORWARDING_OPTION === 'true' && (
             <DrawerOption icon="tiles" headline="videoForwardingOptionHeadline" description="videoForwardingOptionDsc">
               <RangeInput
                 minValue={1}

@@ -4,6 +4,7 @@ import {
   type LiveStreamProvider,
 } from '@dolbyio/comms-uikit-react';
 import fetch from '@src/utils/fetch';
+import getProxyUrl from '@src/utils/getProxyUrl';
 import { determineProvider } from '@src/utils/misc';
 
 export const useLiveStreaming = () => {
@@ -11,7 +12,6 @@ export const useLiveStreaming = () => {
   const { conference } = useConference();
 
   const streamHandler = async (variant: 'start' | 'stop', rtmp?: string) => {
-    const { VITE_PROXY_PROTOCOL, VITE_API_PROXY, VITE_PROXY_PORT } = import.meta.env;
     const params = {
       method: 'POST',
       data: {
@@ -20,9 +20,7 @@ export const useLiveStreaming = () => {
       },
     } as const;
 
-    const url = `${VITE_PROXY_PROTOCOL}://${VITE_API_PROXY}${
-      VITE_PROXY_PORT ? `:${VITE_PROXY_PORT}` : ''
-    }/streaming/${variant}`;
+    const url = `${getProxyUrl()}/streaming/${variant}`;
     const request = async () => {
       await fetch(url, params);
     };
@@ -32,5 +30,14 @@ export const useLiveStreaming = () => {
     }
     return stopLiveStreaming(request);
   };
-  return { ...base, streamHandler };
+  /*
+   * While refreshing the page with the live stream active we need to inform backend about this by sending beacon,
+   * since regular http requests with app/json content type won't work
+   */
+  const sendStreamingBeacon = () => {
+    if (base.isLiveStreamingModeActive) {
+      navigator.sendBeacon(`${getProxyUrl()}/streaming/stop/?conferenceId=${conference?.id}`);
+    }
+  };
+  return { ...base, streamHandler, sendStreamingBeacon };
 };

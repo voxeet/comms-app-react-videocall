@@ -91,7 +91,7 @@ export const ActionBar = forwardRef<HTMLDivElement, ActionBarProps>(({ mobileSha
           <>
             <Text> | </Text>
             <Text
-              id={isLocalUserLiveStreamingOwner ? 'streaming' : 'isStreaming'}
+              labelKey={isLocalUserLiveStreamingOwner ? 'streaming' : 'isStreaming'}
               values={{ participant: liveStreamingOwner?.info.name }}
             />
           </>
@@ -151,7 +151,7 @@ export const ActionBar = forwardRef<HTMLDivElement, ActionBarProps>(({ mobileSha
                   {!(isMobileSmall && (isLiveStreamingModeActive || isActive(streamingStatus))) && (
                     <>
                       <Text> | </Text>
-                      <Text id="recording" />
+                      <Text labelKey="recording" />
                     </>
                   )}
                 </>

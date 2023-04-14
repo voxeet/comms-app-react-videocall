@@ -24,6 +24,7 @@ import {
   useScreenSharing,
   MusicModeButton,
   useAudioProcessing,
+  useErrors,
 } from '@dolbyio/comms-uikit-react';
 import useDrawer from '@hooks/useDrawer';
 import { useLiveStreaming } from '@hooks/useLiveStreaming';
@@ -43,6 +44,7 @@ export const Dock = () => {
   const { setSharingErrors } = useScreenSharing();
   const { streamHandler } = useLiveStreaming();
   const { isMusicModeSupported, isError: musicModeError, removeAudioCaptureError } = useAudioProcessing();
+  const { recordingErrors } = useErrors();
 
   useEffect(() => {
     if (musicModeError) {
@@ -138,7 +140,13 @@ export const Dock = () => {
           defaultTooltipText={intl.formatMessage({ id: 'record' })}
           activeTooltipText={intl.formatMessage({ id: 'stopRecording' })}
           onStopRecordingAction={() => showSuccessNotification(intl.formatMessage({ id: 'recordingStopped' }))}
-          onError={() => showErrorNotification(intl.formatMessage({ id: 'recordingError' }))}
+          onError={() =>
+            showErrorNotification(
+              intl.formatMessage({
+                id: recordingErrors['Recording already in progress'] ? 'recordingAlreadyInProgress' : 'recordingError',
+              }),
+            )
+          }
           renderStartConfirmation={renderRecordModal}
           renderStopConfirmation={renderRecordModal}
         />
@@ -146,7 +154,7 @@ export const Dock = () => {
         <LeaveConference />
       </Space>
       <Space className={styles.row} style={{ width: 330, justifyContent: 'flex-end' }}>
-        <BackgroundBlurToggle />
+        {import.meta.env.VITE_BLUR_OPTION === 'true' && <BackgroundBlurToggle />}
         {import.meta.env.VITE_MUSIC_MODE === 'true' && isMusicModeSupported && (
           <MusicModeButton
             activeIconColor="white"

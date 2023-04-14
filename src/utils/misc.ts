@@ -11,10 +11,12 @@ export const determineProvider = (rtmpURL: string) => {
   }
 };
 
-export function debounce<T extends any[]>(fn: (...args: T) => void, wait: number) {
+export function debounce<T extends unknown[]>(fn: (...args: T) => void, wait: number) {
   let timer: ReturnType<typeof setTimeout>;
-  return function (...args: T) {
+  function debounceFunc(...args: T) {
     if (timer) clearTimeout(timer);
     timer = setTimeout(() => fn(...args), wait);
-  };
+  }
+
+  return debounceFunc;
 }

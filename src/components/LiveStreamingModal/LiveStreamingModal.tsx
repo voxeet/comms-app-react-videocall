@@ -63,7 +63,7 @@ const LiveStreamingModal = ({
             <Twitch />
             <YouTubeStudio />
             <FacebookLive />
-            <Text id="andOthers" color="grey.200" type="captionSmall" />
+            <Text labelKey="andOthers" color="grey.200" type="captionSmall" />
           </Space>
           <Space mb="m">
             <Input

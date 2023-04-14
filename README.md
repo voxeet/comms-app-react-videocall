@@ -6,7 +6,7 @@
 
 ## Overview
 
-This project demonstrates what a simple video meeting experience is like, built using React.  
+This project demonstrates what a simple video meeting experience is like, built using React.
 
 | Intended use | Features                                                         | Tech stack            |
 | ------------ | ---------------------------------------------------------------- | --------------------- |
@@ -26,20 +26,11 @@ The following steps will quickly get you started testing the Dolby.io Communicat
 
 ### Pre-requisites
 
-To get started building this app you will need a Dolby.io account and access token. You will also need the following -  
+To get started building this app you will need a Dolby.io account and access token. You will also need the following -
 
 - NPM v8.11
 - Yarn v 1.22.19
 - Node v16
-
-### Supported Browsers
-
-The Video Call App supports the following browsers
-
-- Chrome 100+
-- Safari 15+
-- Firefox 100+
-- Edge 100+
 
 #### How to get a Dolby.io account
 
@@ -49,11 +40,10 @@ To setup your Dolby.io account, go to [Dolby.io dashboard](https://dashboard.dol
 
 You will need to generate a client access token to run this app. Follow the steps to obtain a token.
 
-1. Go to the Dashboard, and find the _Applications_ menu item..
+1. Go to the _Dashboard_, and find the _Launch Demos_ button.
    ![dashboard](documentation/assets/Dashboard.png)
 
-2. On the next screen, there is a token field where you can copy the client access token to your clipboard. The generated token is active for the indicated amount of time.
-
+2. On the next screen, there is a token field where you can copy the client access token to your clipboard. The generated token is active for 12 hours.
    ![token](documentation/assets/apps-dashboard.png)
 
 ## How to run the Video Conferencing app
@@ -110,9 +100,24 @@ This command generates distribution packages in the `/dist` directory.
 
 ### Additional configuration
 
-Please see the [additional configuration options](additional-configurations.md) guide to learn more about additional settings such as music mode. 
+Please see the [additional configuration options](additional-configurations.md) guide to learn more about additional settings such as music mode.
 
+## Known issues and limitations
 
-## More resources 
+- Speaker selection is available only on Chrome
+- The copy conference link works only for root directories by default
+- In some cases entering a conference may take more than three seconds
+- On Safari 15.4 and below, the local user can hear echo
 
-Looking for more sample apps and projects? Head to the [Project Gallery]()
+## Requirements and supported platforms
+
+Video Conference Call App supports four main browsers
+
+- Chrome 100+
+- Safari 15+
+- Firefox 100+
+- Edge 100+
+
+## More resources
+
+Looking for more sample apps and projects? Head to the [Project Gallery](https://docs.dolby.io/communications-apis/page/gallery).
