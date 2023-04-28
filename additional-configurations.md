@@ -1,4 +1,4 @@
-# Additional Configuration Options for the Vide Call App
+# Additional Configuration Options for the Video Call App
 
 ## Base URL configuration
 
