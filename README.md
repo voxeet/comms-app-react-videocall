@@ -6,7 +6,7 @@
 
 ## Overview
 
-This project demonstrates what a simple video meeting experience is like, built using React.  
+This project demonstrates what a simple video meeting experience is like, built using React.
 
 | Intended use | Features                                                         | Tech stack            |
 | ------------ | ---------------------------------------------------------------- | --------------------- |
@@ -26,7 +26,7 @@ The following steps will quickly get you started testing the Dolby.io Communicat
 
 ### Pre-requisites
 
-To get started building this app you will need a Dolby.io account and access token. You will also need the following -  
+To get started building this app you will need a Dolby.io account and access token. You will also need the following -
 
 - NPM v8.11
 - Yarn v 1.22.19
@@ -49,7 +49,7 @@ To setup your Dolby.io account, go to [Dolby.io dashboard](https://dashboard.dol
 
 You will need to generate a client access token to run this app. Follow the steps to obtain a token.
 
-1. Go to the Dashboard, and find the _Applications_ menu item..
+1. Go to the Dashboard, and find the _Applications_ [menu item](https://dashboard.dolby.io/dashboard/applications/).
    ![dashboard](documentation/assets/Dashboard.png)
 
 2. On the next screen, there is a token field where you can copy the client access token to your clipboard. The generated token is active for the indicated amount of time.
@@ -72,7 +72,7 @@ yarn
 
 ### Paste the token
 
-Open file [src/App.tsx](./src/App.tsx), find line 23 and replace `{YOUR_TOKEN}` with your access token string, prepared previously in [this step](#how-to-obtain-access-token). It should look like this:
+Open file [src/App.tsx](./src/App.tsx), find the `CommsProvider` component and replace `{YOUR_TOKEN}` with your access token string, prepared previously in [this step](#how-to-obtain-access-token). It should look like this:
 
 ```javascript
   return (
@@ -110,9 +110,8 @@ This command generates distribution packages in the `/dist` directory.
 
 ### Additional configuration
 
-Please see the [additional configuration options](additional-configurations.md) guide to learn more about additional settings such as music mode. 
+Please see the [additional configuration options](additional-configurations.md) guide to learn more about additional settings such as music mode.
 
+## More resources
 
-## More resources 
-
-Looking for more sample apps and projects? Head to the [Project Gallery]()
+Looking for more sample apps and projects? Head to the [Project Gallery](https://docs.dolby.io/communications-apis/page/gallery).

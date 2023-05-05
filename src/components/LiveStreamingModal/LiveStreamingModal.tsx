@@ -1,8 +1,8 @@
 import { Twitch, YouTubeStudio, FacebookLive } from '@assets/index';
 import ModalContentBase from '@components/ModalContentBase/ModalContentBase';
 import Text from '@components/Text';
-import { Input, Modal, Space } from '@dolbyio/comms-uikit-react';
-import { useLiveStreaming } from '@hooks/useLiveStreaming';
+import { Input, Modal, Space, useLiveStreaming } from '@dolbyio/comms-uikit-react';
+import getProxyUrl from '@src/utils/getProxyUrl';
 import React, { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 
@@ -24,7 +24,7 @@ const LiveStreamingModal = ({
   const intl = useIntl();
   const [serverUrl, setServerUrl] = useState('');
   const [streamKey, setStreamKey] = useState('');
-  const { streamHandler } = useLiveStreaming();
+  const { startLiveStreamingByProxy } = useLiveStreaming();
 
   /*
    * Since usage of this modal can be separated from UIKit , we need to be sure to clear inputs while closing modal (ex using as render props within always present dock)
@@ -38,7 +38,7 @@ const LiveStreamingModal = ({
   }, [isOpen]);
 
   const startStreamingHandler = async () => {
-    streamHandler('start', `${serverUrl.at(-1) === '/' ? serverUrl : `${serverUrl}/`}${streamKey}`);
+    startLiveStreamingByProxy(getProxyUrl(), `${serverUrl.at(-1) === '/' ? serverUrl : `${serverUrl}/`}${streamKey}`);
     closeModal();
     onActionSuccess?.();
   };
@@ -63,7 +63,7 @@ const LiveStreamingModal = ({
             <Twitch />
             <YouTubeStudio />
             <FacebookLive />
-            <Text id="andOthers" color="grey.200" type="captionSmall" />
+            <Text labelKey="andOthers" color="grey.200" type="captionSmall" />
           </Space>
           <Space mb="m">
             <Input

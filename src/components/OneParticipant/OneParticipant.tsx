@@ -50,14 +50,14 @@ export const OneParticipant = () => {
       >
         <Space>
           <Space mb="xs">
-            <Text testID="Alone" type={isMobile ? 'h6' : 'H2'} id="alone" />
+            <Text testID="Alone" type={isMobile ? 'h6' : 'H2'} labelKey="alone" />
           </Space>
           <Space mb="s">
-            <Text testID="Invite" id="invite" type={isMobile ? 'bodySmall' : 'bodyDefault'} />
+            <Text testID="Invite" labelKey="invite" type={isMobile ? 'bodySmall' : 'bodyDefault'} />
           </Space>
           {!isMobileSmall && (
             <>
-              <Text testID="CallTitleId" type="H4" id="callTitleId" style={{ display: 'block' }} />
+              <Text testID="CallTitleId" type="H4" labelKey="callTitleId" style={{ display: 'block' }} />
               <Space mb="s">
                 <Space mb="s">
                   <Space>
@@ -73,7 +73,7 @@ export const OneParticipant = () => {
                 backgroundColor="grey.600"
                 successText={intl.formatMessage({ id: 'success' })}
               >
-                <Text type="captionSmallDemiBold" id={isDesktop ? 'copyLinkShort' : 'shareLinkShort'} />
+                <Text type="captionSmallDemiBold" labelKey={isDesktop ? 'copyLinkShort' : 'shareLinkShort'} />
               </CopyConferenceLinkButton>
             </>
           )}

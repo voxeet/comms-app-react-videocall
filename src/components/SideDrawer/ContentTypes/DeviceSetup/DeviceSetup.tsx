@@ -68,6 +68,8 @@ const DeviceSetup = () => {
               disabled={!isDrawerOpen}
               isMicrophonePermission={isMicrophonePermission}
               className={styles.videoRwd}
+              indicator={false}
+              audio={false}
             />
           </Space>
           {isDesktop && isCameraPermission && (

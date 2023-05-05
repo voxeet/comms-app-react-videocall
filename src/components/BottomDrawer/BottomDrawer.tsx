@@ -10,12 +10,14 @@ import {
   LiveStreamButton,
   RecordButton,
   Space,
+  useErrors,
   useNotifications,
   useParticipants,
+  useLiveStreaming,
   useTheme,
 } from '@dolbyio/comms-uikit-react';
 import useDrawer from '@hooks/useDrawer';
-import { useLiveStreaming } from '@hooks/useLiveStreaming';
+import getProxyUrl from '@src/utils/getProxyUrl';
 import cx from 'classnames';
 import React, { useCallback } from 'react';
 import { useIntl } from 'react-intl';
@@ -30,10 +32,11 @@ type BottomDrawerProps = {
 
 const BottomDrawer = ({ close }: BottomDrawerProps) => {
   const { isTablet, isMobileSmall, isMobile } = useTheme();
-  const { streamHandler } = useLiveStreaming();
+  const { stopLiveStreamingByProxy } = useLiveStreaming();
   const { participants } = useParticipants();
   const { openDrawer } = useDrawer();
   const { showSuccessNotification, showErrorNotification } = useNotifications();
+  const { recordingErrors } = useErrors();
   const intl = useIntl();
 
   const openParticipantsList = () => {
@@ -76,7 +79,7 @@ const BottomDrawer = ({ close }: BottomDrawerProps) => {
             icon="invite"
             backgroundColor="grey.600"
           />
-          <Text type="captionSmallDemiBold" id="inviteLabel" />
+          <Text type="captionSmallDemiBold" labelKey="inviteLabel" />
         </Space>
         {areThreeButtonsInRow && <Space className={styles.spacer} />}
         {isMobileSmall && (
@@ -90,7 +93,7 @@ const BottomDrawer = ({ close }: BottomDrawerProps) => {
               backgroundColor="grey.600"
               badgeColor="grey.300"
             />
-            <Text type="captionSmallDemiBold" id="participantsLabel" />
+            <Text type="captionSmallDemiBold" labelKey="participantsLabel" />
           </Space>
         )}
         <Space className={styles.buttonContainer}>
@@ -101,8 +104,17 @@ const BottomDrawer = ({ close }: BottomDrawerProps) => {
             onStartRecordingAction={recordingSuccessAction}
             renderStartConfirmation={renderRecordModal}
             renderStopConfirmation={renderRecordModal}
+            onError={() =>
+              showErrorNotification(
+                intl.formatMessage({
+                  id: recordingErrors['Recording already in progress']
+                    ? 'recordingAlreadyInProgress'
+                    : 'recordingError',
+                }),
+              )
+            }
           />
-          <Text type="captionSmallDemiBold" id="recordingLabel" />
+          <Text type="captionSmallDemiBold" labelKey="recordingLabel" />
         </Space>
         {areThreeButtonsInRow && <Space className={styles.spacer} />}
         {isLiveStreamingAvailable && (
@@ -113,19 +125,19 @@ const BottomDrawer = ({ close }: BottomDrawerProps) => {
               renderDataInput={renderDataInput}
               renderStopConfirmation={renderStopStreamingModal}
               stopStreaming={async () => {
-                await streamHandler('stop');
+                await stopLiveStreamingByProxy(getProxyUrl());
                 close();
               }}
               onStopLiveStreamingAction={() =>
                 showSuccessNotification(intl.formatMessage({ id: 'liveStreamingEnded' }))
               }
             />
-            <Text type="captionSmallDemiBold" id="goLive" />
+            <Text type="captionSmallDemiBold" labelKey="goLive" />
           </Space>
         )}
         <Space className={styles.buttonContainer}>
           <ToggleSettingsDrawerButton backgroundColor="grey.600" onOpenAction={close} />
-          <Text type="captionSmallDemiBold" id="settings" />
+          <Text type="captionSmallDemiBold" labelKey="settings" />
         </Space>
       </Space>
     </Space>

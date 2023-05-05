@@ -17,7 +17,7 @@ export const ConferenceLeft = () => {
     <Layout testID="ConferenceLeftRoute">
       <Space fw className={styles.wrapper}>
         <Space className={cx(styles.textContainer, isSmartphone && styles.smartphone, isLandscape && styles.landscape)}>
-          <Text type={isSmartphone ? 'H1' : 'H0'} align="center" id="conferenceLeft" />
+          <Text type={isSmartphone ? 'H1' : 'H0'} align="center" labelKey="conferenceLeft" />
         </Space>
         <ReturnToHome />
         <Rejoin />

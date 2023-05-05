@@ -72,7 +72,7 @@ export const ConferenceCreateInput = ({
   const [value, setValue] = useState(type === 'meeting' ? meetingName : username);
   const [searchParams] = useSearchParams();
   const intl = useIntl();
-  const { isMobile, isMobileSmall, isDesktop, isTablet } = useTheme();
+  const { isMobile, isMobileSmall, isTablet } = useTheme();
 
   const settings = useMemo(() => typeValues[type], [type]);
 
@@ -139,7 +139,7 @@ export const ConferenceCreateInput = ({
     }
 
     return padding;
-  }, [isMobileSmall, isMobile, isDesktop, isTablet]);
+  }, [isSmartphone, isTablet]);
 
   return (
     <Space fh fw className={styles.wrapper}>
@@ -176,7 +176,7 @@ export const ConferenceCreateInput = ({
             onClick={next}
             style={{ width: '100%', height: settings.buttonHeight }}
           >
-            <Text testID={settings.submitButtonLabelTestId} type="button" id={settings.submitButtonLabel} />
+            <Text testID={settings.submitButtonLabelTestId} type="button" labelKey={settings.submitButtonLabel} />
           </Button>
         </Space>
       </Space>
