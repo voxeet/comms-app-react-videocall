@@ -5,7 +5,7 @@ The LeaveConferenceButton component is responsible for leaving an active confere
 ## Props
 
 | Name               | Type                          | Default | Description                                                     |
-|--------------------|-------------------------------|---------|-----------------------------------------------------------------|
+| ------------------ | ----------------------------- | ------- | --------------------------------------------------------------- |
 | `tooltipText`      | string                        | -       | The text to display in the Tooltip component.                   |
 | `tooltipPosition`? | TooltipProps['position']      | top     | The position of the Tooltip component.                          |
 | `onSuccess`?       | () => void                    | -       | A function to execute when leave action successfully returns.   |

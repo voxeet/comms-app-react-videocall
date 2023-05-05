@@ -6,7 +6,7 @@ by clicking either overlay or close button.
 ## Props
 
 | Name                  | Type           | Default    | Description                                               |
-|-----------------------|----------------|------------|-----------------------------------------------------------|
+| --------------------- | -------------- | ---------- | --------------------------------------------------------- |
 | `isVisible`           | boolean        | \_         | Determines if modal is displayed.                         |
 | `close`               | () => void     | -          | Callback prop to close modal.                             |
 | `backdropColor` ?     | ColorKey       | `black`    | Overlay color.                                            |

@@ -1,13 +1,13 @@
 {
   "name": "comms-app-react-videocall",
-  "version": "1.8.0",
+  "version": "1.9.0",
+  "private": true,
   "scripts": {
     "dev": "cross-env ENV=web && vite",
     "dev-proxy": "concurrently --kill-others \"cd api && yarn dev\" \"yarn dev\"",
     "dev-proxy-host": "concurrently --kill-others \"cd api && yarn dev\" \"yarn dev --host --https\"",
     "build": "cross-env ENV=web && vite build",
     "preview": "cross-env ENV=web && vite preview",
-    "lint": "eslint \"src/**/*.{js,ts,tsx}\"",
     "license-checker": "license-checker --json --out third-party-licenses.json --relativeLicensePath"
   },
   "license": "MIT",
@@ -16,9 +16,9 @@
     "url": "https://github.com/dolbyio-samples/comms-app-react-videocall"
   },
   "dependencies": {
-    "@dolbyio/comms-uikit-react": "0.8.0",
+    "@dolbyio/comms-uikit-react": "1.0.0-rc.0",
     "@emotion/react": "^11.9.0",
-    "@voxeet/voxeet-web-sdk": "3.8.0",
+    "@voxeet/voxeet-web-sdk": "^3.9.0",
     "axios": "^0.26.1",
     "classnames": "^2.3.1",
     "color": "4.2.3",
@@ -26,6 +26,7 @@
     "react-dom": "^18.0.0",
     "react-intl": "^5.24.8",
     "react-router-dom": "6",
+    "vite": "^4.3.3",
     "vite-plugin-static-copy": "^0.9.0",
     "vite-plugin-svgr-component": "^1.0.0"
   },
@@ -38,7 +39,6 @@
     "concurrently": "^7.6.0",
     "cross-env": "^7.0.3",
     "license-checker": "^25.0.1",
-    "typescript-plugin-css-modules": "^3.4.0",
-    "vite": "^2.7.2"
+    "typescript-plugin-css-modules": "^3.4.0"
   }
 }

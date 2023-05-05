@@ -1,4 +1,5 @@
 /* eslint-disable no-nested-ternary */
+// TODO add error handling that isn't console.log
 
 import ActionBar from '@components/ActionBar';
 import AllowAudioModal from '@components/AllowAudioModal';
@@ -23,7 +24,6 @@ import {
   useAudio,
   useCamera,
   useConference,
-  useErrors,
   useMicrophone,
   useParticipants,
   useRecording,
@@ -31,15 +31,17 @@ import {
   useSpeaker,
   useTheme,
   useVideo,
-  useNotifications,
-  ErrorCodes,
+  useLiveStreaming,
 } from '@dolbyio/comms-uikit-react';
 import useConferenceCreate from '@hooks/useConferenceCreate';
+import { usePageRefresh } from '@hooks/usePageRefresh';
 import { SideDrawer } from '@src/components/SideDrawer';
 import Backdrop from '@src/components/SideDrawer/Backdrop';
 import { SideDrawerProvider } from '@src/context/SideDrawerContext';
+import useSDKErrorHandler from '@src/hooks/useSDKErrorsHandler';
+import getProxyUrl from '@src/utils/getProxyUrl';
 import cx from 'classnames';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 
 import styles from './Conference.module.scss';
@@ -66,26 +68,31 @@ export const Conference = () => {
     isLocalUserPresentationOwner,
     isPendingTakeoverRequest,
     isPresentationModeActive,
+    stopScreenShare,
   } = useScreenSharing();
-  const { status: recordingStatus, ownerId, isLocalUserRecordingOwner } = useRecording();
-  const { showWarningNotification, showErrorNotification } = useNotifications();
-  const { sdkErrors, removeSdkErrors } = useErrors();
+  const { status: recordingStatus, ownerId, isLocalUserRecordingOwner, stopRecording } = useRecording();
   const [isBottomDrawerOpen, setIsBottomDrawerOpen] = useState(false);
   const [showBars, setShowBars] = useState(true);
+  const { isLiveStreamingModeActive, sendStreamingBeacon } = useLiveStreaming();
 
-  useEffect(() => {
-    if (ErrorCodes.IncorrectSession in sdkErrors) {
-      removeSdkErrors(ErrorCodes.IncorrectSession);
-      setTimeout(() => {
-        showErrorNotification(intl.formatMessage({ id: 'sessionExpired' }));
-        leaveConference();
-      }, 100);
+  const refreshCleanup = (e: BeforeUnloadEvent) => {
+    e.preventDefault();
+    sendStreamingBeacon(getProxyUrl());
+  };
+
+  usePageRefresh(refreshCleanup, [isLiveStreamingModeActive]);
+
+  const sessionAndTokenErrorHandler = useCallback(async () => {
+    if (isLocalUserRecordingOwner) {
+      await stopRecording();
     }
-    if (ErrorCodes.PeerConnectionDisconnectedError in sdkErrors) {
-      showWarningNotification(intl.formatMessage({ id: 'connectionError' }));
-      removeSdkErrors(ErrorCodes.PeerConnectionDisconnectedError);
+    if (isLocalUserPresentationOwner) {
+      stopScreenShare();
     }
-  }, [sdkErrors]);
+    leaveConference();
+  }, [isLocalUserRecordingOwner, isLocalUserPresentationOwner, leaveConference, stopRecording, stopScreenShare]);
+
+  useSDKErrorHandler(sessionAndTokenErrorHandler, sessionAndTokenErrorHandler);
 
   useEffect(() => {
     if (showBars && isMobileSmall && participants.length > 1) {
@@ -96,7 +103,7 @@ export const Conference = () => {
     if (participants.length < 2) {
       setShowBars(true);
     }
-  }, [showBars, participants.length]);
+  }, [showBars, participants.length, isMobileSmall]);
 
   const openBottomDrawer = () => {
     setIsBottomDrawerOpen(true);
@@ -117,13 +124,13 @@ export const Conference = () => {
     (async () => {
       if (localCamera && localCamera.deviceId && isVideo) {
         try {
-          await selectCamera(localCamera.deviceId!);
+          await selectCamera(localCamera.deviceId);
         } catch (error) {
-          console.error(error);
+          // console.error(error);
         }
       }
     })();
-  }, [localCamera]);
+  }, [isVideo, localCamera, selectCamera]);
 
   useEffect(() => {
     (async () => {
@@ -131,11 +138,11 @@ export const Conference = () => {
         try {
           await selectMicrophone(localMicrophone.deviceId);
         } catch (error) {
-          console.error(error);
+          // console.error(error);
         }
       }
     })();
-  }, [localMicrophone, isAudio]);
+  }, [localMicrophone, isAudio, selectMicrophone]);
 
   useEffect(() => {
     (async () => {
@@ -143,11 +150,11 @@ export const Conference = () => {
         try {
           await selectSpeaker(localSpeakers.deviceId);
         } catch (error) {
-          console.error(error);
+          // console.error(error);
         }
       }
     })();
-  }, [localSpeakers]);
+  }, [localSpeakers, selectSpeaker]);
 
   const isSmartphone = isMobile || isMobileSmall;
 

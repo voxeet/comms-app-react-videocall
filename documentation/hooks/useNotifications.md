@@ -1,11 +1,15 @@
 # useNotifications
 
-The useNotifications hook expose notifications as well as handlers to remove display notification.
+The useNotifications hook expose notifications as well as handlers to remove / display notifications.
+
+```javascript
+import { useNotifications } from '@dolbyio/comms-uikit-react';
+```
 
 ## Members
 
 | Name                            | Type                                                                             | Description                                               |
-|---------------------------------|----------------------------------------------------------------------------------|-----------------------------------------------------------|
+| ------------------------------- | -------------------------------------------------------------------------------- | --------------------------------------------------------- |
 | `showNotification`              | (Omit<Notification, `id`>) => void                                               | Display notification in notification center.              |
 | `showSuccessNotification`       | (message : string , instanceConfig?: NotificationBase[`instanceConfig`]) => void | Display success type notification in notification center. |
 | `showWarningNotification`       | (message : string , instanceConfig?: NotificationBase[`instanceConfig`]) => void | Display warning type notification in notification center. |
@@ -26,16 +30,18 @@ const { showNotification } = useNotifications();
 
 showNotification({
   message: `Session closed`,
-  variant: NotificationVariants.Warning,
+  variant: 'warning',
 });
 
-showSuccessNotification('This is a success notificaiotn');
+showSuccessNotification('This is a success notification');
 ```
+
+> Values for `variant` include `"success"`, `"warning"`,`"error"`,`"info"` or `"neutral"`
 
 ### RemoveNotification
 
 ```javascript
-const { removeNotification } = useSession();
+const { removeNotification } = useNotification();
 
 const onClick = () => {
   removeNotification(notification.id);

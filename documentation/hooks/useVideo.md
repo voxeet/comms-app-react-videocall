@@ -2,12 +2,16 @@
 
 The useVideo hook gathers functions responsible for managing state of video transmission.
 
+```javascript
+import { useVideo } from '@dolbyio/comms-uikit-react';
+```
+
 ## Members
 
-| Name                    | Type                    | Description                                 |
-| ----------------------- | ----------------------- | ------------------------------------------- |
-| `isVideo`               | boolean                 | Indicates video state of local user.        |
-| `toggleVideo`           | () => void             | Toggles video of local user.                |
+| Name          | Type       | Description                          |
+| ------------- | ---------- | ------------------------------------ |
+| `isVideo`     | boolean    | Indicates video state of local user. |
+| `toggleVideo` | () => void | Toggles video of local user.         |
 
 ## Examples
 
@@ -24,7 +28,8 @@ const { toggleVideo } = useVideo();
 ### Use current state of video
 
 ```javascript
-const {isVideo} = useVideo()
+import { useVideo, IconButton } from '@dolbyio/comms-uikit-react';
+const { isVideo } = useVideo();
 
-<IconButton icon={isVideo ? "camera" : "cameraOff" }/>
+<IconButton icon={isVideo ? 'camera' : 'cameraOff'} />;
 ```

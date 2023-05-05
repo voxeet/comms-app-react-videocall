@@ -14,7 +14,7 @@ export const PhoneLandscapeCurtain = ({ backgroundColor }: AndroidRotationCurtai
 
   return isPhoneDevice ? (
     <Space className={styles.rotationCurtain} style={{ backgroundColor: getColor(backgroundColor, 'background') }}>
-      <Text className={styles.description} type="H1" id="pleaseRotateYourPhone" />
+      <Text className={styles.description} type="H1" labelKey="pleaseRotateYourPhone" />
     </Space>
   ) : null;
 };

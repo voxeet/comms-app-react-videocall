@@ -1,0 +1,50 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+# Allow one concurrent deployment
+concurrency:
+  group: deploy-to-gh-pages
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+    permissions:
+      contents: read
+      pages: write # to deploy to Pages
+      id-token: write # to verify the deployment originates from an appropriate source
+
+    # Deploy to the github-pages environment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+
+      - name: Install and Build 🔧
+        run: |
+          yarn
+          yarn build
+          cp .env.gh-pages .env.production 
+          cp dist/index.html dist/404.html
+
+      - name: Setup GitHub Pages 🛠
+        uses: actions/configure-pages@v2
+
+      - name: Upload artifact ⬆️
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: dist
+
+      - name: Deploy to GitHub Pages 🚀
+        id: deployment
+        uses: actions/deploy-pages@v1

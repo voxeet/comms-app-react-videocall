@@ -17,6 +17,11 @@ The Icon component is responsible for displaying icon files in SVG format.
 
 | Name            | Icon                                             |
 | --------------- | ------------------------------------------------ |
+| add             | ![Alt text](./IconComponents/Add.tsx)            |
+| chevron down    | ![Alt text](./IconComponents/ChevronDown.tsx)    |
+| chevron up      | ![Alt text](./IconComponents/ChevronUp.tsx)      |
+| circle          | ![Alt text](./IconComponents/Circle.tsx)         |
+| exit            | ![Alt text](./IconComponents/Exit.tsx)           |
 | camera          | ![Alt text](./IconComponents/Camera.tsx)         |
 | camera-off      | ![Alt text](./IconComponents/CameraOff.tsx)      |
 | camera-reverse  | ![Alt text](./IconComponents/CameraReverse.tsx)  |

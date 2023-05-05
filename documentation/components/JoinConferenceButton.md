@@ -10,13 +10,14 @@ sessionService.openSession(participantInfo: ParticipantInfo)
 ## Props
 
 | Name               | Type                           | Default | Description                                                                            |
-|--------------------|--------------------------------|---------|----------------------------------------------------------------------------------------|
+| ------------------ | ------------------------------ | ------- | -------------------------------------------------------------------------------------- |
 | `joinOptions`      | JoinOptions                    | -       | An object representing the desired configuration of the conference.                    |
 | `meetingName`      | string                         | -       | The name of the meeting. This will be automatically assigned to the conference object. |
 | `tooltipText`      | string                         | -       | The text to display in the Tooltip component.                                          |
 | `tooltipPosition`? | TooltipProps['position']       | top     | The position of the Tooltip component.                                                 |
 | `onInitialise`?    | () => void                     | -       | A function to execute when join action is initiated (but not completed).               |
 | `onSuccess`?       | (conferenceId: string) => void | -       | A function to execute when join action successfully returns.                           |
+| `onError`?         | () => void                     | -       | A function to execute when join action throws an error.                                |
 | `testID` ?         | string                         | -       | The unique E2E test handler.                                                           |
 
 ## Examples

@@ -28,6 +28,7 @@ const ModalContentBase = ({ children, buttons, headline, description, headerLogo
         isSmartphone && styles.smartphone,
         isLandscape && styles.landscape,
         isMobileSmall && styles.mobileSmall,
+        !buttons && !children && styles.extraBottomPadding,
       )}
     >
       <Space className={styles.mainSection}>

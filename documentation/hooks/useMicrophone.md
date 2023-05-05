@@ -2,14 +2,20 @@
 
 The useMicrophone hook gathers functions responsible for managing microphones.
 
+```javascript
+import { useMicrophone } from '@dolbyio/comms-uikit-react';
+```
+
 ## Members
 
-| Name                        | Type                                   | Description                                     |
-| --------------------------- | -------------------------------------- | ----------------------------------------------- |
-| `getMicrophones`            | () => Promise<Mic[]>                   | Gets a list of the available microphones.       |
-| `selectMicrophone`          | (Mic) => void                         | Selects a microphone.                           |
-| `getDefaultLocalMicrophone` | () => Promise<MediaDeviceInfo\|null> | Gets data of default microphone.                |
-| `getMicrophonePermission`   | () => Promise<boolean>                | Check status of browser microphone permissions. |
+| Name                        | Type                                                                                                       | Description                                                                                          |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `microphones`               | [MediaDeviceInfo](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo)[]                      | Holds the list of the available microphones. `getMicrophones` should be invoked to set this variable |
+| `getMicrophones`            | () => void                                                                                                 | Gets a list of the available microphones and saves it to `microphones` variable                      |
+| `selectMicrophone`          | (string) => void                                                                                           | Selects a microphone.                                                                                |
+| `getDefaultLocalMicrophone` | () => Promise<[MediaDeviceInfo](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo) \| null> | Gets data of default microphone.                                                                     |
+| `getMicrophonePermission`   | () => Promise\<boolean\>                                                                                   | Checks status of browser microphone permissions.                                                     |
+| `getSelectedMicrophone`     | () => [MediaDeviceInfo](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo) \| undefined     | Gets currently selected microphone in the conference.                                                |
 
 ## Examples
 
@@ -18,22 +24,18 @@ The useMicrophone hook gathers functions responsible for managing microphones.
 ### Select source microphone
 
 ```javascript
-const { getMicrophones, selectMicrophone } = useMicrophone();
-const microphones = getMicrophones();
-...
-return (
-    microphones.map((m) => (
-    <div onClick={() => selectMicrophone(m)}>...</div>
-    ))
-)
-```
+const MicrophonesList = () => {
+  const { microphones, getMicrophones, selectMicrophone } = useMicrophone();
+  useEffect(() => {
+    getMicrophones();
+  }, [getMicrophones]);
 
-### Enable / disable microphone
-
-```javascript
-const { toggleAudio } = useMicrophone();
-...
-<button onClick={toggleMicrophone}>...</button>
+  return microphones.map((m) => (
+    <div key={m.label} onClick={() => selectMicrophone(m)}>
+      {m.label}
+    </div>
+  ));
+};
 ```
 
 ### Check microphone permission

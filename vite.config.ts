@@ -1,5 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { resolve } from 'path';
+import fs from 'fs';
+import { resolve, join } from 'path';
 
 import react from '@vitejs/plugin-react';
 import { defineConfig, loadEnv } from 'vite';
@@ -8,6 +9,14 @@ import { svgrComponent } from 'vite-plugin-svgr-component';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
+  const wasmDir = require.resolve('@voxeet/voxeet-web-sdk/package.json').replace('package.json', 'dist');
+  const wasmPaths = fs.readdirSync(wasmDir);
+
+  const targets = wasmPaths.map((wasmPath) => ({
+    src: join(wasmDir, wasmPath),
+    dest: `assets/wasm`,
+  }));
+
   const env = loadEnv(mode, process.cwd(), '');
   return {
     define: {
@@ -30,28 +39,7 @@ export default defineConfig(({ mode }) => {
       }),
       svgrComponent(),
       viteStaticCopy({
-        targets: [
-          {
-            src: 'node_modules/@voxeet/voxeet-web-sdk/dist/vsl_impl.pkgwvsl',
-            dest: 'assets/wasm',
-          },
-          {
-            src: 'node_modules/@voxeet/voxeet-web-sdk/dist/vsl_impl.wasm',
-            dest: 'assets/wasm',
-          },
-          {
-            src: 'node_modules/@voxeet/voxeet-web-sdk/dist/dvwc_impl.wasm',
-            dest: 'assets/wasm',
-          },
-          {
-            src: 'node_modules/@voxeet/voxeet-web-sdk/dist/voxeet-dvwc-worker.js',
-            dest: 'assets/wasm',
-          },
-          {
-            src: 'node_modules/@voxeet/voxeet-web-sdk/dist/voxeet-worklet.js',
-            dest: 'assets/wasm',
-          },
-        ],
+        targets,
       }),
     ],
     esbuild: {

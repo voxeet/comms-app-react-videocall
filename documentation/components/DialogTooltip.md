@@ -5,7 +5,7 @@ The DialogTooltip component is a wrapper for displaying relative tooltip with co
 ### Props
 
 | Name                 | Type                    | Default         | Description                                                   |
-|----------------------|-------------------------|-----------------|---------------------------------------------------------------|
+| -------------------- | ----------------------- | --------------- | ------------------------------------------------------------- |
 | `isVisible` ?        | boolean                 | -               | Flag for rendering component.                                 |
 | `children` ?         | ReactNode               | -               | The React nodes to be rendered as children - tooltip content. |
 | `position` ?         | `top` / `bottom`        | `top`           | Position for tooltip , under parent or above parent           |
