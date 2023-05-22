@@ -5,7 +5,7 @@ The Input component is responsible for interactive controls for forms in order t
 ## Props
 
 | Name                   | Type                                 | Default | Description                                                                                                                                            |
-|------------------------|--------------------------------------|---------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ---------------------- | ------------------------------------ | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `value`                | string                               | -       | The value of the input element that is required for a controlled component.                                                                            |
 | `label` ?              | string                               | -       | The text displayed above the input element.                                                                                                            |
 | `borderColor` ?        | ColorKey                             | -       | The color of the border.                                                                                                                               |

@@ -13,9 +13,10 @@ import {
   useNotifications,
   useRecording,
   useScreenSharing,
+  useLiveStreaming,
   useTheme,
 } from '@dolbyio/comms-uikit-react';
-import { useLiveStreaming } from '@hooks/useLiveStreaming';
+import getProxyUrl from '@src/utils/getProxyUrl';
 import React, { forwardRef, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 
@@ -56,7 +57,7 @@ export const ActionBar = forwardRef<HTMLDivElement, ActionBarProps>(({ mobileSha
     status: streamingStatus,
     timestamp,
     isLiveStreamingModeActive,
-    streamHandler,
+    stopLiveStreamingByProxy,
     isLocalUserLiveStreamingOwner,
   } = useLiveStreaming();
   const [isStreamingModal, setStreamingModal] = useState(false);
@@ -91,14 +92,22 @@ export const ActionBar = forwardRef<HTMLDivElement, ActionBarProps>(({ mobileSha
           <>
             <Text> | </Text>
             <Text
-              id={isLocalUserLiveStreamingOwner ? 'streaming' : 'isStreaming'}
+              labelKey={isLocalUserLiveStreamingOwner ? 'streaming' : 'isStreaming'}
               values={{ participant: liveStreamingOwner?.info.name }}
             />
           </>
         )}
       </>
     );
-  }, [streamingStatus, isLocalUserLiveStreamingOwner, timestamp, recordingStatus, isRecordingModeActive]);
+  }, [
+    streamingStatus,
+    timestamp,
+    isMobileSmall,
+    isRecordingModeActive,
+    recordingStatus,
+    isLocalUserLiveStreamingOwner,
+    liveStreamingOwner?.info.name,
+  ]);
 
   const streamingModal = useMemo(() => {
     if (!isStreamingModal) {
@@ -111,14 +120,14 @@ export const ActionBar = forwardRef<HTMLDivElement, ActionBarProps>(({ mobileSha
           closeModal={hideStreamingModal}
           accept={async () => {
             hideStreamingModal();
-            await streamHandler('stop');
+            await stopLiveStreamingByProxy(getProxyUrl());
             showSuccessNotification(intl.formatMessage({ id: 'liveStreamingEnded' }));
           }}
         />
       );
     }
     return <LiveStreamingModal closeModal={hideStreamingModal} isOpen={isStreamingModal} />;
-  }, [streamingStatus, isStreamingModal]);
+  }, [isStreamingModal, streamingStatus, stopLiveStreamingByProxy, showSuccessNotification, intl]);
 
   if (
     !isLocalUserPresentationOwner &&
@@ -151,7 +160,7 @@ export const ActionBar = forwardRef<HTMLDivElement, ActionBarProps>(({ mobileSha
                   {!(isMobileSmall && (isLiveStreamingModeActive || isActive(streamingStatus))) && (
                     <>
                       <Text> | </Text>
-                      <Text id="recording" />
+                      <Text labelKey="recording" />
                     </>
                   )}
                 </>

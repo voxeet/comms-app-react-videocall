@@ -23,7 +23,7 @@ export const ReturnToHome = () => {
   return (
     <Space mt="l">
       <Button onClick={homeScreen} testID="ReturnToHomeButton" variant="primary" className={styles.button}>
-        <Text type="button" id="returnToHome" />
+        <Text type="button" labelKey="returnToHome" />
       </Button>
     </Space>
   );

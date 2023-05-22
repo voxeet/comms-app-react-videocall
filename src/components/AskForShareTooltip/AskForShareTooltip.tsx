@@ -17,7 +17,7 @@ const AskForShareTooltip = ({ cancel, accept }: AskForShareTooltipProps) => {
   return (
     <>
       <Space className={styles.textSection} mb="s">
-        <Text id="startSharingConfirmation" />
+        <Text labelKey="startSharingConfirmation" />
       </Space>
       <Space className={styles.buttonSection}>
         <Button

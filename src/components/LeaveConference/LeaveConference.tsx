@@ -4,9 +4,10 @@ import {
   LeaveConferenceButton,
   useAudioProcessing,
   useMessage,
+  useLiveStreaming,
 } from '@dolbyio/comms-uikit-react';
-import { useLiveStreaming } from '@hooks/useLiveStreaming';
 import { Routes } from '@src/types/routes';
+import getProxyUrl from '@src/utils/getProxyUrl';
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
@@ -16,7 +17,7 @@ const LeaveConference = () => {
   const navigate = useNavigate();
   const { setAudioCaptureMode, isMusicMode } = useAudioProcessing();
   const { sendMessage } = useMessage();
-  const { isLocalUserLiveStreamingOwner, isLiveStreamingModeActive, streamHandler } = useLiveStreaming();
+  const { isLocalUserLiveStreamingOwner, isLiveStreamingModeActive, stopLiveStreamingByProxy } = useLiveStreaming();
 
   const onSuccess = () => {
     navigate(`${Routes.ConferenceLeft}${window.location.search}`, { replace: true });
@@ -34,7 +35,7 @@ const LeaveConference = () => {
       sendMessage({ text: AudioProcessingMessages.MUSIC_MODE_STOPPED });
     }
     if (isLocalUserLiveStreamingOwner && isLiveStreamingModeActive) {
-      return streamHandler('stop');
+      return stopLiveStreamingByProxy(getProxyUrl());
     }
     return true;
   };

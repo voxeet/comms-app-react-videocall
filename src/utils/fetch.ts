@@ -7,7 +7,7 @@ const defaultOptions = {
 const axiosApiInstance = axios.create(defaultOptions);
 
 axiosApiInstance.interceptors.response.use(
-  (response) => response.data,
+  (response) => response,
   (error) => Promise.reject(error.response),
 );
 

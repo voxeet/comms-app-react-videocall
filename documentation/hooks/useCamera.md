@@ -2,15 +2,22 @@
 
 The useCamera hook gathers functions responsible for managing cameras.
 
+```javascript
+import { useCamera } from '@dolbyio/comms-uikit-react';
+```
+
 ## Members
 
-| Name                    | Type                             | Description                                 |
-|-------------------------|----------------------------------| ------------------------------------------- |
-| `getCameras`            | () => Promise<MediaDeviceInfo[]> | Gets the list of the available cameras.     |
-| `selectCamera`          | (string) => Promise<string>      | Selects a camera.                           |
-| `getDefaultLocalCamera` | () => Promise<MediaDeviceInfo\|null> | Gets data of default camera.                |
-| `getCameraPermission`   | () => Promise<boolean>           | Check status of browser camera permissions. |
-| `swapCamera`            | ()=> Promise<void>               |Change current camera between front and rear cameras. Useful on mobile browsers. |
+| Name                    | Type                                 | Description                                                                                  |
+| ----------------------- | ------------------------------------ | -------------------------------------------------------------------------------------------- |
+| `cameras`               | MediaDeviceInfo[]                    | Holds the list of the available cameras. `getCameras` should be invoked to set this variable |
+| `getCameras`            | () => void                           | Gets a list of the available cameras and saves it to `cameras` variable                      |
+| `selectCamera`          | (string) => Promise\<string\>        | Selects a camera.                                                                            |
+| `getDefaultLocalCamera` | () => Promise<MediaDeviceInfo\|null> | Gets data of default camera.                                                                 |
+| `getCameraPermission`   | () => Promise\<boolean\>             | Check status of browser camera permissions.                                                  |
+| `swapCamera`            | ()=> Promise\<void\>                 | Change current camera between front and rear cameras. Useful on mobile browsers.             |
+| `getSelectedCamera`     | () => MediaDeviceInfo \| undefined   | Gets currently selected camera in the conference.                                            |
+
 ## Examples
 
 ### React
@@ -18,14 +25,18 @@ The useCamera hook gathers functions responsible for managing cameras.
 ### Select source camera
 
 ```javascript
-const { getCameras, selectCamera } = useCamera();
-const cameras = getCameras();
-...
-return (
-  cameras.map((c) => (
-    <div onClick={() => selectCamera(c)}>...</div>
-  ))
-)
+const CamerasList = () => {
+  const { cameras, getCameras, selectCamera } = useCamera();
+  useEffect(() => {
+    getCameras();
+  }, [getCameras]);
+
+  return cameras.map((c) => (
+    <div key={c.label} onClick={() => selectCamera(c)}>
+      {c.label}
+    </div>
+  ));
+};
 ```
 
 ### Use default camera as source

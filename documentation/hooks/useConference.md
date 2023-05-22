@@ -2,17 +2,21 @@
 
 The useConference hook gathers functions responsible for managing conferences.
 
+```javascript
+import { useConference } from '@dolbyio/comms-uikit-react';
+```
+
 ## Members
 
-| Name                 | Type                                                                                     | Description                                               |
-|----------------------|------------------------------------------------------------------------------------------|-----------------------------------------------------------|
-| `conference`         | Conference                                                                               | The object of the current conference.                     |
-| `createConference`   | (ConferenceOptions) => Promise<Conference>                                               | Creates a conference.                                     |
-| `fetchConference`    | (id) => Promise<Conference>                                                              | Fetches a conference.                                     |
-| `joinConference`     | (Conference, JoinOptions) => Promise<Conference>                                         | Joins a conference.                                       |
-| `leaveConference`    | () => Promise<void>                                                                      | Leaves a conference.                                      |
-| `maxVideoForwarding` | number                                                                                   | Retrieves maximum video forwarding for current user       |
-| `setVideoForwarding` | (maxVideoForwarding: number, options?: Partial<VideoForwardingOptions>) => Promise<void> | Sets videoForwarding for limiting incomming video streams |
+| Name                 | Type                                                                                                                                                                                                                                                                    | Description                                               |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| `conference`         | [Conference](https://docs.dolby.io/communications-apis/docs/js-client-sdk-model-conference)                                                                                                                                                                             | The object of the current conference.                     |
+| `createConference`   | ([ConferenceOption](https://docs.dolby.io/communications-apis/docs/js-client-sdk-model-conferenceoptions)) => Promise<[Conference](https://docs.dolby.io/communications-apis/docs/js-client-sdk-model-conference)>                                                      | Creates a conference.                                     |
+| `fetchConference`    | (id) => Promise<[Conference](https://docs.dolby.io/communications-apis/docs/js-client-sdk-model-conference)>                                                                                                                                                            | Fetches a conference.                                     |
+| `joinConference`     | ([Conference](https://docs.dolby.io/communications-apis/docs/), [JoinOptions](https://docs.dolby.io/communications-apis/docs/js-client-sdk-model-joinoptions)) => Promise\<[Conference](https://docs.dolby.io/communications-apis/docs/js-client-sdk-model-conference)> | Joins a conference.                                       |
+| `leaveConference`    | () => Promise\<void\>                                                                                                                                                                                                                                                   | Leaves a conference.                                      |
+| `maxVideoForwarding` | number                                                                                                                                                                                                                                                                  | Retrieves maximum video forwarding for current user       |
+| `setVideoForwarding` | (maxVideoForwarding: number, options?: Partial<VideoForwardingOptions>) => Promise\<void\>                                                                                                                                                                              | Sets videoForwarding for limiting incomming video streams |
 
 ## Examples
 
@@ -25,6 +29,8 @@ const { conference } = useConference();
 
 <span>{conference.alias}</span>;
 ```
+
+> Read more on `Conference` model [here](https://docs.dolby.io/communications-apis/docs/js-client-sdk-model-conference).
 
 ### Create and join conference
 
@@ -49,6 +55,8 @@ const joinOptions = {
 await joinConference(newConference, joinOptions);
 ```
 
+> Read more on `JoinOptions` model [here](https://docs.dolby.io/communications-apis/docs/js-client-sdk-model-joinoptions).
+
 ### Leave conference
 
 ```javascript
@@ -62,11 +70,9 @@ const { leaveConference } = useConference();
 ```javascript
 const { setVideoForwarding } = useConference();
 
-<button
-  onClick={() =>
-    setVideoForwarding({ maxVideoForwarding: 2, options: { strategy: VideoForwardingStrategy.LastSpeaker } })
-  }
->
+<button onClick={() => setVideoForwarding({ maxVideoForwarding: 2, options: { strategy: 'lastSpeakerStrategy' } })}>
   ...
 </button>;
 ```
+
+> Read more on `VideoFowardingStrategy` model [here](https://docs.dolby.io/communications-apis/docs/js-client-sdk-model-videoforwardingstrategy).
