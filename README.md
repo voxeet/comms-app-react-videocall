@@ -70,21 +70,9 @@ Open a terminal window in the root directory of your project folder. Install the
 yarn
 ```
 
-### Paste the token
+### Add your token
 
-Open file [src/App.tsx](./src/App.tsx), find the `CommsProvider` component and replace `{YOUR_TOKEN}` with your access token string, prepared previously in [this step](#how-to-obtain-access-token). It should look like this:
-
-```javascript
-  return (
-    <TranslationProvider>
-      <ConferenceCreateProvider>
-        <CommsProvider token="bGciOiJIUzUxMiJ9.eyJOTQxMywic3V...23r2fsdvsdfsfdsvfd">
-          <...>
-        </CommsProvider>
-      </ConferenceCreateProvider>
-    </TranslationProvider>
-  );
-```
+Make a new file `.env`. Copy the contents of `.env.example` into it. replace the value of `VITE_CLIENT_ACCESS_TOKEN` with your access token string, prepared previously in [this step](#how-to-obtain-access-token).
 
 ### Start the app
 
