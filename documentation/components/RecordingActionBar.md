@@ -5,7 +5,7 @@ Component responsible for rendering current recording status.
 ## Props
 
 | Name                        | Type                                             | Default | Description                                               |
-|-----------------------------|--------------------------------------------------|---------|-----------------------------------------------------------|
+| --------------------------- | ------------------------------------------------ | ------- | --------------------------------------------------------- |
 | `onActionSuccess`?          | ColorKey                                         | -       | Callback after resolving stop recording action.           |
 | `statusLabels`              | Record<Status , string>                          | -       | Labels for corresponding recording statuses               |
 | `buttonLabels`              | Record<Status,{tooltip?: string, label: string}> | -       | Labels for action buttons dependent on status             |

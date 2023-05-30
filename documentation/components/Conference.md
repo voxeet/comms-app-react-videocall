@@ -4,7 +4,7 @@ The Conference component is responsible for creating and joining conferences on 
 
 ## Props
 
-| Name       | Type            | Default | Description                                                                 |
+| Name | Type | Default | Description |
 
 | Name            | Type            | Default | Description                                                                 |
 | --------------- | --------------- | ------- | --------------------------------------------------------------------------- |

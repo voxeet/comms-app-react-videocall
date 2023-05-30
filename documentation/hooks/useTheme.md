@@ -2,12 +2,20 @@
 
 The useTheme hook gathers functions responsible for managing themes.
 
+```javascript
+import { useTheme } from '@dolbyio/comms-uikit-react';
+```
+
+> See implementation for default theme [here](/src/theme/defaultTheme.ts)
+
+> Add your own custom theme [here](/src/theme/customThemes.ts)
+
 ## Members
 
 | Name                 | Type                | Description                                                                      |
 | -------------------- | ------------------- | -------------------------------------------------------------------------------- |
 | `theme`              | Theme               | Gets the theme object.                                                           |
-| `themes`             | CustomThemes        | Gets all themes in the project.                                            |
+| `themes`             | CustomThemes        | Gets all themes in the project.                                                  |
 | `activeTheme`        | string              | Gets the currently used theme mode name.                                         |
 | `availableThemes`    | string[]            | Gets array of available theme names.                                             |
 | `setActiveTheme`     | (ThemeMode) => void | Sets a theme mode.                                                               |

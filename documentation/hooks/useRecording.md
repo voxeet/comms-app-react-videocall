@@ -2,12 +2,16 @@
 
 The useRecording hook gathers functions responsible for managing videocall recording.
 
+```javascript
+import { useRecording } from '@dolbyio/comms-uikit-react';
+```
+
 ## Members
 
 | Name                        | Type                         | Description                                             |
 | --------------------------- | ---------------------------- | ------------------------------------------------------- |
-| `startRecording`            | () => Promise<boolean>       | Starts recording.                                       |
-| `stopRecording`             | () => Promise<boolean>       | Stops recording.                                        |
+| `startRecording`            | () => Promise\<boolean\>     | Starts recording.                                       |
+| `stopRecording`             | () => Promise\<boolean\>     | Stops recording.                                        |
 | `ownerId`                   | string / null                | ID of the participant who is recording.                 |
 | `timestamp`                 | number / null                | The number of seconds from the start of recording.      |
 | `isLocalUserRecordingOwner` | boolean                      | Informs if local user is recording owner.               |
@@ -21,20 +25,34 @@ The useRecording hook gathers functions responsible for managing videocall recor
 
 ### React
 
-### Start recording
+### Check if recording is active
 
 ```javascript
-const { startRecording } = useRecording();
+const { isLocalUserRecordingOwner, isPresentationModeActive, status } = useRecording();
 
-await startRecording();
+const isRecordingActive = status === RecordingStatus.Active || (isLocalUserRecordingOwner && isRecordingModeActive);
 ```
 
-### Stop recording
+### Start / Stop recording
 
 ```javascript
-const { stopRecording } = useRecording();
+import { useRecording, RecordingStatus } from '@dolbyio/comms-uikit-react';
+const { startRecording, stopRecording, status: recordingStatus, isLocalUserRecordingOwner } = useRecording();
 
-await stopRecording();
+// Refer to example above
+const isRecordingActive = isLocalUserRecordingOwner || recordingStatus === RecordingStatus.Active;
+
+const RecordingButton = () => {
+  const toggleRecord = () => {
+    if (isRecordingActive) {
+      stopRecording();
+    } else {
+      startRecording();
+    }
+  };
+
+  return <button onClick={toggleRecord}>{isRecordingActive ? 'Stop Recording' : 'Start Recording'}</button>;
+};
 ```
 
 ### Find participant object based on ownerId
@@ -43,7 +61,7 @@ await stopRecording();
 const { ownerId } = useRecording();
 const { participants } = useParticipants();
 
-const participant = participants.find((p) => participant.id === ownerId);
+const participant = participants.find((participant) => participant.id === ownerId);
 ```
 
 ### Check timestamp of start of recording
@@ -52,12 +70,4 @@ const participant = participants.find((p) => participant.id === ownerId);
 const { timestamp } = useRecording();
 
 console.log(timestamp);
-```
-
-### Define if recording mode is active based on status or isLocalUserRecordingOwner and isPresentationModeActive
-
-```javascript
-const { isLocalUserRecordingOwner, isPresentationModeActive, status } = useRecording();
-
-const isRecordingActive = status === RecordingStatus.Active || (isLocalUserRecordingOwner && isRecordingModeActive);
 ```

@@ -38,14 +38,14 @@ export const DrawerOption = ({
         <Space className={styles.left}>
           {icon && <Icon color={getColor(iconColor || 'grey.200')} name={icon} />}
           <Space ml="xs">
-            <Text type="paragraphSmall" color="grey.200" id={headline} />
+            <Text type="paragraphSmall" color="grey.200" labelKey={headline} />
           </Space>
         </Space>
         {headlineActionComponent}
       </Space>
       {description && (
         <Space fw pt="xs">
-          <Text type="caption" color="grey.400" id={description} className={styles.description} />
+          <Text type="caption" color="grey.400" labelKey={description} className={styles.description} />
         </Space>
       )}
       {children}

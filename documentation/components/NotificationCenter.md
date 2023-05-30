@@ -5,7 +5,7 @@ NotificationCenter component is responsible for displaying notification messages
 ## Props
 
 | Name                                     | Type                           | Default      | Description                                   |
-|------------------------------------------|--------------------------------|--------------|-----------------------------------------------|
+| ---------------------------------------- | ------------------------------ | ------------ | --------------------------------------------- |
 | `position` ?                             | NotificationPositions          | `top-center` | Position of Notification container            |
 | `additionalNotificationContainerProps` ? | Partial(Space Component props) | -            | Additional props for Notification container   |
 | `duration` ?                             | number                         | -            | Time to live for each notification            |

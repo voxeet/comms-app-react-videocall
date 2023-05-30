@@ -8,6 +8,7 @@ import {
   Spinner,
   useAudio,
   useCamera,
+  useErrors,
   useMicrophone,
   useNotifications,
   useSession,
@@ -48,15 +49,24 @@ export const DeviceSetup = () => {
   const intl = useIntl();
   const { openSession, participant, closeSession, isSessionOpened } = useSession();
   const { showErrorNotification } = useNotifications();
+  const { sdkErrors } = useErrors();
 
   const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+  useEffect(() => {
+    if (sdkErrors['Incorrect participant session']) {
+      setIsLoading(false);
+    }
+    // This hook should only be run once on first component render
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (videoError) {
       showErrorNotification(intl.formatMessage({ id: 'videoRetrying' }));
       removeError();
     }
-  }, [videoError]);
+  }, [intl, removeError, showErrorNotification, videoError]);
 
   const checkPermissions = () => {
     (async () => {
@@ -91,6 +101,8 @@ export const DeviceSetup = () => {
   useEffect(() => {
     checkPermissions();
     sessionSetup();
+    // This hook should only be run once on first component render
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -124,16 +136,21 @@ export const DeviceSetup = () => {
     setStep(CreateStep.meetingName);
   };
 
-  const joinParams: JoinParams = {
-    isMicrophonePermission,
-    isCameraPermission,
-    isAudio,
-    isVideo,
+  const onJoinError = async () => {
+    showErrorNotification(intl.formatMessage({ id: 'joinErrorNotification' }));
+    setIsLoading(false);
   };
 
   const joinOptions = useMemo(() => {
+    const joinParams: JoinParams = {
+      isMicrophonePermission,
+      isCameraPermission,
+      isAudio,
+      isVideo,
+    };
+
     return setJoinOptions(joinParams);
-  }, [isMicrophonePermission, isCameraPermission, isAudio, isVideo]);
+  }, [isAudio, isCameraPermission, isMicrophonePermission, isVideo]);
 
   if (isLoading) {
     return (
@@ -157,6 +174,7 @@ export const DeviceSetup = () => {
         onInitialise={onInitialise}
         onSuccess={onSuccess}
         joinOptions={joinOptions}
+        onError={onJoinError}
       />
     );
   }
@@ -198,15 +216,16 @@ export const DeviceSetup = () => {
             onInitialise={onInitialise}
             onSuccess={onSuccess}
             style={{ width: 400 }}
+            onError={onJoinError}
           >
-            <Text testID="JoinbuttonText" type="buttonDefault" id="joinNow" />
+            <Text testID="JoinbuttonText" type="buttonDefault" labelKey="joinNow" />
           </JoinConferenceButton>
           {!isAllPermission && (
             <Text
               testID="PermissionsWarning"
               type="captionRegular"
               color="grey.500"
-              id="permissionsWarning"
+              labelKey="permissionsWarning"
               align="center"
             />
           )}

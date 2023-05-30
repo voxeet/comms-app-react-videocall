@@ -1,0 +1,11 @@
+.fallbackContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+}
