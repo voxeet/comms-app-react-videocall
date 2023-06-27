@@ -2,25 +2,29 @@
 
 The useScreenSharing hook gathers functions responsible for managing screen sharing.
 
+```javascript
+import { useScreenSharing } from '@dolbyio/comms-uikit-react';
+```
+
 ## Members
 
-| Name                           | Type                | Description                                                        |
-| ------------------------------ | ------------------- | ------------------------------------------------------------------ |
-| `startScreenShare`             | () => {}            | Starts screen sharing. Function available only on desktop devices. |
-| `stopScreenShare`              | () => {}            | Stops screen sharing. Function available only on desktop devices.  |
-| `owner`                        | Participant         | The object of the participant which sharing screen.                |
-| `isLocalUserPresentationOwner` | boolean             | Informs if local user is presentation owner.                       |
-| `stream`                       | MediaStreamWithType | Object of screen share stream.                                     |
-| `status`                       | Status              | Current share status                                               |
-| `isPendingTakeoverRequest`     | boolean             | Informs if local user has pending takeover request.                |
-| `setPendingTakeoverRequest`    | (boolean) => void   | Changes pending takeover request status.                           |
-| `permissionError`              | boolean             | True while there is no permission for browser                      |
-| `sharingInProgressError`       | boolean             | True while trying share while sharing is already in Progress       |
-| `setSharingErrors`             | ()=> void           | Handler to remove ScreenSharing related errors                     |
-| `isPresentationModeActive`     | boolean             | Informs if local user has active presentation mode.                |
-| `resetScreenSharingData`       | () => void          | Resets data of screen sharing for local user.                      |
-| `isAutoStartShareError`        | boolean             | Informs if a browser problem with auto start screen share exists.  |
-| `isLackOfBrowserPermissions`   | boolean             | Informs if exists browser problem with auto start screen share.    |
+| Name                           | Type                                         | Description                                                        |
+| ------------------------------ | -------------------------------------------- | ------------------------------------------------------------------ |
+| `startScreenShare`             | () => {}                                     | Starts screen sharing. Function available only on desktop devices. |
+| `stopScreenShare`              | () => {}                                     | Stops screen sharing. Function available only on desktop devices.  |
+| `owners`                       | Map<Participant, MediaStreamWithType / null> | A map of the participant and the stream which sharing screen.      |
+| `isLocalUserPresentationOwner` | boolean                                      | Informs if local user is presentation owner.                       |
+| `firstPresenter`               | Participant / null                           | First participant who is presenting.                               |
+| `status`                       | Status                                       | Current share status                                               |
+| `isPendingTakeoverRequest`     | boolean                                      | Informs if local user has pending takeover request.                |
+| `setPendingTakeoverRequest`    | (boolean) => void                            | Changes pending takeover request status.                           |
+| `permissionError`              | boolean                                      | True while there is no permission for browser                      |
+| `sharingInProgressError`       | boolean                                      | True while trying share while sharing is already in Progress       |
+| `setSharingErrors`             | ()=> void                                    | Handler to remove ScreenSharing related errors                     |
+| `isPresentationModeActive`     | boolean                                      | Informs if local user has active presentation mode.                |
+| `resetScreenSharingData`       | () => void                                   | Resets data of screen sharing for local user.                      |
+| `isAutoStartShareError`        | boolean                                      | Informs if a browser problem with auto start screen share exists.  |
+| `isLackOfBrowserPermissions`   | boolean                                      | Informs if exists browser problem with auto start screen share.    |
 
 ## Examples
 
@@ -31,7 +35,7 @@ The useScreenSharing hook gathers functions responsible for managing screen shar
 ```javascript
 const { startScreenShare } = useScreenSharing();
 
-await startScreenShare();
+<button onClick={() => startScreenShare()}>...</button>;
 ```
 
 ### Stop screen share
@@ -39,7 +43,7 @@ await startScreenShare();
 ```javascript
 const { stopScreenShare } = useScreenSharing();
 
-await stopScreenShare();
+<button onClick={() => stopScreenShare()}>...</button>;
 ```
 
 ### Display presentation owner name
@@ -50,13 +54,19 @@ const { owner } = useScreenSharing();
 <Text>{`${owner.info.name} is presenting ...`}</Text>;
 ```
 
+> Read more on `Participant` model [here](https://docs.dolby.io/communications-apis/docs/js-client-sdk-model-participant)
+
 ### Mark stream status in action bar
 
 ```javascript
+import { useScreenSharing } from '@dolbyio/comms-uikit-react';
+
 const { status } = useScreenSharing();
 
-<Space>{status === ShareStatus.Active ? <div className="greenDot" /> : <div className="redDot" />}</Space>;
+<Space>{status === 'active' ? <div className="greenDot" /> : <div className="redDot" />}</Space>;
 ```
+
+> Values for `status` include `"active"`, `"loading"`, `"error"`, or `"other"`.
 
 ### Attach stream to video
 

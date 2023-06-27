@@ -15,6 +15,7 @@ The InfoBar component is responsible showing information to the user .
 | `duration`           | number                                               | 2000      | Time to live for InfoBar                                                                                                                                                       |
 | `alwaysVisible`      | boolean                                              | false     | Informs that InfoBar will be always visible.                                                                                                                                   |
 | `...HTMLDivElement`? | Partial(HTMLDivElement)                              | -         | Props that will be passed to the root of the div element.                                                                                                                      |
+
 A callback function which will run when the Infobar is completely invisible
 
 ## Examples

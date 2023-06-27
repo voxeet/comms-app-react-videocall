@@ -10,19 +10,22 @@ import {
   LiveStreamButton,
   RecordButton,
   Space,
+  useErrors,
   useNotifications,
   useParticipants,
+  useLiveStreaming,
   useTheme,
 } from '@dolbyio/comms-uikit-react';
 import useDrawer from '@hooks/useDrawer';
-import { useLiveStreaming } from '@hooks/useLiveStreaming';
+import { env } from '@src/utils/env';
+import getProxyUrl from '@src/utils/getProxyUrl';
 import cx from 'classnames';
 import React, { useCallback } from 'react';
 import { useIntl } from 'react-intl';
 
 import styles from './BottomDrawer.module.scss';
 
-const isLiveStreamingAvailable = import.meta.env.VITE_STREAMING === 'true';
+const isLiveStreamingAvailable = env('VITE_RTMP_STREAMING') === 'true';
 
 type BottomDrawerProps = {
   close: () => void;
@@ -30,10 +33,11 @@ type BottomDrawerProps = {
 
 const BottomDrawer = ({ close }: BottomDrawerProps) => {
   const { isTablet, isMobileSmall, isMobile } = useTheme();
-  const { streamHandler } = useLiveStreaming();
+  const { stopLiveStreamingByProxy } = useLiveStreaming();
   const { participants } = useParticipants();
   const { openDrawer } = useDrawer();
   const { showSuccessNotification, showErrorNotification } = useNotifications();
+  const { recordingErrors } = useErrors();
   const intl = useIntl();
 
   const openParticipantsList = () => {
@@ -63,7 +67,7 @@ const BottomDrawer = ({ close }: BottomDrawerProps) => {
   const areThreeButtonsInRow = (isTablet || isMobile) && !isLiveStreamingAvailable;
 
   return (
-    <Space fw className={cx(styles.drawer, import.meta.env.VITE_STREAMING === 'true' && !isTablet && styles.extended)}>
+    <Space fw className={cx(styles.drawer, isLiveStreamingAvailable && !isTablet && styles.extended)}>
       <Space className={styles.closeButtonSection}>
         <IconButton size="s" icon="close" onClick={close} backgroundColor="transparent" />
       </Space>
@@ -76,7 +80,7 @@ const BottomDrawer = ({ close }: BottomDrawerProps) => {
             icon="invite"
             backgroundColor="grey.600"
           />
-          <Text type="captionSmallDemiBold" id="inviteLabel" />
+          <Text type="captionSmallDemiBold" labelKey="inviteLabel" />
         </Space>
         {areThreeButtonsInRow && <Space className={styles.spacer} />}
         {isMobileSmall && (
@@ -90,42 +94,53 @@ const BottomDrawer = ({ close }: BottomDrawerProps) => {
               backgroundColor="grey.600"
               badgeColor="grey.300"
             />
-            <Text type="captionSmallDemiBold" id="participantsLabel" />
+            <Text type="captionSmallDemiBold" labelKey="participantsLabel" />
           </Space>
         )}
-        <Space className={styles.buttonContainer}>
-          <RecordButton
-            defaultTooltipText={intl.formatMessage({ id: 'record' })}
-            activeTooltipText={intl.formatMessage({ id: 'stopRecording' })}
-            onStopRecordingAction={() => recordingSuccessAction(intl.formatMessage({ id: 'recordingStopped' }))}
-            onStartRecordingAction={recordingSuccessAction}
-            renderStartConfirmation={renderRecordModal}
-            renderStopConfirmation={renderRecordModal}
-          />
-          <Text type="captionSmallDemiBold" id="recordingLabel" />
-        </Space>
+        {env('VITE_CONFERENCE_RECORDING') === 'true' && (
+          <Space className={styles.buttonContainer}>
+            <RecordButton
+              defaultTooltipText={intl.formatMessage({ id: 'record' })}
+              activeTooltipText={intl.formatMessage({ id: 'stopRecording' })}
+              onStopRecordingAction={() => recordingSuccessAction(intl.formatMessage({ id: 'recordingStopped' }))}
+              onStartRecordingAction={recordingSuccessAction}
+              renderStartConfirmation={renderRecordModal}
+              renderStopConfirmation={renderRecordModal}
+              onError={() =>
+                showErrorNotification(
+                  intl.formatMessage({
+                    id: recordingErrors['Recording already in progress']
+                      ? 'recordingAlreadyInProgress'
+                      : 'recordingError',
+                  }),
+                )
+              }
+            />
+            <Text type="captionSmallDemiBold" labelKey="recordingLabel" />
+          </Space>
+        )}
         {areThreeButtonsInRow && <Space className={styles.spacer} />}
         {isLiveStreamingAvailable && (
-          <Space className={styles.buttonContainer}>
+          <Space id="LiveStreamButton" className={styles.buttonContainer}>
             <LiveStreamButton
               transparent={false}
               onError={() => showErrorNotification(intl.formatMessage({ id: 'liveStreamingError' }))}
               renderDataInput={renderDataInput}
               renderStopConfirmation={renderStopStreamingModal}
               stopStreaming={async () => {
-                await streamHandler('stop');
+                await stopLiveStreamingByProxy(getProxyUrl());
                 close();
               }}
               onStopLiveStreamingAction={() =>
                 showSuccessNotification(intl.formatMessage({ id: 'liveStreamingEnded' }))
               }
             />
-            <Text type="captionSmallDemiBold" id="goLive" />
+            <Text type="captionSmallDemiBold" labelKey="goLive" />
           </Space>
         )}
         <Space className={styles.buttonContainer}>
           <ToggleSettingsDrawerButton backgroundColor="grey.600" onOpenAction={close} />
-          <Text type="captionSmallDemiBold" id="settings" />
+          <Text type="captionSmallDemiBold" labelKey="settings" />
         </Space>
       </Space>
     </Space>

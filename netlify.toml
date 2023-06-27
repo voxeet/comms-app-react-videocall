@@ -1,0 +1,30 @@
+[build]
+
+  command = "yarn build"
+  publish = "dist/"
+
+[functions]
+
+  external_node_modules = ["vm2"]
+  # Must be set to "esbuild" to use external_node_modules
+  node_bundler = "esbuild"
+  directory = "backend/functions"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[dev]
+  command = "yarn vite dev"
+  autoLaunch = false
+  framework = "#custom"
+  targetPort = 5173
+  port = 3000
+
+[template]
+  incoming-hooks = ["dolbyio-videocall"]
+
+[template.environment]
+  KEY = "change me to your dolby.io app key"
+  SECRET = "change me to your dolby.io app secret"

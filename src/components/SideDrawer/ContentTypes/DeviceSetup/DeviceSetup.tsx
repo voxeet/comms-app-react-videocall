@@ -52,7 +52,7 @@ const DeviceSetup = () => {
   }, []);
 
   return (
-    <Space fw fh testID="DeviceSetup" className={styles.contentContainer}>
+    <Space fw fh id="DeviceSetup" testID="DeviceSetup" className={styles.contentContainer}>
       <DrawerHeader
         height={!isDesktop && !isTablet ? 50 : 80}
         title={intl.formatMessage({ id: 'settings' })}
@@ -68,6 +68,8 @@ const DeviceSetup = () => {
               disabled={!isDrawerOpen}
               isMicrophonePermission={isMicrophonePermission}
               className={styles.videoRwd}
+              indicator={false}
+              audio={false}
             />
           </Space>
           {isDesktop && isCameraPermission && (

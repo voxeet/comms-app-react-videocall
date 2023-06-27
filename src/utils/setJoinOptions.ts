@@ -1,3 +1,5 @@
+import { env } from '@src/utils/env';
+
 export type JoinParams = {
   isMicrophonePermission: boolean;
   isCameraPermission: boolean;
@@ -7,7 +9,7 @@ export type JoinParams = {
 
 const setJoinOptions = ({ isMicrophonePermission, isCameraPermission, isAudio, isVideo }: JoinParams) => {
   return {
-    dvwc: import.meta.env.VITE_MUSIC_MODE === 'true',
+    dvwc: env('VITE_MUSIC_MODE') === 'true',
     constraints: {
       audio: isMicrophonePermission && isAudio,
       video:

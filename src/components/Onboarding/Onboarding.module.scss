@@ -1,0 +1,38 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  background-color: var(--colors-grey-600);
+  mix-blend-mode: multiply;
+}
+
+.spotlight {
+  position: absolute;
+  background-color: white;
+  border-radius: var(--borderRadius);
+}
+
+.tooltip {
+  position: fixed;
+  z-index: 1;
+
+  &.default {
+    margin: var(--spaces-s);
+  }
+
+  &.top {
+    margin-top: calc(var(--spaces-xs) * -1);
+  }
+
+  &.bottom {
+    margin-top: var(--spaces-xs);
+  }
+
+  &.left {
+    margin-left: calc(var(--spaces-xs) * -1);
+  }
+
+  &.right {
+    margin-left: var(--spaces-xs);
+  }
+}

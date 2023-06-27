@@ -57,11 +57,12 @@ export const ConferenceCreateHeader = () => {
         testID="ConferenceCreateHeaderTitle"
         color="black"
         type="H4"
-        id={step === CreateStep.deviceSetup ? 'setUp' : 'joinMeeting'}
+        labelKey={step === CreateStep.deviceSetup ? 'setUp' : 'joinMeeting'}
       />
       <Space style={{ width: 48 }}>
         {step === CreateStep.deviceSetup && (
           <IconButton
+            id="SettingsButton"
             testID="SettingsButton"
             backgroundColor="transparent"
             icon="settings"

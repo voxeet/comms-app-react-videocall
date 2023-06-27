@@ -32,6 +32,7 @@ export const BackgroundBlurToggle = () => {
           css={{ pointerEvents: isVideo ? undefined : 'none', opacity: isVideo ? 1 : 0.6 }}
         >
           <Space
+            id="BackgroundBlurSwitch"
             p="xs"
             onClick={handleBlur}
             className={styles.row}

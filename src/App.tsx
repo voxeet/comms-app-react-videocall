@@ -1,41 +1,52 @@
-import TranslationProvider from '@components/TranslationProvider';
-import { ConferenceCreateProvider } from '@context/ConferenceCreateContext';
-import { CommsProvider, ThemeProvider } from '@dolbyio/comms-uikit-react';
-import { Navigator } from '@src/routes/Navigator';
-import React, { useMemo } from 'react';
+import { CommsProvider, ThemeProvider, LogProvider, NotificationCenter, LogLevel } from '@dolbyio/comms-uikit-react';
+import VoxeetSDK from '@voxeet/voxeet-web-sdk';
+import React, { useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter, useLocation } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 
+import PhoneLandscapeCurtain from './components/PhoneLandscapeCurtain';
+import TranslationProvider from './components/TranslationProvider';
 import './App.module.scss';
+import { ConferenceCreateProvider } from './context/ConferenceCreateContext';
+import useToken from './hooks/useToken';
+import { Navigator } from './routes/Navigator';
 
 const App = () => {
-  const location = useLocation();
+  // Register the component name so that we can estimate the app's usage
+  useEffect(() => {
+    VoxeetSDK.registerComponentVersion(import.meta.env.VITE_APP_NAME, import.meta.env.VITE_APP_VERSION);
+  }, []);
 
-  const urlToken = useMemo(() => {
-    return encodeURIComponent(new URLSearchParams(window.location.search).get('token') || '');
-  }, [location]);
+  const { YOUR_TOKEN, getToken } = useToken();
 
-  const YOUR_TOKEN = urlToken;
+  if (!YOUR_TOKEN) {
+    return null;
+  }
 
   return (
-    <TranslationProvider>
-      <ConferenceCreateProvider>
-        <CommsProvider
-          token={YOUR_TOKEN} 
-          packageUrlPrefix={`${window.location.origin}${
-            import.meta.env.BASE_URL
-          }assets/wasm`}
-        >
-          <ThemeProvider
-            customThemes={{
-              'My Theme': { colors: { white: 'yellow', primary: { 400: 'red' }, secondary: { 400: 'blue' } } },
-            }}
+    <LogProvider minLogLevel={LogLevel.warn}>
+      <TranslationProvider>
+        <ConferenceCreateProvider>
+          <CommsProvider
+            token={YOUR_TOKEN}
+            refreshToken={getToken}
+            packageUrlPrefix={`${window.location.origin}${import.meta.env.BASE_URL}assets/wasm/`}
           >
-            <Navigator />
-          </ThemeProvider>
-        </CommsProvider>
-      </ConferenceCreateProvider>
-    </TranslationProvider>
+            <ThemeProvider
+              customThemes={{
+                'My Theme': { colors: { white: 'yellow', primary: { 400: 'red' }, secondary: { 400: 'blue' } } },
+              }}
+            >
+              <Navigator />
+              {/* Because of the problem with resize / orientation change events , we need to lock android chrome landscape mode* /}
+              {/* for mobile devices */}
+              <PhoneLandscapeCurtain />
+              <NotificationCenter position="top-center" />
+            </ThemeProvider>
+          </CommsProvider>
+        </ConferenceCreateProvider>
+      </TranslationProvider>
+    </LogProvider>
   );
 };
 

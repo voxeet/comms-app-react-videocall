@@ -13,17 +13,21 @@ export const ReturnToHome = () => {
   const { resetVideo } = useVideo();
   const { resetAudio } = useAudio();
 
-  const homeScreen = () => {
+  const gotoHomeScreen = () => {
     resetVideo();
     resetAudio();
     setStep(CreateStep.meetingName);
-    navigate(`${Routes.ConferenceCreate}${window.location.search}`);
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('id')) {
+      params.delete('id');
+    }
+    navigate(`${Routes.ConferenceCreate}?${params.toString()}`);
   };
 
   return (
     <Space mt="l">
-      <Button onClick={homeScreen} testID="ReturnToHomeButton" variant="primary" className={styles.button}>
-        <Text type="button" id="returnToHome" />
+      <Button onClick={gotoHomeScreen} testID="ReturnToHomeButton" variant="primary" className={styles.button}>
+        <Text type="button" labelKey="returnToHome" />
       </Button>
     </Space>
   );

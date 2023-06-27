@@ -5,7 +5,7 @@ The Overlay component is responsible to display overlay with children. Used for 
 ## Props
 
 | Name                 | Type           | Default   | Description                                               |
-|----------------------|----------------|-----------|-----------------------------------------------------------|
+| -------------------- | -------------- | --------- | --------------------------------------------------------- |
 | `opacity` ?          | number         | 0.8       | Opacity of overlay.                                       |
 | `onClick` ?          | ()=> void      | -         | OnClick handler while clicking on overlay.                |
 | `visible` ?          | boolean        | true      | Visibility flag for overlay and its children.             |

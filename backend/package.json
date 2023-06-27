@@ -1,0 +1,33 @@
+{
+  "name": "dolby-api-proxy",
+  "version": "1.2.0",
+  "main": "src/main.ts",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "npx tsc",
+    "start": "node dist/src/main.js",
+    "dev": "concurrently \"npx tsc --watch\" \"wait-on dist/src/main.js && nodemon -q --inspect dist/src/main.js\""
+  },
+  "dependencies": {
+    "@dolbyio/dolbyio-rest-apis-client": "^3.5.0",
+    "@netlify/functions": "^1.4.0",
+    "body-parser": "^1.20.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "node-fetch": "2",
+    "pubnub": "^7.2.2",
+    "serverless-http": "^3.2.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.14",
+    "@types/node": "^18.11.8",
+    "@types/pubnub": "^7.2.1",
+    "concurrently": "^7.6.0",
+    "nodemon": "^2.0.20",
+    "typescript": "4.9.5",
+    "wait-on": "^6.0.1"
+  }
+}
