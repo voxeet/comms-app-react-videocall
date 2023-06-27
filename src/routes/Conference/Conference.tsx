@@ -34,8 +34,8 @@ import {
   useLiveStreaming,
   Modal,
   useCommsContext,
+  isEdgeOrChromeBrowser,
 } from '@dolbyio/comms-uikit-react';
-import { isEdgeOrChromeBrowser } from '@dolbyio/comms-uikit-react/src/utils/misc';
 import useConferenceCreate from '@hooks/useConferenceCreate';
 import { usePageRefresh } from '@hooks/usePageRefresh';
 import { Onboarding, OnboardingStep } from '@src/components/Onboarding/Onboarding';
