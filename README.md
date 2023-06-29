@@ -1,7 +1,7 @@
 # Video Call App
 
 <p align="center">
-  <img src="./documentation/assets/banner.png" width="375px" />
+  <img src="documentation/assets/banner.jpeg" width="375px" />
 </p>
 
 ## Overview
@@ -64,7 +64,7 @@ To setup your Dolby.io account, go to [Dolby.io dashboard](https://dashboard.dol
 
 #### Setting up your [Dolby.io](https://dashboard.dolby.io) app
 
-To set up your app, you will need to go to the _Dashboard_. Inside the `Communications and Media` tab, click `add new app` if you do not have an existing app. ![dashboard](documentation/assets/dashboard.png)
+To set up your app, you will need to go to the _Dashboard_. Inside the `Communications and Media` tab, click `add new app` if you do not have an existing app. ![dashboard](docu)
 
 ### Repo structure
 
