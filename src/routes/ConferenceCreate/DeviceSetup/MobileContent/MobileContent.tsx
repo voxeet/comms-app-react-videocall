@@ -11,6 +11,8 @@ import {
 } from '@dolbyio/comms-uikit-react';
 import ToggleMicrophoneButton from '@src/routes/ConferenceCreate/DeviceSetup/ToggleMicrophoneButton';
 import ToggleVideoButton from '@src/routes/ConferenceCreate/DeviceSetup/ToggleVideoButton';
+import { splitMeetingAlias } from '@src/utils/misc';
+
 import React, { useMemo } from 'react';
 
 import styles from './MobileContent.module.scss';
@@ -145,7 +147,7 @@ const MobileContent = ({
       <Space fw className={styles.container}>
         <Space mt={meetingNameTopMargin} className={styles.conferenceName}>
           <Text testID="MeetingName" type={titleTextType} color="black">
-            {meetingName}
+            {splitMeetingAlias(meetingName)[0]}
           </Text>
         </Space>
         <Space mt={videoTopMargin} className={styles.localVideo}>
