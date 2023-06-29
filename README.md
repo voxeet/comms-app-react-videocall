@@ -64,7 +64,7 @@ To setup your Dolby.io account, go to [Dolby.io dashboard](https://dashboard.dol
 
 #### Setting up your [Dolby.io](https://dashboard.dolby.io) app
 
-To set up your app, you will need to go to the _Dashboard_. Inside the `Communications and Media` tab, click `add new app` if you do not have an existing app. ![dashboard](docu)
+To set up your app, you will need to go to the _Dashboard_. Inside the `Communications and Media` tab, click `Create app` if you do not have an existing app. ![dashboard](documentation/assets/create.png)
 
 ### Repo structure
 
