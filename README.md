@@ -1,7 +1,7 @@
 # Video Call App
 
 <p align="center">
-  <img src="./documentation/assets/banner.jpg" width="375px" />
+  <img src="./documentation/assets/banner.png" width="375px" />
 </p>
 
 ## Overview
