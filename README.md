@@ -115,7 +115,7 @@ yarn dev
 
 After the appropriate message appears in the terminal window, open <http://localhost:3000> in the browser. The application will launch at this address. You should be able to see the welcome screen.
 
-![home](documentation/home.png)
+![home](documentation/assets/home.png)
 
 ### Additional configuration
 
