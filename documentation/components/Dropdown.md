@@ -15,18 +15,21 @@ return (
   <Dropdown selected={selectedDevice}>
     <DropdownLabel label="Label text" color="black" />
     <DropdownControl placeholder="Camera" />
-    <DropdownList onChange={onChange} options={[
-            {
-              label: 'Camera A',
-              value: 'camera-a',
-              icon: 'camera',
-            },
-            {
-              label: 'Camera B',
-              value: 'camera-b',
-              icon: 'camera',
-            },
-          ]} />
+    <DropdownList
+      onChange={onChange}
+      options={[
+        {
+          label: 'Camera A',
+          value: 'camera-a',
+          icon: 'camera',
+        },
+        {
+          label: 'Camera B',
+          value: 'camera-b',
+          icon: 'camera',
+        },
+      ]}
+    />
   </Dropdown>
 );
 ```
@@ -37,9 +40,9 @@ The DropdownLabel component renders a label for a drop-down list.
 
 ### Props
 
-| Name             | Type               | Default | Description                                                          |
-| ---------------- | ------------------ | ------- | -------------------------------------------------------------------- |
-| `label`          | string             | -       | The text of the label.                                               |
+| Name             | Type               | Default | Description                                                            |
+| ---------------- | ------------------ | ------- | ---------------------------------------------------------------------- |
+| `label`          | string             | -       | The text of the label.                                                 |
 | `...TextProps` ? | Partial(TextProps) | -       | Props that will be passed to the Text component, inside DropdownLabel. |
 
 ## \<DropdownControl />
@@ -48,11 +51,11 @@ The DropdownControl component renders an element responsible for toggling visibi
 
 ### Props
 
-| Name                     | Type                       | Default | Description                                                        |
-| ------------------------ | -------------------------- | ------- | ------------------------------------------------------------------ |
-| `placeholder`            | string                     | -       | The default text to display when the selected value is null.       |
-| `color` ?                | ColorKey                   | -       | The color of the text.                                             |
-| `borderColor` ?          | ColorKey                   | -       | The color of the box border.                                       |
+| Name                     | Type                       | Default | Description                                                          |
+| ------------------------ | -------------------------- | ------- | -------------------------------------------------------------------- |
+| `placeholder`            | string                     | -       | The default text to display when the selected value is null.         |
+| `color` ?                | ColorKey                   | -       | The color of the text.                                               |
+| `borderColor` ?          | ColorKey                   | -       | The color of the box border.                                         |
 | `...HTMLButtonElement` ? | Partial(HTMLButtonElement) | -       | Props that will be passed to the button tag, inside DropdownControl. |
 
 ## \<DropdownList />

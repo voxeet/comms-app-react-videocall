@@ -5,7 +5,7 @@ Component responsible for rendering current sharing stream status display.
 ## Props
 
 | Name                        | Type                              | Default | Description                                               |
-|-----------------------------|-----------------------------------|---------|-----------------------------------------------------------|
+| --------------------------- | --------------------------------- | ------- | --------------------------------------------------------- |
 | `guestLabel`?               | string                            | -       | Description for not local presenter                       |
 | `onActionSuccess`?          | ColorKey                          | -       | Callback after resolving stop sharing action.             |
 | `statusLabels`              | Record<Status , string>           | -       | Labels for corresponding sharing statuses                 |

@@ -6,7 +6,7 @@ Positioning is based on props
 ## Props
 
 | Name              | Type               | Default | Description                                          |
-|-------------------|--------------------|---------|------------------------------------------------------|
+| ----------------- | ------------------ | ------- | ---------------------------------------------------- |
 | `label`           | string / ReactNode | -       | The description label of the component.              |
 | `icon`            | IconComponentName  | -       | Icon name for displaying for feeding Icon component. |
 | `avatar` ?        | ReactNode          | -       | Avatar component. It is prioritised over Icon        |

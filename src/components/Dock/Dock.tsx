@@ -1,16 +1,11 @@
-import AskForShareTooltip from '@components/AskForShareTooltip/AskForShareTooltip';
 import BackgroundBlurToggle from '@components/BackgroundBlurToggle';
 import Copy from '@components/Copy';
 import LeaveConference from '@components/LeaveConference';
 import MusicModeModal from '@components/MusicModeModal';
 import RecordingModal from '@components/RecordingModal';
-import ScreenSharingTakeOverModal from '@components/ScreenSharingTakeOverModal/ScreenSharingTakeOverModal';
-import ShareHandOverTooltip from '@components/ShareHandOverTooltip/ShareHandOverTooltip';
 import StopLiveStreamingModal from '@components/StopLiveStreamingModal';
 import ToggleSettingsDrawerButton from '@components/ToggleSettingsDrawerButton';
 import {
-  ConferenceName,
-  DialogTooltip,
   IconButton,
   LiveStreamButton,
   LocalToggleAudioButton,
@@ -24,11 +19,16 @@ import {
   useScreenSharing,
   MusicModeButton,
   useAudioProcessing,
+  useLiveStreaming,
+  useErrors,
+  Text,
 } from '@dolbyio/comms-uikit-react';
 import useDrawer from '@hooks/useDrawer';
-import { useLiveStreaming } from '@hooks/useLiveStreaming';
 import LiveStreamingModal from '@src/components/LiveStreamingModal';
 import { SideDrawerContentTypes } from '@src/context/SideDrawerContext';
+import { env } from '@src/utils/env';
+import getProxyUrl from '@src/utils/getProxyUrl';
+import { splitMeetingAlias } from '@src/utils/misc';
 import React, { useEffect } from 'react';
 import { useIntl } from 'react-intl';
 
@@ -41,8 +41,9 @@ export const Dock = () => {
   const { showSuccessNotification, showErrorNotification, showNeutralNotification } = useNotifications();
   const intl = useIntl();
   const { setSharingErrors } = useScreenSharing();
-  const { streamHandler } = useLiveStreaming();
+  const { stopLiveStreamingByProxy } = useLiveStreaming();
   const { isMusicModeSupported, isError: musicModeError, removeAudioCaptureError } = useAudioProcessing();
+  const { recordingErrors } = useErrors();
 
   useEffect(() => {
     if (musicModeError) {
@@ -66,20 +67,6 @@ export const Dock = () => {
     }
   };
 
-  const renderTakeOver = (isOpen: boolean, close: () => void) => (
-    <ScreenSharingTakeOverModal isOpen={isOpen} closeModal={close} />
-  );
-
-  const renderHandOver = (isVisible: boolean, accept: () => void, cancel: () => void, requester?: string) => (
-    <DialogTooltip isVisible={isVisible}>
-      <ShareHandOverTooltip accept={accept} cancel={cancel} requester={requester} />
-    </DialogTooltip>
-  );
-  const renderAskForShare = (isVisible: boolean, accept: () => void, cancel: () => void) => (
-    <DialogTooltip isVisible={isVisible}>
-      <AskForShareTooltip accept={accept} cancel={cancel} />
-    </DialogTooltip>
-  );
   const renderRecordModal = (isVisible: boolean, accept: () => void, cancel: () => void) => (
     <RecordingModal isOpen={isVisible} closeModal={cancel} accept={accept} />
   );
@@ -105,13 +92,15 @@ export const Dock = () => {
 
   return (
     <Space testID="Dock" className={styles.dock} p="m">
-      <Space className={styles.row} style={{ width: 330 }}>
+      <Space id="CopyButton" className={styles.row} style={{ width: 330 }}>
         <Copy />
         <Space style={{ flex: 1 }}>
-          <ConferenceName testID="ConferenceName" />
+          <Text type="h6" testID="ConferenceName">
+            {splitMeetingAlias(conference.alias)[0]}
+          </Text>
         </Space>
       </Space>
-      <Space className={styles.row}>
+      <Space id="Dock" className={styles.row}>
         <LocalToggleAudioButton
           defaultTooltipText={intl.formatMessage({ id: 'mute' })}
           activeTooltipText={intl.formatMessage({ id: 'unmute' })}
@@ -127,28 +116,38 @@ export const Dock = () => {
           activeTooltipText={intl.formatMessage({ id: 'stopPresenting' })}
           onStartSharingAction={() => showSuccessNotification(intl.formatMessage({ id: 'presentingSuccessfully' }))}
           onStopSharingAction={() => showSuccessNotification(intl.formatMessage({ id: 'screenSharingStopped' }))}
-          onTakeOverDeclineAction={() => showErrorNotification(intl.formatMessage({ id: 'requestDeclined' }))}
           onLackOfBrowserPermissions={handleLackOfBrowserPermissions}
-          renderTakeOver={renderTakeOver}
-          renderHandOver={renderHandOver}
-          renderAskForShare={renderAskForShare}
+          onError={() => showErrorNotification(intl.formatMessage({ id: 'screenSharingLimit' }))}
         />
-        <Space className={styles.spacer} />
-        <RecordButton
-          defaultTooltipText={intl.formatMessage({ id: 'record' })}
-          activeTooltipText={intl.formatMessage({ id: 'stopRecording' })}
-          onStopRecordingAction={() => showSuccessNotification(intl.formatMessage({ id: 'recordingStopped' }))}
-          onError={() => showErrorNotification(intl.formatMessage({ id: 'recordingError' }))}
-          renderStartConfirmation={renderRecordModal}
-          renderStopConfirmation={renderRecordModal}
-        />
+        {env('VITE_CONFERENCE_RECORDING') === 'true' && (
+          <>
+            <Space className={styles.spacer} />
+            <RecordButton
+              defaultTooltipText={intl.formatMessage({ id: 'record' })}
+              activeTooltipText={intl.formatMessage({ id: 'stopRecording' })}
+              onStopRecordingAction={() => showSuccessNotification(intl.formatMessage({ id: 'recordingStopped' }))}
+              onError={() =>
+                showErrorNotification(
+                  intl.formatMessage({
+                    id: recordingErrors['Recording already in progress']
+                      ? 'recordingAlreadyInProgress'
+                      : 'recordingError',
+                  }),
+                )
+              }
+              renderStartConfirmation={renderRecordModal}
+              renderStopConfirmation={renderRecordModal}
+            />
+          </>
+        )}
         <Space className={styles.spacer} />
         <LeaveConference />
       </Space>
       <Space className={styles.row} style={{ width: 330, justifyContent: 'flex-end' }}>
-        <BackgroundBlurToggle />
-        {import.meta.env.VITE_MUSIC_MODE === 'true' && isMusicModeSupported && (
+        {env('VITE_BLUR_OPTION') === 'true' && <BackgroundBlurToggle />}
+        {env('VITE_MUSIC_MODE') === 'true' && isMusicModeSupported && (
           <MusicModeButton
+            id="MusicModeButton"
             activeIconColor="white"
             defaultTooltipText={intl.formatMessage({ id: 'musicMode' })}
             renderStartConfirmation={renderMusicModeModal}
@@ -171,10 +170,11 @@ export const Dock = () => {
             }
           />
         )}
-        {import.meta.env.VITE_STREAMING === 'true' && (
+        {env('VITE_RTMP_STREAMING') === 'true' && (
           <LiveStreamButton
+            id="LiveStreamButton"
             stopStreaming={async () => {
-              await streamHandler('stop');
+              await stopLiveStreamingByProxy(getProxyUrl());
             }}
             activeIconColor="white"
             disabledIconColor="grey.300"
@@ -186,6 +186,7 @@ export const Dock = () => {
           />
         )}
         <IconButton
+          id="OpenDrawerButton"
           testID="OpenDrawerButton"
           icon="participants"
           backgroundColor="transparent"

@@ -1,4 +1,5 @@
 /* eslint-disable no-nested-ternary */
+// TODO add error handling that isn't console.log
 
 import ActionBar from '@components/ActionBar';
 import AllowAudioModal from '@components/AllowAudioModal';
@@ -23,7 +24,6 @@ import {
   useAudio,
   useCamera,
   useConference,
-  useErrors,
   useMicrophone,
   useParticipants,
   useRecording,
@@ -31,21 +31,38 @@ import {
   useSpeaker,
   useTheme,
   useVideo,
-  useNotifications,
-  ErrorCodes,
+  useLiveStreaming,
+  Modal,
+  useCommsContext,
+  isEdgeOrChromeBrowser,
 } from '@dolbyio/comms-uikit-react';
 import useConferenceCreate from '@hooks/useConferenceCreate';
+import { usePageRefresh } from '@hooks/usePageRefresh';
+import { Onboarding, OnboardingStep } from '@src/components/Onboarding/Onboarding';
 import { SideDrawer } from '@src/components/SideDrawer';
 import Backdrop from '@src/components/SideDrawer/Backdrop';
+import Text from '@src/components/Text';
 import { SideDrawerProvider } from '@src/context/SideDrawerContext';
+import useSDKErrorHandler from '@src/hooks/useSDKErrorsHandler';
+import { conferenceSteps } from '@src/onboarding/conference';
+import { Routes } from '@src/types/routes';
+import { env, ungatedFeaturesEnabled } from '@src/utils/env';
+import getProxyUrl from '@src/utils/getProxyUrl';
+import { getMeetTimestamp } from '@src/utils/misc';
 import cx from 'classnames';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
+import { useNavigate } from 'react-router-dom';
 
 import styles from './Conference.module.scss';
 
+const MINUTE = 60 * 1000;
+const CONFERENCE_DURATION = (ungatedFeaturesEnabled() ? 15 : 0) * MINUTE;
+const DURATION_TO_SHOW_NOTIFICATION = CONFERENCE_DURATION - 2 * MINUTE;
+
 export const Conference = () => {
   const { conference, leaveConference } = useConference();
+  const { conferenceStatus } = useCommsContext();
   const { participants } = useParticipants();
   const { meetingName } = useConferenceCreate();
   const { selectCamera, localCamera } = useCamera();
@@ -59,6 +76,7 @@ export const Conference = () => {
   const actionBarRef = useRef<HTMLDivElement>(null);
   const dockRef = useRef<HTMLDivElement>(null);
   const mobileTopRef = useRef<HTMLDivElement>(null);
+  const [showOnboarding, setShowOnboarding] = useState(true);
   const {
     status,
     permissionError,
@@ -66,26 +84,79 @@ export const Conference = () => {
     isLocalUserPresentationOwner,
     isPendingTakeoverRequest,
     isPresentationModeActive,
+    stopScreenShare,
   } = useScreenSharing();
-  const { status: recordingStatus, ownerId, isLocalUserRecordingOwner } = useRecording();
-  const { showWarningNotification, showErrorNotification } = useNotifications();
-  const { sdkErrors, removeSdkErrors } = useErrors();
+  const { status: recordingStatus, ownerId, isLocalUserRecordingOwner, stopRecording } = useRecording();
   const [isBottomDrawerOpen, setIsBottomDrawerOpen] = useState(false);
   const [showBars, setShowBars] = useState(true);
+  const [showTwoMinutesRemaining, setShowTwoMinutesRemaining] = useState(false);
+  const T2MessageRef = useRef('This video call will end in two minutes');
+  const { isLiveStreamingModeActive, isLocalUserLiveStreamingOwner, stopLiveStreamingByProxy } = useLiveStreaming();
+  const navigate = useNavigate();
+
+  const cleanup = useCallback(async () => {
+    if (isLiveStreamingModeActive && isLocalUserLiveStreamingOwner) {
+      stopLiveStreamingByProxy(getProxyUrl());
+    }
+    if (isLocalUserRecordingOwner) {
+      await stopRecording();
+    }
+    if (isLocalUserPresentationOwner) {
+      await stopScreenShare();
+    }
+    await leaveConference();
+  }, [
+    isLiveStreamingModeActive,
+    isLocalUserLiveStreamingOwner,
+    isLocalUserRecordingOwner,
+    isLocalUserPresentationOwner,
+    leaveConference,
+    stopLiveStreamingByProxy,
+    stopRecording,
+    stopScreenShare,
+  ]);
+
+  useSDKErrorHandler(cleanup, cleanup);
+  usePageRefresh(cleanup, [
+    isLiveStreamingModeActive,
+    isLocalUserLiveStreamingOwner,
+    isLocalUserRecordingOwner,
+    isLocalUserPresentationOwner,
+    leaveConference,
+    stopLiveStreamingByProxy,
+    stopRecording,
+    stopScreenShare,
+  ]);
+
+  const filteredSteps = (step: OnboardingStep): boolean => {
+    switch (step.target) {
+      case 'BackgroundBlurSwitch':
+        return env('VITE_BLUR_OPTION') === 'true' && isEdgeOrChromeBrowser === true;
+      case 'MusicModeButton':
+        return env('VITE_MUSIC_MODE') === 'true' && isEdgeOrChromeBrowser === true;
+      case 'LiveStreamButton':
+        return env('VITE_RTMP_STREAMING') === 'true';
+      default:
+        return true;
+    }
+  };
 
   useEffect(() => {
-    if (ErrorCodes.IncorrectSession in sdkErrors) {
-      removeSdkErrors(ErrorCodes.IncorrectSession);
-      setTimeout(() => {
-        showErrorNotification(intl.formatMessage({ id: 'sessionExpired' }));
-        leaveConference();
-      }, 100);
+    const startTime = getMeetTimestamp(meetingName) ?? 0;
+    const timePassed = Date.now() - startTime;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const clearTimer = () => clearTimeout(timer);
+    if (timePassed >= CONFERENCE_DURATION) return clearTimer;
+    if (timePassed >= DURATION_TO_SHOW_NOTIFICATION) {
+      T2MessageRef.current = 'This video call will stop in less than 2 minutes';
+      setShowTwoMinutesRemaining(true);
+    } else {
+      timer = setTimeout(() => {
+        setShowTwoMinutesRemaining(true);
+      }, DURATION_TO_SHOW_NOTIFICATION - timePassed);
     }
-    if (ErrorCodes.PeerConnectionDisconnectedError in sdkErrors) {
-      showWarningNotification(intl.formatMessage({ id: 'connectionError' }));
-      removeSdkErrors(ErrorCodes.PeerConnectionDisconnectedError);
-    }
-  }, [sdkErrors]);
+    return clearTimer;
+  }, [meetingName]);
 
   useEffect(() => {
     if (showBars && isMobileSmall && participants.length > 1) {
@@ -96,7 +167,14 @@ export const Conference = () => {
     if (participants.length < 2) {
       setShowBars(true);
     }
-  }, [showBars, participants.length]);
+  }, [showBars, participants.length, isMobileSmall]);
+
+  useEffect(() => {
+    if (conferenceStatus === 'ended') {
+      cleanup();
+      navigate(`${Routes.ConferenceLeft}${window.location.search}`, { replace: true });
+    }
+  }, [cleanup, conferenceStatus, navigate]);
 
   const openBottomDrawer = () => {
     setIsBottomDrawerOpen(true);
@@ -117,13 +195,13 @@ export const Conference = () => {
     (async () => {
       if (localCamera && localCamera.deviceId && isVideo) {
         try {
-          await selectCamera(localCamera.deviceId!);
+          await selectCamera(localCamera.deviceId);
         } catch (error) {
-          console.error(error);
+          // console.error(error);
         }
       }
     })();
-  }, [localCamera]);
+  }, [isVideo, localCamera, selectCamera]);
 
   useEffect(() => {
     (async () => {
@@ -131,11 +209,11 @@ export const Conference = () => {
         try {
           await selectMicrophone(localMicrophone.deviceId);
         } catch (error) {
-          console.error(error);
+          // console.error(error);
         }
       }
     })();
-  }, [localMicrophone, isAudio]);
+  }, [localMicrophone, isAudio, selectMicrophone]);
 
   useEffect(() => {
     (async () => {
@@ -143,11 +221,11 @@ export const Conference = () => {
         try {
           await selectSpeaker(localSpeakers.deviceId);
         } catch (error) {
-          console.error(error);
+          // console.error(error);
         }
       }
     })();
-  }, [localSpeakers]);
+  }, [localSpeakers, selectSpeaker]);
 
   const isSmartphone = isMobile || isMobileSmall;
 
@@ -271,7 +349,7 @@ export const Conference = () => {
                 fw={!isTablet && isPortrait}
                 className={cx(
                   styles.bottomDrawer,
-                  import.meta.env.VITE_STREAMING && !isTablet && styles.extended,
+                  env('VITE_RTMP_STREAMING') === 'true' && !isTablet && styles.extended,
                   isBottomDrawerOpen && styles.active,
                   !isTablet && styles.smartphones,
                 )}
@@ -285,6 +363,24 @@ export const Conference = () => {
           <ScreenSharingPermissionModal isOpen={!!permissionError} closeModal={() => setSharingErrors()} />
         </Layout>
       </ConferenceComponent>
+      {ungatedFeaturesEnabled() && (
+        <Modal
+          testID="LeaveEventModel"
+          isVisible={showTwoMinutesRemaining}
+          close={() => setShowTwoMinutesRemaining(false)}
+          closeButton
+          overlayClickClose
+        >
+          <Space m="l" css={{ display: 'flex', flexDirection: 'column' }}>
+            <Text testID="LeaveEventModelDescription" type="h6" align="center">
+              Warning
+            </Text>
+            <Text testID="LeaveEventModelDescription" align="center">
+              {T2MessageRef.current}
+            </Text>
+          </Space>
+        </Modal>
+      )}
       {isMobileSmall && !showBars && (
         <div
           className={cx(styles.actionDetector)}
@@ -306,6 +402,13 @@ export const Conference = () => {
           }
         />
       </Overlay>
+      {!isMobile && showOnboarding && (
+        <Onboarding
+          name="conference"
+          steps={conferenceSteps.filter((step) => filteredSteps(step))}
+          onComplete={() => setShowOnboarding(false)}
+        />
+      )}
     </SideDrawerProvider>
   );
 };

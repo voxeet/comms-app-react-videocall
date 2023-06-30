@@ -1,13 +1,6 @@
 import Timer from '@components/Timer';
-import {
-  useConference,
-  IconButton,
-  Space,
-  ConferenceName,
-  useTheme,
-  useCamera,
-  useAudio,
-} from '@dolbyio/comms-uikit-react';
+import { useConference, IconButton, Space, useTheme, useCamera, useAudio, Text } from '@dolbyio/comms-uikit-react';
+import { splitMeetingAlias } from '@src/utils/misc';
 import cx from 'classnames';
 import React from 'react';
 
@@ -51,7 +44,9 @@ export const MobileTopBar = ({ visible = true }: MobileTopBarProps) => {
       )}
       <Space className={styles.middleSection}>
         <Space>
-          <ConferenceName type="h6" />
+          <Text type="h6" testID="ConferenceName">
+            {splitMeetingAlias(conference.alias)[0]}
+          </Text>
         </Space>
         <Space>
           <Timer />

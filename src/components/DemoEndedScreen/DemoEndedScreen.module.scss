@@ -1,0 +1,23 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spaces-m);
+}
+
+.textContainer {
+  margin-top: 100px;
+  margin-bottom: var(--spaces-m);
+}
+
+.button {
+  width: 400px;
+  height: 48px;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spaces-xs);
+}

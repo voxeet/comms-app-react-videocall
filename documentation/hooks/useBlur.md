@@ -1,6 +1,34 @@
 # useBlur
 
-The useBlur hook gathers functions responsible for toggling video background blur. Built-in function `startBackgroundBlur` attaches video processor to local video. To ensure the proper work of the video processor, the `vsl_impl.wasm` and `vsl_impl.pkgwvsl` files need to be accessible for download at URL that can be configured using the packageUrlPrefix accessor or by `packageUrlPrefix` prop in [CommsProvider](../providers/CommsProvider.md). Those files can be found in `@voxeet/voxeet-web-sdk` node module package. For additional information please visit [Dolby.io](https://docs.dolby.io/communications-apis/docs/js-client-sdk-model-localvideo#setprocessor).
+The useBlur hook gathers functions responsible for toggling video background blur. Built-in function `startBackgroundBlur` attaches video processor to local video.
+
+```javascript
+import { useBlur } from '@dolbyio/comms-uikit-react';
+```
+
+## Prerequisite
+
+To enable video processing, this hook requires support from the following files located in `@voxeet/voxeet-web-sdk` node module package:
+
+- `dvwc_impl.wasm`
+- `voxeet-dvwc-worker.js`
+- `voxeet-worklet.js`
+
+You can configure the path to these files by setting the `packageUrlPrefix` accessor or the `packageUrlPrefix` prop in [CommsProvider](../providers/CommsProvider.md)
+
+**Note:** Please check [here](https://docs.dolby.io/communications-apis/docs/js-client-sdk-model-localvideo#setprocessor) to learn more about system requirements.
+
+See example below to configure CommsProvider component to access the relevant files via voxeet-web-sdk CDN link:
+
+```javascript
+<CommsProvider
+  token={token}
+  refreshToken={refreshToken}
+  packageUrlPrefix="https://cdn.jsdelivr.net/npm/@voxeet/voxeet-web-sdk/dist"
+>
+  {children}
+</CommsProvider>
+```
 
 ## Members
 
@@ -15,18 +43,19 @@ The useBlur hook gathers functions responsible for toggling video background blu
 
 ### React
 
-### Start background blur.
+### Start / Stop background blur.
 
 ```javascript
-const { startBackgroundBlur } = useBlur();
-...
-<button onClick={startBackgroundBlur}>...</button>
-```
+const ToggleBlurButton = () => {
+  const { startBackgroundBlur, stopVideoProcessing, isBlurred } = useBlur();
 
-### Stop video processor.
-
-```javascript
-const {stopVideoProcessing} = useBlur()
-
-<button onClick={stopVideoProcessing}>...</button>
+  const ToggleBlur = () => {
+    if (isBlurred) {
+      stopVideoProcessing();
+    } else {
+      startBackgroundBlur();
+    }
+  };
+  return <button onClick={ToggleBlur}>{isBlurred ? 'Stop Blur' : 'Start Blur'}</button>;
+};
 ```

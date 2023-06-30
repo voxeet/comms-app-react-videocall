@@ -33,6 +33,7 @@ const ToggleSettingsDrawerButton = ({
   return (
     <Tooltip position="top" text={isVisible ? '' : intl.formatMessage({ id: 'settings' })}>
       <IconButton
+        id="OpenSettingsButton"
         testID="OpenSettingsButton"
         icon="settings"
         backgroundColor={backgroundColor}

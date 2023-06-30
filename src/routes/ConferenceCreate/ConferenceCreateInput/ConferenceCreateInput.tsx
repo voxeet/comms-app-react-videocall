@@ -2,7 +2,10 @@ import Text from '@components/Text';
 import { Input, ValidationType, Button, Space, useTheme } from '@dolbyio/comms-uikit-react';
 import useConferenceCreate from '@hooks/useConferenceCreate';
 import { useEnter } from '@hooks/useEnter';
+import { Onboarding } from '@src/components/Onboarding/Onboarding';
+import { hostJoinSteps } from '@src/onboarding/host_join';
 import { CreateStep } from '@src/types/routes';
+import { splitMeetingAlias } from '@src/utils/misc';
 import { isValid } from '@src/utils/validation';
 import React, { useMemo, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
@@ -69,10 +72,11 @@ export const ConferenceCreateInput = ({
     setMeetingName,
   } = useConferenceCreate(type);
   const [validation, setValidation] = useState<ValidationType>({ valid: true });
-  const [value, setValue] = useState(type === 'meeting' ? meetingName : username);
+  const [value, setValue] = useState(type === 'meeting' ? splitMeetingAlias(meetingName)[0] : username);
   const [searchParams] = useSearchParams();
   const intl = useIntl();
-  const { isMobile, isMobileSmall, isDesktop, isTablet } = useTheme();
+  const { isMobile, isMobileSmall, isTablet } = useTheme();
+  const [showOnboarding, setShowOnboarding] = useState(true);
 
   const settings = useMemo(() => typeValues[type], [type]);
 
@@ -139,7 +143,7 @@ export const ConferenceCreateInput = ({
     }
 
     return padding;
-  }, [isMobileSmall, isMobile, isDesktop, isTablet]);
+  }, [isSmartphone, isTablet]);
 
   return (
     <Space fh fw className={styles.wrapper}>
@@ -147,12 +151,12 @@ export const ConferenceCreateInput = ({
         <Text
           testID={settings.headerTestId}
           type="H1"
-          id={settings.headerId}
+          labelKey={settings.headerId}
           values={{ name: username }}
           color="black"
         />
         <Space mt="xs">
-          <Text testID={settings.disclaimerTestId} color="grey.500" id={settings.disclaimerId} />
+          <Text testID={settings.disclaimerTestId} color="grey.500" labelKey={settings.disclaimerId} />
         </Space>
         <Space mt="l">
           <div ref={myRef}>
@@ -176,10 +180,13 @@ export const ConferenceCreateInput = ({
             onClick={next}
             style={{ width: '100%', height: settings.buttonHeight }}
           >
-            <Text testID={settings.submitButtonLabelTestId} type="button" id={settings.submitButtonLabel} />
+            <Text testID={settings.submitButtonLabelTestId} type="button" labelKey={settings.submitButtonLabel} />
           </Button>
         </Space>
       </Space>
+      {!isMobile && showOnboarding && (
+        <Onboarding name="hostJoin" steps={hostJoinSteps} onComplete={() => setShowOnboarding(false)} />
+      )}
     </Space>
   );
 };

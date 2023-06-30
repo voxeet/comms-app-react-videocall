@@ -8,6 +8,7 @@ import {
   Spinner,
   useAudio,
   useCamera,
+  useErrors,
   useMicrophone,
   useNotifications,
   useSession,
@@ -17,11 +18,14 @@ import {
   VideoLocalView,
 } from '@dolbyio/comms-uikit-react';
 import useConferenceCreate from '@hooks/useConferenceCreate';
+import { Onboarding } from '@src/components/Onboarding/Onboarding';
 import { SideDrawer } from '@src/components/SideDrawer';
+import { hostDeviceSetupSteps } from '@src/onboarding/host_device_setup';
 import MobileContent from '@src/routes/ConferenceCreate/DeviceSetup/MobileContent';
 import ToggleMicrophoneButton from '@src/routes/ConferenceCreate/DeviceSetup/ToggleMicrophoneButton';
 import ToggleVideoButton from '@src/routes/ConferenceCreate/DeviceSetup/ToggleVideoButton';
 import { CreateStep, Routes } from '@src/types/routes';
+import { getMeetTimestamp, splitMeetingAlias } from '@src/utils/misc';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
@@ -38,7 +42,7 @@ export const DeviceSetup = () => {
   const { localSpeakers } = useSpeaker();
   const { isVideo } = useVideo();
   const { isAudio, blockedAudioState, markBlockedAudioActivated } = useAudio();
-  const { meetingName, username, setStep } = useConferenceCreate();
+  const { meetingName, username, setStep, setMeetingName } = useConferenceCreate();
   const { isTablet, isMobile, isMobileSmall } = useTheme();
 
   const [isAllPermission, setIsAllPermission] = useState<boolean>(false);
@@ -48,15 +52,29 @@ export const DeviceSetup = () => {
   const intl = useIntl();
   const { openSession, participant, closeSession, isSessionOpened } = useSession();
   const { showErrorNotification } = useNotifications();
+  const { sdkErrors } = useErrors();
+  const [showOnboarding, setShowOnboarding] = useState(true);
 
   const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+  const uniqueMeetingName = getMeetTimestamp(meetingName) ? meetingName : `${meetingName}|${Date.now().toString()}`;
+
+  useEffect(() => {
+    if (sdkErrors['Incorrect participant session']) {
+      setIsLoading(false);
+    }
+    checkPermissions();
+    sessionSetup();
+    // This hook should only be run once on first component render
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (videoError) {
       showErrorNotification(intl.formatMessage({ id: 'videoRetrying' }));
       removeError();
     }
-  }, [videoError]);
+  }, [intl, removeError, showErrorNotification, videoError]);
 
   const checkPermissions = () => {
     (async () => {
@@ -89,11 +107,6 @@ export const DeviceSetup = () => {
   };
 
   useEffect(() => {
-    checkPermissions();
-    sessionSetup();
-  }, []);
-
-  useEffect(() => {
     if (isCameraPermission && localCamera === null) {
       (async () => {
         setLocalCamera(await getDefaultLocalCamera());
@@ -116,7 +129,8 @@ export const DeviceSetup = () => {
   const onSuccess = async () => {
     const params = new URLSearchParams(window.location.search);
     if (!params.get('id')) {
-      params.append('id', meetingName);
+      params.append('id', uniqueMeetingName);
+      setMeetingName(uniqueMeetingName);
     } else {
       params.set('id', meetingName);
     }
@@ -124,16 +138,21 @@ export const DeviceSetup = () => {
     setStep(CreateStep.meetingName);
   };
 
-  const joinParams: JoinParams = {
-    isMicrophonePermission,
-    isCameraPermission,
-    isAudio,
-    isVideo,
+  const onJoinError = async () => {
+    showErrorNotification(intl.formatMessage({ id: 'joinErrorNotification' }));
+    setIsLoading(false);
   };
 
   const joinOptions = useMemo(() => {
+    const joinParams: JoinParams = {
+      isMicrophonePermission,
+      isCameraPermission,
+      isAudio,
+      isVideo,
+    };
+
     return setJoinOptions(joinParams);
-  }, [isMicrophonePermission, isCameraPermission, isAudio, isVideo]);
+  }, [isAudio, isCameraPermission, isMicrophonePermission, isVideo]);
 
   if (isLoading) {
     return (
@@ -150,13 +169,14 @@ export const DeviceSetup = () => {
         localCamera={localCamera}
         localSpeakers={localSpeakers}
         username={username}
-        meetingName={meetingName}
+        meetingName={uniqueMeetingName}
         isMicrophonePermission={isMicrophonePermission}
         isCameraPermission={isCameraPermission}
         isAllPermission={isAllPermission}
         onInitialise={onInitialise}
         onSuccess={onSuccess}
         joinOptions={joinOptions}
+        onError={onJoinError}
       />
     );
   }
@@ -187,31 +207,40 @@ export const DeviceSetup = () => {
         </Space>
         <Space className={styles.columnRight}>
           <Text testID="MeetingName" type="H1" color="black">
-            {meetingName}
+            {splitMeetingAlias(uniqueMeetingName)[0]}
           </Text>
           <JoinConferenceButton
+            id="JoinButton"
             testID="DeviceSetupJoinButton"
             joinOptions={joinOptions}
-            meetingName={meetingName}
+            meetingName={uniqueMeetingName}
             tooltipText="Join"
             tooltipPosition="bottom"
             onInitialise={onInitialise}
+            disabled={!isAllPermission}
             onSuccess={onSuccess}
             style={{ width: 400 }}
+            onError={onJoinError}
           >
-            <Text testID="JoinbuttonText" type="buttonDefault" id="joinNow" />
+            <Text testID="JoinbuttonText" type="buttonDefault" labelKey="joinNow" />
           </JoinConferenceButton>
           {!isAllPermission && (
-            <Text
-              testID="PermissionsWarning"
-              type="captionRegular"
-              color="grey.500"
-              id="permissionsWarning"
-              align="center"
-            />
+            <Space className={styles.columnLeft}>
+              <Text
+                testID="PermissionsWarning"
+                type="captionRegular"
+                color="grey.500"
+                labelKey="permissionsWarning"
+                align="center"
+              />
+              <Text labelKey="deviceInitialization" type="caption" color="grey.200" align="center" />
+            </Space>
           )}
         </Space>
       </Space>
+      {!isMobile && showOnboarding && (
+        <Onboarding name="deviceSetup" steps={hostDeviceSetupSteps} onComplete={() => setShowOnboarding(false)} />
+      )}
       <SideDrawer />
     </Space>
   );

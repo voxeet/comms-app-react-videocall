@@ -11,6 +11,8 @@ import {
 } from '@dolbyio/comms-uikit-react';
 import ToggleMicrophoneButton from '@src/routes/ConferenceCreate/DeviceSetup/ToggleMicrophoneButton';
 import ToggleVideoButton from '@src/routes/ConferenceCreate/DeviceSetup/ToggleVideoButton';
+import { splitMeetingAlias } from '@src/utils/misc';
+
 import React, { useMemo } from 'react';
 
 import styles from './MobileContent.module.scss';
@@ -26,6 +28,7 @@ type MobileContentProps = {
   isAllPermission: boolean;
   onInitialise: () => Promise<void>;
   onSuccess: () => Promise<void>;
+  onError: () => Promise<void>;
   joinOptions: Pick<React.ComponentProps<typeof JoinConferenceButton>, 'joinOptions'>['joinOptions'];
 };
 
@@ -50,9 +53,10 @@ const MobileContent = ({
   isAllPermission,
   onInitialise,
   onSuccess,
+  onError,
   joinOptions,
 }: MobileContentProps) => {
-  const { isLandscape, isMobile, isMobileSmall, isTablet } = useTheme();
+  const { isMobile, isMobileSmall, isTablet } = useTheme();
 
   const meetingNameTopMargin = useMemo(() => {
     let value: SpaceValues = 'xxl';
@@ -62,7 +66,7 @@ const MobileContent = ({
     }
 
     return value;
-  }, [isMobile, isMobileSmall, isLandscape]);
+  }, [isMobile, isMobileSmall]);
 
   const videoTopMargin = useMemo(() => {
     let value: SpaceValues = 'm';
@@ -72,7 +76,7 @@ const MobileContent = ({
     }
 
     return value;
-  }, [isMobile, isMobileSmall, isLandscape]);
+  }, [isMobile, isMobileSmall]);
 
   const buttonsSectionTopMargin = useMemo(() => {
     let value: SpaceValues = 'm';
@@ -82,7 +86,7 @@ const MobileContent = ({
     }
 
     return value;
-  }, [isMobile, isMobileSmall, isLandscape]);
+  }, [isMobile, isMobileSmall]);
 
   const joinButtonTopMargin = useMemo(() => {
     let value: SpaceValues = 'xl';
@@ -92,7 +96,7 @@ const MobileContent = ({
     }
 
     return value;
-  }, [isMobile, isMobileSmall, isLandscape]);
+  }, [isMobile, isMobileSmall]);
 
   const permissionsWarningTopMargin = useMemo(() => {
     let value: SpaceValues = 'm';
@@ -102,7 +106,7 @@ const MobileContent = ({
     }
 
     return value;
-  }, [isMobile, isMobileSmall, isLandscape]);
+  }, [isMobile, isMobileSmall]);
 
   const joinButtonWidth = useMemo(() => {
     let value: string | number = joinButtonWidthValue.medium;
@@ -112,7 +116,7 @@ const MobileContent = ({
     }
 
     return value;
-  }, [isMobile, isMobileSmall, isTablet, isLandscape]);
+  }, [isMobile, isMobileSmall]);
 
   const permissionsWarningWidth = useMemo(() => {
     let value: string | number = permissionsWarningWidthValue.medium;
@@ -122,7 +126,7 @@ const MobileContent = ({
     }
 
     return value;
-  }, [isMobile, isMobileSmall, isTablet, isLandscape]);
+  }, [isMobile, isMobileSmall]);
 
   const titleTextType = useMemo(() => {
     let type: TextProps['type'] = 'h4';
@@ -143,7 +147,7 @@ const MobileContent = ({
       <Space fw className={styles.container}>
         <Space mt={meetingNameTopMargin} className={styles.conferenceName}>
           <Text testID="MeetingName" type={titleTextType} color="black">
-            {meetingName}
+            {splitMeetingAlias(meetingName)[0]}
           </Text>
         </Space>
         <Space mt={videoTopMargin} className={styles.localVideo}>
@@ -168,9 +172,10 @@ const MobileContent = ({
             tooltipText="Join"
             onInitialise={onInitialise}
             onSuccess={onSuccess}
+            onError={onError}
             style={{ width: joinButtonWidth, height: 48 }}
           >
-            <Text testID="JoinbuttonText" type="buttonDefault" id="joinNow" />
+            <Text testID="JoinbuttonText" type="buttonDefault" labelKey="joinNow" />
           </JoinConferenceButton>
         </Space>
         <Space
@@ -183,7 +188,7 @@ const MobileContent = ({
               testID="PermissionsWarning"
               type="captionRegular"
               color="grey.500"
-              id="permissionsWarning"
+              labelKey="permissionsWarning"
               align="center"
             />
           )}

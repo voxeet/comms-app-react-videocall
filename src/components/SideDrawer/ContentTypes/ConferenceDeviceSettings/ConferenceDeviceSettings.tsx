@@ -11,6 +11,7 @@ import {
   SpeakersSelect,
   ThemeSelect,
   useMicrophone,
+  useAudio,
   useCamera,
   useSession,
   useBlur,
@@ -42,12 +43,13 @@ const Settings = () => {
   const { isDrawerOpen } = useDrawer();
   const { isDesktop, isMobile, isMobileSmall } = useTheme();
   const { participant } = useSession();
-  const { toggleEchoCancellation, echoCancellation } = useAudioProcessing();
+  const { toggleEchoCancellation, isEchoCancellationOn: echoCancellation } = useAudioProcessing();
   const { setVideoForwarding, maxVideoForwarding } = useConference();
 
   const { getMicrophonePermission } = useMicrophone();
   const { getCameraPermission } = useCamera();
   const { isSupported } = useBlur();
+  const { isAudio } = useAudio();
 
   const isSmartphone = isMobile || isMobileSmall;
 
@@ -64,6 +66,8 @@ const Settings = () => {
   useEffect(() => {
     checkMicrophonePermission();
     checkCameraPermission();
+    // This is an on component mount hook
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const setParticipantsVideoTiles = (value: number) => {
@@ -97,14 +101,16 @@ const Settings = () => {
       </Space>
       <DrawerMainContent scrollbarColor="grey.600">
         <Space>
-          <DrawerOption
-            testID="EchoOption"
-            icon="echo"
-            headline="echoOptionHeadline"
-            description="echoOptionDsc"
-            headlineActionComponent={<Switch isActive={!!echoCancellation} onClick={toggleEchoCancellation} />}
-          />
-          {isDesktop && (
+          {isAudio && (
+            <DrawerOption
+              testID="EchoOption"
+              icon="echo"
+              headline="echoOptionHeadline"
+              description="echoOptionDsc"
+              headlineActionComponent={<Switch isActive={!!echoCancellation} onClick={toggleEchoCancellation} />}
+            />
+          )}
+          {isDesktop && import.meta.env.VITE_VIDEO_FORWARDING_OPTION === 'true' && (
             <DrawerOption icon="tiles" headline="videoForwardingOptionHeadline" description="videoForwardingOptionDsc">
               <RangeInput
                 minValue={1}

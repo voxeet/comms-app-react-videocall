@@ -4,10 +4,10 @@ The Session component is responsible for opening a new session on component moun
 
 ## Props
 
-| Name              | Type            | Default | Description                             |
-| ----------------- | --------------- | ------- |-----------------------------------------|
-| `participantInfo` | ParticipantInfo | -       | Participant info used to open session   |
-| `children`        | React.ReactNode | -       | The children element.                   |
+| Name              | Type            | Default | Description                           |
+| ----------------- | --------------- | ------- | ------------------------------------- |
+| `participantInfo` | ParticipantInfo | -       | Participant info used to open session |
+| `children`        | React.ReactNode | -       | The children element.                 |
 
 ## Examples
 

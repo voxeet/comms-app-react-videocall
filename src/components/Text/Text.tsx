@@ -4,15 +4,15 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 type TextProps = {
-  id?: TranslationKeys;
+  labelKey?: TranslationKeys;
   values?: TextValues;
   testID?: string;
 } & Partial<UITextProps>;
 
-export const Text = ({ id, values, children, testID, ...rest }: TextProps) => {
+export const Text = ({ labelKey, values, children, testID, ...rest }: TextProps) => {
   return (
     <UIText testID={testID} {...rest}>
-      {id ? <FormattedMessage id={id} values={values || {}} /> : children || null}
+      {labelKey ? <FormattedMessage id={labelKey} values={values || {}} /> : children || null}
     </UIText>
   );
 };

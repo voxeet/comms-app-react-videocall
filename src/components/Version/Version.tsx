@@ -10,9 +10,9 @@ export const Version = () => {
   const { getSDKVersion } = useSession();
   return (
     <Space testID="AppVersion" className={styles.version}>
-      <Text type="captionSmallRegular" color="grey.300" id="version" values={{ v: packageJson.version }} />
+      <Text type="captionSmallRegular" color="grey.300" labelKey="version" values={{ v: packageJson.version }} />
       <Space className={styles.spacer} />
-      <Text type="captionSmallRegular" color="grey.300" id="sdk" values={{ v: getSDKVersion() }} />
+      <Text type="captionSmallRegular" color="grey.300" labelKey="sdk" values={{ v: getSDKVersion() }} />
     </Space>
   );
 };

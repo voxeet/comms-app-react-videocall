@@ -1,4 +1,24 @@
-# Additional Configuration Options for the Video Call App
+# Additional Configuration and customization Options for the Video Call App
+
+## Changing the labels in the app
+
+To change the labels in the app, you can modify [en.json](src/translations/en.json) and change the labels as necessary.
+To add a new string, add a new key-value pair to the JSON file. You can then reference that new key in the code as follows:
+
+```javascript
+
+// en.json
+{
+    //... other keys
+    "yourNewKey" : "your new value",
+}
+
+// your own code file
+import {Text} from '@dolbyio/comms-uikit-react';
+
+<Text labelKey="yourNewKey" type="H2" />
+
+```
 
 ## Base URL configuration
 
@@ -18,7 +38,7 @@ Additional information about Base URL configuration can be found [here](https://
 VITE_MUSIC_MODE=true
 ```
 
-2. To start the application run the following command in the **root** directory
+You can learn more about music mode on our [docs pages](https://docs.dolby.io/communications-apis/docs/guides-music-mode) 2. To start the application run the following command in the **root** directory
 
 ```bash
 yarn dev
@@ -26,48 +46,24 @@ yarn dev
 
 ## Using live streaming features
 
-In order to use live streaming features, you need to run an additional proxy server so that POST methods can be properly handled. An example of such a server is placed in the [/api](api/) folder.
+In order to use live streaming features, you need to run an additional proxy server so that POST methods can be properly handled. An example of such a server is placed in the [/backend](backend/) folder.
 
 > If your application has been started in previous steps, please kill the process and proceed with instructions below.
 
 ### Setting up live streaming
 
-1. In the project root folder, create an `.env` file and add the following variables
+1. In the project root folder's `.env` file set the following variable
 
 ```env
-VITE_API_PROXY=localhost
-VITE_PROXY_PORT=4000
-VITE_PROXY_PROTOCOL=http
-VITE_STREAMING=true
+VITE_RTMP_STREAMING=true
 ```
 
-2. In the `/api` directory, create an `.env` file and fill it with the following properties.
+> You can set any value for port and hostname in the .env files, as long as they are the same.
 
-```bash
-PORT=4000
-KEY=APP_KEY
-SECRET=APP_SECRET
-HOSTNAME=localhost
-```
+## Customizing the App Theme
 
-Your `APP_KEY` and `APP_SECRET` can be found in your Dolby.io dashboard, under the app section. **Do not** wrap them in quote marks.
+The app theme is controlled by the [Dolby.io UI Kit](https://www.npmjs.com/package/@dolbyio/comms-uikit-react). Refer to [this guide](https://github.com/DolbyIO/comms-uikit-react/blob/main/documentation/providers/ThemeProvider.md) on how to stylize your app.
 
-![Keys and secrets](documentation/assets/app_keys.png)
+## Customizing the viewer layout
 
-3. Staying inside the `/api` directory, install all dependencies by running the following command
-
-```bash
-yarn
-```
-
-1. To start both the server and application together, run the following command in the **root** directory:
-
-```bash
-yarn run dev-proxy
-```
-
->You can set any value for port and hostname in the .env files, as long as they are the same.
-
-## Adding Custom layouts to your live stream
-
-Please visit this [blog post](https://dolby.io/blog/creating-a-custom-mixer-layout-for-streaming-a-conference/) if you want to explore adding a custom layout to your live stream.
+You can re-arrange the rendered layout for your live stream viewers by configuring the Communications API Mixer app. A mixer app is a web app based on the Dolby.io communications APIs that composes multiple streams of videos into a single stream and passes that on to any RTMP or webRTC based consumer. Refer to this [blog](https://dolby.io/blog/creating-a-custom-mixer-layout-for-streaming-a-conference/) for more details.
