@@ -12,7 +12,6 @@ import {
 import ToggleMicrophoneButton from '@src/routes/ConferenceCreate/DeviceSetup/ToggleMicrophoneButton';
 import ToggleVideoButton from '@src/routes/ConferenceCreate/DeviceSetup/ToggleVideoButton';
 import { splitMeetingAlias } from '@src/utils/misc';
-
 import React, { useMemo } from 'react';
 
 import styles from './MobileContent.module.scss';
