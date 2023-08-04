@@ -19,7 +19,7 @@
   "dependencies": {
     "@dolbyio/comms-uikit-react": "1.2.0",
     "@emotion/react": "^11.9.0",
-    "@voxeet/voxeet-web-sdk": "^3.10.0",
+    "@voxeet/voxeet-web-sdk": "^3.11.0",
     "axios": "^0.26.1",
     "classnames": "^2.3.1",
     "color": "4.2.3",
