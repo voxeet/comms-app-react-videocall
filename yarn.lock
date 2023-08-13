@@ -2046,10 +2046,10 @@
     "@babel/plugin-transform-react-jsx-source" "^7.22.5"
     react-refresh "^0.14.0"
 
-"@voxeet/voxeet-web-sdk@^3.10.0":
-  version "3.10.0"
-  resolved "https://registry.yarnpkg.com/@voxeet/voxeet-web-sdk/-/voxeet-web-sdk-3.10.0.tgz#5f2bb3878b3bf9a779bce8b1cd8ed81dd36d28ad"
-  integrity sha512-L8ALer7B2g6CCRx4zMlJg7YzKmO07u96V9cm4Cj0ayd37AQMPojinS7XrVTx5Dfh/lgOJQjnU6fhyZKAlNuwvg==
+"@voxeet/voxeet-web-sdk@^3.11.0":
+  version "3.11.0"
+  resolved "https://registry.yarnpkg.com/@voxeet/voxeet-web-sdk/-/voxeet-web-sdk-3.11.0.tgz#4bfcee5172787c7e3b93cd543a958974c0417ea1"
+  integrity sha512-ltQ0E8EzHTJxJXl63IFqw6hSs9fzwF9DiV7jtudfKaQxrNDBDEDIE3vUjlxQZlKGfjLoeODfCFezxyjbB0tXNA==
   dependencies:
     axios "^0.26.0"
     bowser "^2.8.1"

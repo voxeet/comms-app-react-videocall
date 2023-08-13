@@ -6,7 +6,10 @@ import fetch from '../utils/fetch';
 const useToken = () => {
   const [error, setError] = useState<string | undefined>();
 
-  const accessToken = import.meta.env.VITE_CLIENT_ACCESS_TOKEN || '';
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlAccessToken = urlParams.get('token');
+
+  const accessToken = import.meta.env.VITE_CLIENT_ACCESS_TOKEN || urlAccessToken || '';
 
   const [YOUR_TOKEN, setToken] = useState<string | null>(null);
 
