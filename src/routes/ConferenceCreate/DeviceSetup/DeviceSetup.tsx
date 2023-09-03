@@ -25,6 +25,7 @@ import MobileContent from '@src/routes/ConferenceCreate/DeviceSetup/MobileConten
 import ToggleMicrophoneButton from '@src/routes/ConferenceCreate/DeviceSetup/ToggleMicrophoneButton';
 import ToggleVideoButton from '@src/routes/ConferenceCreate/DeviceSetup/ToggleVideoButton';
 import { CreateStep, Routes } from '@src/types/routes';
+import { ungatedFeaturesEnabled } from '@src/utils/env';
 import { getMeetTimestamp, splitMeetingAlias } from '@src/utils/misc';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
@@ -57,7 +58,7 @@ export const DeviceSetup = () => {
 
   const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
-  const uniqueMeetingName = getMeetTimestamp(meetingName) ? meetingName : `${meetingName}|${Date.now().toString()}`;
+  const uniqueMeetingName = !ungatedFeaturesEnabled() ? meetingName : ( getMeetTimestamp(meetingName) ? meetingName : `${meetingName}|${Date.now().toString()}`);
 
   useEffect(() => {
     if (sdkErrors['Incorrect participant session']) {
