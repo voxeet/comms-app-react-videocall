@@ -1,3 +1,5 @@
+# :warning: This repository is no longer maintained :warning:
+
 # Video Call App
 
 <p align="center">
